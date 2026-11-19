@@ -37,9 +37,9 @@ var SITE_COPY = {
     meta: {
       locale: "en-IE",
       titleIndex: "{brand}: trained young people for local jobs in Cascais",
-      titleLogin: "Log in to the demo | {brand}",
-      titleFamily: "Family dashboard demo | {brand}",
-      titleWorker: "Worker dashboard demo | {brand}"
+      titleLogin: "Log in | {brand} app demo",
+      titleFamily: "Family app | {brand} demo",
+      titleWorker: "Worker app | {brand} demo"
     },
 
     common: {
@@ -47,8 +47,7 @@ var SITE_COPY = {
       place: "Cascais",
       demoBanner: "Demo with sample data. {brand} launches January 2027.",
       backToSite: "Back to the website",
-      perHour: "/hr",
-      required: "required"
+      perHour: "/hr"
     },
 
     nav: {
@@ -58,31 +57,45 @@ var SITE_COPY = {
       safety: "Safety",
       pricing: "Pricing",
       faq: "FAQ",
-      demo: "See the demo",
+      demo: "Try the app demo",
       signup: "Sign up"
     },
 
     hero: {
-      badge: "Launching in Cascais in January 2027",
-      title: "Everyday jobs, done by trained young locals",
+      title: "Trusted local help from trained young people",
       intro: "{brand} connects Cascais households and older neighbours with trained young people aged 16 to 24 for paid local jobs.",
-      familyLabel: "For families and neighbours",
+      tabsLabel: "Who are you?",
+      tabFamily: "I need help",
+      tabWorker: "I want to work",
       familyLine: "Book a trained young person for the jobs around your home.",
-      familyCta: "Sign up as a family",
-      workerLabel: "For 16 to 24 year olds",
       workerLine: "Earn money near home, learn new skills and build a real reference.",
-      workerCta: "Sign up to work",
-      demoCta: "See the demo",
-      surveyTitle: "We surveyed 33 local students",
-      stat1: "82%",
-      stat1Label: "have already done some paid work",
-      stat2: "97%",
-      stat2Label: "would take a free short course if it led to paid work"
+      jobLabel: "What do you need help with?",
+      jobPlaceholder: "Choose a job",
+      ageLabel: "How old are you?",
+      agePlaceholder: "Choose your age",
+      parishLabel: "Your parish",
+      start: "Get started",
+      launch: "Launching in Cascais in January 2027. Signing up is free.",
+      photoAlt: "A golden retriever being walked along a sunny pavement",
+      previewLabel: "App preview with sample data",
+      chipShortlistTitle: "Your shortlist is ready",
+      chipShortlistText: "3 trained dog walkers",
+      chipBadgeTitle: "Course passed",
+      chipBadgeText: "Pet care course, level Starter",
+      trust: [
+        { icon: "school", text: "Trained for every job type" },
+        { icon: "verified_user", text: "Every booked job will be insured" },
+        { icon: "family_restroom", text: "Parent consent for under-18s" },
+        { icon: "payments", text: "Pay through {brand} after the job" }
+      ]
     },
 
     how: {
       title: "How it works",
-      familyTitle: "For families and neighbours",
+      intro: "Two simple paths, and a live app demo you can tap through.",
+      tabsLabel: "Show steps for",
+      tabFamily: "Families",
+      tabWorker: "Young people",
       familySteps: [
         { title: "Post a job", text: "Tell us what you need, where and when." },
         { title: "Get a shortlist", text: "We send you 2 or 3 vetted workers who fit the job." },
@@ -90,38 +103,42 @@ var SITE_COPY = {
         { title: "The job gets done, insured", text: "Every booked job will be insured, with the policy in place before launch." },
         { title: "Pay and review", text: "Pay through {brand} after the job. You both leave a review." }
       ],
-      familyCta: "Sign up as a family",
-      workerTitle: "For young people aged 16 to 24",
       workerSteps: [
         { title: "Sign up", text: "Tell us which jobs you'd like and how much time you have." },
         { title: "Parent consent if you're under 18", text: "A parent or guardian says yes before your first job." },
         { title: "Take a free course", text: "A short online course for each job type. Pass it to take that job." },
         { title: "Earn badges and level up", text: "Go from Starter to Verified to Trusted as you complete jobs." }
       ],
-      workerCta: "Sign up to work"
+      familyCta: "Sign up as a family",
+      workerCta: "Sign up to work",
+      demoTitle: "Live app demo",
+      demoText: "Sample data only. Nothing you type is saved.",
+      demoOpen: "Open the app demo",
+      demoFrameTitle: "{brand} app demo"
     },
 
     jobs: {
-      title: "Jobs at launch",
+      title: "Jobs you can book at launch",
       intro: "Workers set their own rate, usually around €10 an hour.",
-      notOffered: "Not offered at launch: babysitting or childcare."
+      notOffered: "Not offered at launch: babysitting or childcare.",
+      cardCta: "Sign up for this job"
     },
 
     // Job types. "value" is what gets saved to the Google Sheet.
     jobTypes: [
-      { value: "Event help", icon: "celebration", name: "Event help", desc: "Setting up, serving and cleaning up at parties and family gatherings." },
-      { value: "Pet care and dog walking", icon: "pets", name: "Pet care and dog walking", desc: "Walks, feeding and company for your pets while you're out." },
-      { value: "Car washing", icon: "local_car_wash", name: "Car washing", desc: "A careful hand wash at your home." },
-      { value: "Garden care", icon: "yard", name: "Garden care", desc: "Weeding, watering, raking and tidying, with hand tools only." },
-      { value: "Window cleaning", icon: "window", name: "Window cleaning", desc: "Ground-level windows only. No ladders, ever." },
-      { value: "Tech help for seniors", icon: "devices", name: "Tech help for seniors", desc: "Patient help with phones, video calls, apps and email." }
+      { value: "Event help", icon: "celebration", photo: "assets/job-events.jpg", name: "Event help", short: "Events", desc: "Setting up, serving and cleaning up at parties and family gatherings.", alt: "An outdoor table set for a lunch with flowers" },
+      { value: "Pet care and dog walking", icon: "pets", photo: "assets/job-pets.jpg", name: "Pet care and dog walking", short: "Pet care", desc: "Walks, feeding and company for your pets while you're out.", alt: "A dog on a lead in a field" },
+      { value: "Car washing", icon: "local_car_wash", photo: "assets/job-car.jpg", name: "Car washing", short: "Car wash", desc: "A careful hand wash at your home.", alt: "Hands cleaning a car with a green cloth" },
+      { value: "Garden care", icon: "yard", photo: "assets/job-garden.jpg", name: "Garden care", short: "Garden", desc: "Weeding, watering, raking and tidying, with hand tools only.", alt: "Gloved hands planting with a hand trowel" },
+      { value: "Window cleaning", icon: "window", photo: "assets/job-windows.jpg", name: "Window cleaning", short: "Windows", desc: "Ground-level windows only. No ladders, ever.", alt: "A person cleaning a window from inside the room" },
+      { value: "Tech help for seniors", icon: "devices", photo: "assets/job-tech.jpg", name: "Tech help for seniors", short: "Tech help", desc: "Patient help with phones, video calls, apps and email.", alt: "An older couple looking at a smartphone together" }
     ],
 
     safety: {
-      title: "Safety and insurance",
-      intro: "Built so parents and older neighbours can say yes with confidence.",
+      title: "Safety is built in from day one",
+      intro: "Families and older neighbours will be trusting us with their homes. These rules are not optional.",
       items: [
-        { icon: "shield", title: "Every booked job insured", text: "Every booked job will be insured. The policy will be in place before we launch." },
+        { icon: "verified_user", title: "Every booked job insured", text: "Every booked job will be insured. The policy will be in place before we launch." },
         { icon: "school", title: "Trained for each job", text: "Workers pass a short course for a job type before they can take that job." },
         { icon: "family_restroom", title: "Parent consent under 18", text: "Workers aged 16 and 17 need a parent or guardian's consent to join." },
         { icon: "bedtime", title: "No late jobs for under-18s", text: "Nobody under 18 works after 22:00." },
@@ -131,8 +148,12 @@ var SITE_COPY = {
     },
 
     skills: {
-      title: "Skills that count",
+      title: "Skills that count for young people",
       intro: "Each job type has its own free online course. Pass it and you earn that badge. Complete jobs and you move up a level.",
+      surveyLead: "We asked 33 local students.",
+      survey: "{stat1} have already done some paid work, and {stat2} would take a free short course if it led to paid work.",
+      stat1: "82%",
+      stat2: "97%",
       badgesTitle: "Course badges",
       levelsTitle: "Levels",
       unlocks: "Unlocks"
@@ -146,8 +167,10 @@ var SITE_COPY = {
     ],
 
     pricing: {
-      title: "Pricing",
-      intro: "Simple and fair for both sides.",
+      title: "Simple, fair pricing",
+      intro: "Workers keep everything they earn. Families pay a small fee that includes insurance.",
+      offerTitle: "Founding family offer",
+      offerText: "Sign up before launch and pay half the booking fee, 7.5%, until 30 June 2027.",
       exampleTitle: "Example: 2 hours of garden care",
       exampleRate: "Worker's rate: 2 hours at €10",
       exampleRateValue: "€20.00",
@@ -155,20 +178,22 @@ var SITE_COPY = {
       exampleFeeValue: "€3.00",
       exampleFounding: "Founding family fee (7.5%)",
       exampleFoundingValue: "€1.50",
-      exampleTotal: "Founding family pays",
+      exampleTotal: "You pay",
       exampleTotalValue: "€21.50",
       exampleWorker: "The worker keeps all €20.00.",
       points: [
         { icon: "payments", title: "Workers set their own rate", text: "Usually around €10 an hour. Workers keep 100% of their rate." },
         { icon: "receipt_long", title: "15% booking fee for families", text: "Added on top of the worker's rate. It includes insurance." },
-        { icon: "star", title: "Founding families pay half", text: "Sign up now and pay a 7.5% fee until 30 June 2027." },
         { icon: "card_membership", title: "Membership from July 2027", text: "€6 a month or €15 for 3 months, with no booking fees." }
       ]
     },
 
     signup: {
-      title: "Sign up",
-      intro: "It takes about two minutes. We'll email you before we launch."
+      title: "Join {brand} before we launch",
+      intro: "It takes about two minutes. We'll email you before we launch in January 2027.",
+      tabsLabel: "Sign up as",
+      tabFamily: "A family",
+      tabWorker: "A young person (16 to 24)"
     },
 
     forms: {
@@ -271,6 +296,7 @@ var SITE_COPY = {
 
     faq: {
       title: "Questions",
+      intro: "Can't find your answer? Email us at {email}.",
       items: [
         { q: "When does {brand} start?", a: "We launch in Cascais in January 2027. Sign up now and we'll email you when bookings open." },
         { q: "Is every job insured?", a: "Yes. Every booked job will be insured, and the policy will be in place before we launch. Insurance is included in the booking fee." },
@@ -284,86 +310,113 @@ var SITE_COPY = {
     footer: {
       project: "A Venture for Change 2026 student project",
       contact: "Contact:",
-      nav: "Footer"
+      nav: "Footer",
+      photos: "Job photos from Unsplash."
     },
 
-    /* ---------- Demo screens ---------- */
+    /* ---------- App demo ---------- */
 
     demo: {
-      navLabel: "Demo",
-      familyView: "Family view",
-      workerView: "Worker view",
+      stageTitle: "Try the {brand} app",
+      stageText: "This is how {brand} will work on your phone. Everything here is sample data, and nothing you type is saved.",
+      tryTitle: "Try this",
+      tryLogin: ["Choose A family or A worker.", "Type anything, or nothing, and tap Log in."],
+      tryFamily: ["Pick a job and tap Find workers.", "Compare the shortlist and tap Pick.", "Check the price breakdown with the founding discount.", "Set the start time to 21:00 and search again: the under-18 worker disappears."],
+      tryWorker: ["See the level and progress to Trusted.", "Open Badges to see passed and locked courses.", "Open Record for the skills record schools and employers can see."],
+      switchLabel: "Switch view",
+      familyView: "Family app",
+      workerView: "Worker app",
       logout: "Log out",
+      back: "Back",
+      tabsLabel: "App sections",
+      statusTime: "9:41",
 
       login: {
-        title: "Log in to the demo",
-        intro: "Nothing you type here is checked or saved. Choose a view and continue.",
-        roleLegend: "I am a",
-        roleFamily: "Family",
-        roleWorker: "Worker",
+        welcome: "Welcome to {brand}",
+        intro: "Trusted local help from trained young people in Cascais.",
+        roleLegend: "I'm using {brand} as",
+        roleFamily: "A family",
+        roleWorker: "A worker",
         email: "Email",
         password: "Password",
-        submit: "Open the dashboard",
-        noAccount: "Not signed up yet?",
-        signupLink: "Sign up on the website"
+        show: "Show",
+        hide: "Hide",
+        submit: "Log in",
+        note: "Demo login: nothing you type is checked or saved."
       },
 
       family: {
+        tabHome: "Post a job",
+        tabBookings: "Bookings",
+        tabAccount: "Account",
         hello: "Hello, {name}",
+        founding: "Founding family",
         postTitle: "Post a job",
-        postIntro: "Tell us what you need. We'll show you a shortlist of workers.",
-        job: "Job type",
+        postIntro: "Tell us what you need. We'll send you a shortlist of trained workers.",
+        job: "Which job?",
         parish: "Parish",
         date: "Date",
         time: "Start time",
-        hours: "How many hours?",
+        hours: "How long?",
         hoursUnit: "hours",
         hourUnit: "hour",
         notes: "Anything the worker should know? (optional)",
         submit: "Find workers",
         shortlistTitle: "Your shortlist",
-        shortlistIntro: "These workers are free at that time and have passed the {job} course.",
+        shortlistIntro: "Free at that time and passed the {job} course.",
         lateNote: "This job ends after 22:00, so workers under 18 are not shown.",
         rating: "rating",
-        jobsDone: "jobs done",
-        newWorker: "New",
-        level: "Level",
+        jobsDone: "jobs",
         pick: "Pick",
-        editJob: "Change the job",
         confirmTitle: "Booking confirmed",
         confirmIntro: "{worker} will do your job. You pay through {brand} after the job is done.",
         summaryJob: "Job",
         summaryWhen: "When",
         summaryWhere: "Where",
-        rateLine: "Worker's rate: {hours} at {rate}",
+        rateLine: "{hours} at {rate}",
         feeLine: "Booking fee (15%, includes insurance)",
         foundingLine: "Founding family fee (7.5%)",
         foundingNote: "Founding families pay half the fee until 30 June 2027.",
-        total: "You pay",
+        total: "You pay after the job",
         workerKeeps: "{worker} keeps 100% of their rate.",
         insured: "This job is insured.",
-        another: "Post another job",
-        back: "Back to the shortlist"
+        done: "Done",
+        changeWorker: "Choose someone else",
+        bookingsTitle: "Bookings",
+        bookingsEmpty: "No bookings yet. Post a job and pick a worker from your shortlist.",
+        bookingsCta: "Post a job",
+        accountTitle: "Account",
+        foundingText: "You pay a 7.5% booking fee instead of 15% until 30 June 2027.",
+        switchToWorker: "See the worker app"
       },
 
       worker: {
+        tabHome: "Home",
+        tabBadges: "Badges",
+        tabRecord: "Record",
+        tabAccount: "Account",
         hello: "Hello, {name}",
         levelTitle: "Your level",
         progress: "{done} of {target} jobs to {next}",
         maxLevel: "You've reached the top level.",
-        earningsTitle: "Earnings this month",
+        earningsTitle: "Earned this month",
         earningsNote: "From {count} jobs. You keep 100% of your rate.",
         upcomingTitle: "Upcoming jobs",
         badgesTitle: "Your badges",
+        badgesIntro: "Pass a free course to unlock each job type.",
         badgeEarned: "Passed {date}",
         badgeNotYet: "Free course available",
-        skillsTitle: "Skills record",
-        skillsIntro: "Your record of jobs done and ratings. Share it with schools and employers.",
+        recordTitle: "Skills record",
+        recordIntro: "Your jobs and ratings in one place. Share it with schools and employers.",
         colSkill: "Skill",
-        colJobs: "Jobs done",
-        colRating: "Average rating",
+        colJobs: "Jobs",
+        colRating: "Rating",
         colPassed: "Course passed",
-        reference: "Written reference: unlocked at Verified."
+        reference: "Written reference: unlocked at Verified.",
+        accountTitle: "Account",
+        ageBand: "Age band",
+        consentNote: "Parent consent is only needed for 16 and 17 year olds.",
+        switchToFamily: "See the family app"
       }
     }
   }

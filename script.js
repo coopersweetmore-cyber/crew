@@ -1,6 +1,6 @@
 /* =====================================================================
    Site script: fills in copy from config.js, runs the sign-up forms
-   and the clickable demo. No libraries, no build step.
+   and the phone-app demo. No libraries, no build step.
    ===================================================================== */
 (function () {
   "use strict";
@@ -10,13 +10,13 @@
   var COPY = ALL_COPY[LANG];
   var BRAND = window.BRAND_NAME || "";
   var EMAIL = window.CONTACT_EMAIL || "";
+  var EMBED = /[?&]embed=1\b/.test(window.location.search);
+  var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ---------- Copy helpers ---------- */
 
   function lookup(obj, path) {
-    return path.split(".").reduce(function (o, k) {
-      return o == null ? undefined : o[k];
-    }, obj);
+    return path.split(".").reduce(function (o, k) { return o == null ? undefined : o[k]; }, obj);
   }
 
   function fill(str, vars) {
@@ -42,9 +42,7 @@
     return new Intl.NumberFormat(t("meta.locale"), { style: "currency", currency: "EUR" }).format(n);
   }
 
-  function round2(n) {
-    return Math.round(n * 100) / 100;
-  }
+  function round2(n) { return Math.round(n * 100) / 100; }
 
   function el(tag, className, text) {
     var node = document.createElement(tag);
@@ -62,7 +60,13 @@
   function jobByValue(value) {
     var list = raw("jobTypes") || [];
     for (var i = 0; i < list.length; i++) if (list[i].value === value) return list[i];
-    return { value: value, name: value, icon: "work" };
+    return { value: value, name: value, short: value, icon: "work" };
+  }
+
+  function levelById(id) {
+    var levels = raw("levels") || [];
+    for (var i = 0; i < levels.length; i++) if (levels[i].id === id) return levels[i];
+    return levels[0];
   }
 
   /* ---------- Render copy into the page ---------- */
@@ -74,13 +78,15 @@
 
     root.querySelectorAll("[data-brand]").forEach(function (n) { n.textContent = BRAND; });
     root.querySelectorAll("[data-t]").forEach(function (n) { n.textContent = t(n.getAttribute("data-t")); });
-    root.querySelectorAll("[data-t-placeholder]").forEach(function (n) {
-      n.setAttribute("placeholder", t(n.getAttribute("data-t-placeholder")));
-    });
-    root.querySelectorAll("[data-t-aria-label]").forEach(function (n) {
-      n.setAttribute("aria-label", t(n.getAttribute("data-t-aria-label")));
-    });
+    [["data-t-placeholder", "placeholder"], ["data-t-aria-label", "aria-label"], ["data-t-alt", "alt"], ["data-t-title", "title"]]
+      .forEach(function (pair) {
+        root.querySelectorAll("[" + pair[0] + "]").forEach(function (n) {
+          n.setAttribute(pair[1], t(n.getAttribute(pair[0])));
+        });
+      });
 
+    // Until a real contact email is set in config.js, hide the lines that show it.
+    root.querySelectorAll("[data-needs-email]").forEach(function (n) { n.hidden = EMAIL.indexOf("@") < 1; });
     root.querySelectorAll("[data-email]").forEach(function (n) {
       n.textContent = "";
       if (EMAIL.indexOf("@") > 0) {
@@ -93,7 +99,7 @@
     });
   }
 
-  // <ul data-list="faq.items"><template>…[data-f="q"]…</template></ul>
+  // <ul data-list="faq.items"><template>…[data-f="q"]…[data-f-attr="src:photo;alt:alt"]…</template></ul>
   function renderLists(root) {
     root.querySelectorAll("[data-list]").forEach(function (container) {
       var tpl = container.querySelector("template");
@@ -104,6 +110,13 @@
         frag.querySelectorAll("[data-f]").forEach(function (n) {
           var f = n.getAttribute("data-f");
           n.textContent = f === "index" ? String(index + 1) : fill(item[f] == null ? "" : item[f]);
+        });
+        frag.querySelectorAll("[data-f-self]").forEach(function (n) { n.textContent = fill(String(item)); });
+        frag.querySelectorAll("[data-f-attr]").forEach(function (n) {
+          n.getAttribute("data-f-attr").split(";").forEach(function (pair) {
+            var parts = pair.split(":");
+            if (parts.length === 2 && item[parts[1]] != null) n.setAttribute(parts[0], fill(item[parts[1]]));
+          });
         });
         container.appendChild(frag);
       });
@@ -146,15 +159,55 @@
     });
   }
 
+  // The survey sentence, with the two real numbers set in bold.
+  function renderSurvey(root) {
+    root.querySelectorAll("[data-survey]").forEach(function (n) {
+      var parts = String(raw("skills.survey") || "").split(/(\{stat1\}|\{stat2\})/);
+      parts.forEach(function (p) {
+        if (p === "{stat1}") n.appendChild(el("strong", null, t("skills.stat1")));
+        else if (p === "{stat2}") n.appendChild(el("strong", null, t("skills.stat2")));
+        else n.appendChild(document.createTextNode(fill(p)));
+      });
+    });
+  }
+
+  /* ---------- Tabs (segmented controls) ---------- */
+
+  function initTabs(list) {
+    var tabs = Array.prototype.slice.call(list.querySelectorAll('[role="tab"]'));
+    function select(tab, focus) {
+      tabs.forEach(function (tb) {
+        var on = tb === tab;
+        tb.setAttribute("aria-selected", on ? "true" : "false");
+        tb.tabIndex = on ? 0 : -1;
+        var panel = document.getElementById(tb.getAttribute("aria-controls"));
+        if (panel) panel.hidden = !on;
+      });
+      if (focus) tab.focus();
+      list.dispatchEvent(new CustomEvent("tabchange", { detail: tab }));
+    }
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener("click", function () { select(tab); });
+      tab.addEventListener("keydown", function (e) {
+        var next = null;
+        if (e.key === "ArrowRight") next = tabs[(i + 1) % tabs.length];
+        if (e.key === "ArrowLeft") next = tabs[(i - 1 + tabs.length) % tabs.length];
+        if (e.key === "Home") next = tabs[0];
+        if (e.key === "End") next = tabs[tabs.length - 1];
+        if (next) { e.preventDefault(); select(next, true); }
+      });
+    });
+    list._select = select;
+    return select;
+  }
+
   /* ---------- Form validation (shared) ---------- */
 
   function fieldControls(field) {
     return Array.prototype.slice.call(field.querySelectorAll("input, select, textarea"));
   }
 
-  function isActive(field) {
-    return !field.closest("[hidden]");
-  }
+  function isActive(field) { return !field.closest("[hidden]"); }
 
   function checkField(field) {
     var rule = field.getAttribute("data-rule");
@@ -202,7 +255,6 @@
   }
 
   function wireValidation(form) {
-    // Link each error message to its field for screen readers.
     form.querySelectorAll("[data-rule]").forEach(function (field, i) {
       var err = field.querySelector(".field-error");
       if (!err) return;
@@ -215,7 +267,6 @@
         target.setAttribute("aria-describedby", (prev ? prev + " " : "") + err.id);
       }
     });
-    // Once someone has tried to submit, re-check fields as they fix them.
     function recheck(e) {
       if (!form.hasAttribute("data-tried")) return;
       var field = e.target.closest("[data-rule]");
@@ -251,14 +302,10 @@
   function sendToSheet(params) {
     var controller = new AbortController();
     var timer = setTimeout(function () { controller.abort(); }, 15000);
-    // Apps Script doesn't send CORS headers, so the response is opaque.
+    // Apps Script sends no CORS headers, so the response is opaque.
     // A resolved request means it reached Google.
-    return fetch(window.SIGNUP_ENDPOINT, {
-      method: "POST",
-      mode: "no-cors",
-      body: params,
-      signal: controller.signal
-    }).finally(function () { clearTimeout(timer); });
+    return fetch(window.SIGNUP_ENDPOINT, { method: "POST", mode: "no-cors", body: params, signal: controller.signal })
+      .finally(function () { clearTimeout(timer); });
   }
 
   function initSignupForm(form) {
@@ -291,9 +338,8 @@
       if (tooYoung) setStatus(status, "", "");
     }
     if (parentField) {
-      form.addEventListener("change", function (e) {
-        if (e.target.name === "age_band") applyAge();
-      });
+      form.addEventListener("change", function (e) { if (e.target.name === "age_band") applyAge(); });
+      form._applyAge = applyAge;
       applyAge();
     }
 
@@ -330,22 +376,82 @@
     });
   }
 
-  /* ---------- Demo: login ---------- */
+  /* ---------- Landing page behaviour ---------- */
 
-  function initLogin() {
-    var form = document.getElementById("login-form");
-    if (!form) return;
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var role = form.querySelector("input[name=role]:checked");
-      var page = role && role.value === "worker" ? "worker.html" : "family.html";
-      // Nothing is checked or stored: clear the fields and move on.
-      form.reset();
-      window.location.href = page;
+  function initLanding() {
+    var signupTabs = document.querySelector("[data-signup-tabs]");
+    if (!signupTabs) return;
+
+    function openForm(kind) {
+      var tab = document.getElementById(kind === "worker" ? "su-tab-worker" : "su-tab-family");
+      if (tab && signupTabs._select) signupTabs._select(tab);
+      return document.getElementById(kind === "worker" ? "worker" : "family");
+    }
+
+    // Any link to #family or #worker opens the right form first.
+    document.querySelectorAll('a[href="#family"], a[href="#worker"]').forEach(function (a) {
+      a.addEventListener("click", function (e) {
+        e.preventDefault();
+        var form = openForm(a.getAttribute("href") === "#worker" ? "worker" : "family");
+        var job = a.getAttribute("data-job");
+        if (job) {
+          var box = form.querySelector('input[name="jobs"][value="' + job + '"]');
+          if (box) box.checked = true;
+        }
+        form.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" });
+        history.replaceState(null, "", a.getAttribute("href"));
+      });
     });
+    if (location.hash === "#worker") openForm("worker");
+
+    // Hero starter: carry the answers into the full form.
+    document.querySelectorAll("[data-start]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var kind = btn.getAttribute("data-start");
+        var form = openForm(kind);
+        if (kind === "family") {
+          var job = document.getElementById("st-job").value;
+          var parish = document.getElementById("st-parish-f").value;
+          if (job) {
+            var box = form.querySelector('input[name="jobs"][value="' + job + '"]');
+            if (box) box.checked = true;
+          }
+          if (parish) form.querySelector('[name="parish"]').value = parish;
+        } else {
+          var age = document.getElementById("st-age").value;
+          var parishW = document.getElementById("st-parish-w").value;
+          if (age) {
+            var radio = form.querySelector('input[name="age_band"][value="' + age + '"]');
+            if (radio) { radio.checked = true; if (form._applyAge) form._applyAge(); }
+          }
+          if (parishW) form.querySelector('[name="parish"]').value = parishW;
+        }
+        form.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" });
+        var first = form.querySelector('input[name="name"]');
+        if (first) setTimeout(function () { first.focus({ preventScroll: true }); }, REDUCED ? 0 : 450);
+      });
+    });
+
+    // How it works: switch the live demo with the tab.
+    var howTabs = document.querySelector("[data-how-tabs]");
+    var frame = document.querySelector("[data-demo-frame]");
+    if (howTabs && frame) {
+      howTabs.addEventListener("tabchange", function (e) {
+        var src = e.detail.getAttribute("data-demo");
+        if (src && frame.getAttribute("src") !== src) frame.setAttribute("src", src);
+      });
+    }
+
+    // Header gets a hairline once the page scrolls.
+    var header = document.querySelector("[data-header]");
+    if (header) {
+      var onScroll = function () { header.classList.toggle("is-scrolled", window.scrollY > 8); };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+    }
   }
 
-  /* ---------- Demo: family dashboard ---------- */
+  /* ---------- App demo: shared ---------- */
 
   function hoursText(h) {
     return h + " " + t(h === 1 ? "demo.family.hourUnit" : "demo.family.hoursUnit");
@@ -357,119 +463,206 @@
     });
   }
 
-  function showStep(step) {
-    document.querySelectorAll("[data-step]").forEach(function (s) {
-      s.hidden = s.getAttribute("data-step") !== step;
-    });
-    var heading = document.querySelector("[data-step=\"" + step + "\"] [data-focus]");
-    if (heading) heading.focus();
-    window.scrollTo(0, 0);
+  function initAppShell() {
+    if (EMBED) document.documentElement.classList.add("is-embed");
+    // Inside the landing page, links that switch app views keep the embed flag.
+    if (EMBED) {
+      document.querySelectorAll("a[data-keep-embed]").forEach(function (a) {
+        var href = a.getAttribute("href");
+        if (href === "index.html") { a.removeAttribute("href"); a.setAttribute("aria-disabled", "true"); return; }
+        a.setAttribute("href", href + (href.indexOf("?") > -1 ? "&" : "?") + "embed=1");
+      });
+    }
   }
 
-  function initFamily() {
-    var form = document.getElementById("post-job");
+  function makeRouter() {
+    var body = document.querySelector("[data-app-body]");
+    var tabbar = document.querySelector("[data-tabbar]");
+    if (!body) return null;
+    var current = null;
+    function go(name, back) {
+      var target = body.querySelector('[data-screen="' + name + '"]');
+      if (!target || target === current) return;
+      body.querySelectorAll("[data-screen]").forEach(function (s) {
+        s.hidden = s !== target;
+        s.classList.remove("is-entering", "back");
+      });
+      if (!REDUCED && current) {
+        void target.offsetWidth;
+        target.classList.add("is-entering");
+        if (back) target.classList.add("back");
+      }
+      current = target;
+      body.scrollTop = 0;
+      var tab = target.getAttribute("data-tab");
+      if (tabbar) {
+        tabbar.querySelectorAll("[data-tab-btn]").forEach(function (b) {
+          if (b.getAttribute("data-tab-btn") === tab) b.setAttribute("aria-current", "page");
+          else b.removeAttribute("aria-current");
+        });
+      }
+      var heading = target.querySelector("[data-focus]");
+      if (heading && go.ready) heading.focus({ preventScroll: true });
+      if (go.onShow) go.onShow(name);
+    }
+    document.addEventListener("click", function (e) {
+      var btn = e.target.closest("[data-go]");
+      if (!btn) return;
+      go(btn.getAttribute("data-go"), btn.hasAttribute("data-back"));
+    });
+    return go;
+  }
+
+  /* ---------- App demo: login ---------- */
+
+  function initLogin() {
+    var form = document.getElementById("login-form");
     if (!form) return;
+    var toggle = form.querySelector("[data-pass-toggle]");
+    var pass = document.getElementById("l-pass");
+    toggle.addEventListener("click", function () {
+      var show = pass.type === "password";
+      pass.type = show ? "text" : "password";
+      toggle.setAttribute("aria-pressed", show ? "true" : "false");
+      toggle.textContent = t(show ? "demo.login.hide" : "demo.login.show");
+    });
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var role = form.querySelector("input[name=role]:checked");
+      var page = role && role.value === "worker" ? "worker.html" : "family.html";
+      // Nothing is checked or stored: clear the fields and move on.
+      form.reset();
+      pass.type = "password";
+      window.location.href = page + (EMBED ? "?embed=1" : "");
+    });
+  }
+
+  /* ---------- App demo: family ---------- */
+
+  function initFamily() {
+    if (document.body.getAttribute("data-app") !== "family") return;
     var data = window.DEMO_DATA;
-    var job = null;
+    var go = makeRouter();
+    var form = document.getElementById("post-job");
+    var booking = null;
 
     document.querySelector("[data-hello]").textContent = t("demo.family.hello", { name: data.family.name });
+    document.querySelector("[data-family-name]").textContent = data.family.name;
+    document.querySelector("[data-family-parish]").textContent = data.family.sampleJob.parish;
 
-    // Build selects.
-    var jobSelect = form.querySelector("[name=job]");
+    // Job tiles
+    var tiles = document.querySelector("[data-job-tiles]");
     (raw("jobTypes") || []).forEach(function (j) {
-      var o = el("option", null, j.name); o.value = j.value; jobSelect.appendChild(o);
+      var label = el("label", "job-tile");
+      var input = el("input");
+      input.type = "radio"; input.name = "job"; input.value = j.value;
+      label.appendChild(input);
+      var span = el("span");
+      span.appendChild(icon(j.icon));
+      span.appendChild(el("span", null, j.short));
+      label.appendChild(span);
+      tiles.appendChild(label);
     });
+
+    // Dates: the next two weeks from the demo's "today", shown day-month.
+    var dateSelect = form.querySelector("[name=date]");
+    var today = new Date((data.family.demoToday || data.family.sampleJob.date) + "T12:00:00");
+    for (var dd = 0; dd < 14; dd++) {
+      var day = new Date(today.getTime() + dd * 86400000);
+      var iso = day.getFullYear() + "-" + String(day.getMonth() + 1).padStart(2, "0") + "-" + String(day.getDate()).padStart(2, "0");
+      var opt = el("option", null, dateText(iso, { weekday: "short", day: "numeric", month: "short" }));
+      opt.value = iso;
+      dateSelect.appendChild(opt);
+    }
+
+    // Start times and hours stepper
     var timeSelect = form.querySelector("[name=time]");
     for (var h = 8; h <= 21; h++) {
-      var label = (h < 10 ? "0" : "") + h + ":00";
-      var o = el("option", null, label); o.value = String(h); timeSelect.appendChild(o);
+      var o = el("option", null, (h < 10 ? "0" : "") + h + ":00");
+      o.value = String(h);
+      timeSelect.appendChild(o);
     }
-    var hoursSelect = form.querySelector("[name=hours]");
-    [1, 2, 3, 4].forEach(function (n) {
-      var o = el("option", null, hoursText(n)); o.value = String(n); hoursSelect.appendChild(o);
+    var hoursInput = document.getElementById("p-hours");
+    var hoursOut = document.getElementById("p-hours-out");
+    var stepBtns = form.querySelectorAll("[data-step]");
+    function setHours(n) {
+      n = Math.max(1, Math.min(4, n));
+      hoursInput.value = String(n);
+      hoursOut.textContent = hoursText(n);
+      stepBtns[0].disabled = n <= 1;
+      stepBtns[1].disabled = n >= 4;
+    }
+    stepBtns.forEach(function (b) {
+      b.setAttribute("aria-label", (b.getAttribute("data-step") === "1" ? "+" : "−") + " 1 " + t("demo.family.hourUnit"));
+      b.addEventListener("click", function () { setHours(parseInt(hoursInput.value, 10) + parseInt(b.getAttribute("data-step"), 10)); });
     });
 
-    // Sample defaults so the demo is quick to click through.
-    var d = data.family.sampleJob;
-    jobSelect.value = d.job;
-    form.querySelector("[name=parish]").value = d.parish;
-    form.querySelector("[name=date]").value = d.date;
-    timeSelect.value = String(d.start);
-    hoursSelect.value = String(d.hours);
-
+    function prefill() {
+      var d = data.family.sampleJob;
+      var tile = form.querySelector('input[name="job"][value="' + d.job + '"]');
+      if (tile) tile.checked = true;
+      form.querySelector("[name=parish]").value = d.parish;
+      form.querySelector("[name=date]").value = d.date;
+      timeSelect.value = String(d.start);
+      setHours(d.hours);
+    }
+    prefill();
     wireValidation(form);
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       form.setAttribute("data-tried", "");
       if (!validateForm(form)) return;
-      job = {
-        job: jobSelect.value,
+      var job = {
+        job: form.querySelector('input[name="job"]:checked').value,
         parish: form.querySelector("[name=parish]").value,
         date: form.querySelector("[name=date]").value,
         start: parseInt(timeSelect.value, 10),
-        hours: parseInt(hoursSelect.value, 10)
+        hours: parseInt(hoursInput.value, 10)
       };
       renderShortlist(job);
-      showStep("shortlist");
-    });
-
-    document.querySelectorAll("[data-go]").forEach(function (b) {
-      b.addEventListener("click", function () {
-        var target = b.getAttribute("data-go");
-        if (target === "post-new") { form.reset(); form.removeAttribute("data-tried"); target = "post"; }
-        showStep(target);
-      });
+      go("shortlist");
     });
 
     function renderShortlist(j) {
       var jobType = jobByValue(j.job);
       var late = j.start + j.hours > 22;
-      var workers = data.workers.filter(function (w) {
-        return !(late && w.ageBand === "16 to 17");
-      });
+      var workers = data.workers.filter(function (w) { return !(late && w.ageBand === "16 to 17"); });
 
       document.querySelector("[data-shortlist-intro]").textContent =
         t("demo.family.shortlistIntro", { job: jobType.name.toLowerCase() });
       document.querySelector("[data-late-note]").hidden = !late;
 
-      var grid = document.querySelector("[data-shortlist]");
-      grid.textContent = "";
+      var list = document.querySelector("[data-shortlist]");
+      list.textContent = "";
       workers.forEach(function (w) {
-        var card = el("article", "panel worker-card");
-
+        var card = el("article", "app-card worker-card");
         var top = el("div", "worker-top");
         var av = el("span", "avatar", w.initials); av.setAttribute("aria-hidden", "true");
         top.appendChild(av);
         var who = el("div");
-        who.appendChild(el("h3", "title-lg", w.name));
-        var lvl = levelById(w.level);
-        var chip = el("span", "chip chip-sun");
-        chip.appendChild(icon("workspace_premium"));
-        chip.appendChild(el("span", null, lvl.name));
-        who.appendChild(chip);
+        who.appendChild(el("h3", "worker-name", w.name));
+        var meta = el("p", "worker-meta");
+        var r = el("span"); r.appendChild(icon("star", "icon-fill")); r.appendChild(el("span", null, w.rating.toFixed(1)));
+        meta.appendChild(r);
+        meta.appendChild(el("span", null, w.jobsDone + " " + t("demo.family.jobsDone")));
+        who.appendChild(meta);
         top.appendChild(who);
+        var rate = el("p", "worker-rate num", money(w.rate));
+        rate.appendChild(el("small", null, t("common.perHour")));
+        top.appendChild(rate);
         card.appendChild(top);
 
-        var stats = el("p", "worker-stats");
-        var r = el("span");
-        r.appendChild(icon("star", "icon-fill"));
-        r.appendChild(el("span", null, w.rating.toFixed(1) + " " + t("demo.family.rating")));
-        stats.appendChild(r);
-        stats.appendChild(el("span", null, w.jobsDone + " " + t("demo.family.jobsDone")));
-        card.appendChild(stats);
-
-        var rate = el("p", "worker-rate mono", money(w.rate));
-        rate.appendChild(el("small", null, t("common.perHour")));
-        card.appendChild(rate);
-
-        var chips = el("ul", "badge-chips");
-        var courses = [j.job].concat(w.courses.filter(function (c) { return c !== j.job; }));
-        courses.forEach(function (c) {
+        var chips = el("ul", "chip-row");
+        var lvl = el("li", "pill pill-sun");
+        lvl.appendChild(icon("workspace_premium", "icon-fill"));
+        lvl.appendChild(el("span", null, levelById(w.level).name));
+        chips.appendChild(lvl);
+        [j.job].concat(w.courses.filter(function (c) { return c !== j.job; })).forEach(function (c) {
           var jt = jobByValue(c);
-          var li = el("li", "chip chip-mint");
+          var li = el("li", "pill pill-green");
           li.appendChild(icon(jt.icon));
-          li.appendChild(el("span", null, jt.name));
+          li.appendChild(el("span", null, jt.short));
           chips.appendChild(li);
         });
         card.appendChild(chips);
@@ -480,10 +673,10 @@
         pick.appendChild(el("span", "sr-only", " " + w.name));
         pick.addEventListener("click", function () {
           renderConfirm(j, w);
-          showStep("confirm");
+          go("confirm");
         });
         card.appendChild(pick);
-        grid.appendChild(card);
+        list.appendChild(card);
       });
     }
 
@@ -495,41 +688,79 @@
       var total = round2(subtotal + founding);
       var startLabel = (j.start < 10 ? "0" : "") + j.start + ":00";
 
-      document.querySelector("[data-confirm-intro]").textContent =
-        t("demo.family.confirmIntro", { worker: w.name });
+      document.querySelector("[data-confirm-intro]").textContent = t("demo.family.confirmIntro", { worker: w.name });
       document.querySelector("[data-sum-job]").textContent = jobType.name + ", " + hoursText(j.hours);
       document.querySelector("[data-sum-when]").textContent = dateText(j.date) + ", " + startLabel;
       document.querySelector("[data-sum-where]").textContent = j.parish;
-
       document.querySelector("[data-rate-line]").textContent =
         t("demo.family.rateLine", { hours: hoursText(j.hours), rate: money(w.rate) + t("common.perHour") });
       document.querySelector("[data-rate-value]").textContent = money(subtotal);
       document.querySelector("[data-fee-value]").textContent = money(fee);
       document.querySelector("[data-founding-value]").textContent = money(founding);
       document.querySelector("[data-total-value]").textContent = money(total);
-      document.querySelector("[data-worker-keeps]").textContent =
-        t("demo.family.workerKeeps", { worker: w.name });
+      document.querySelector("[data-worker-keeps]").textContent = t("demo.family.workerKeeps", { worker: w.name });
+
+      booking = { job: jobType, worker: w, date: j.date, start: startLabel, hours: j.hours, parish: j.parish, total: total };
     }
+
+    function renderBookings() {
+      var box = document.querySelector("[data-bookings]");
+      box.textContent = "";
+      if (!booking) {
+        var empty = el("div", "empty");
+        empty.appendChild(icon("event_busy"));
+        empty.appendChild(el("p", "app-sub", t("demo.family.bookingsEmpty")));
+        var cta = el("button", "btn btn-primary", t("demo.family.bookingsCta"));
+        cta.type = "button";
+        cta.setAttribute("data-go", "post");
+        empty.appendChild(cta);
+        box.appendChild(empty);
+        return;
+      }
+      var card = el("article", "app-card");
+      var top = el("div", "worker-top");
+      var av = el("span", "avatar", booking.worker.initials); av.setAttribute("aria-hidden", "true");
+      top.appendChild(av);
+      var who = el("div");
+      who.appendChild(el("h3", "worker-name", booking.job.name));
+      who.appendChild(el("p", "app-sub", booking.worker.name));
+      top.appendChild(who);
+      card.appendChild(top);
+      var dl = el("dl", "summary-list");
+      [["summaryWhen", dateText(booking.date) + ", " + booking.start + " (" + hoursText(booking.hours) + ")"],
+       ["summaryWhere", booking.parish],
+       ["total", money(booking.total)]].forEach(function (row) {
+        dl.appendChild(el("dt", null, t("demo.family." + row[0])));
+        dl.appendChild(el("dd", null, row[1]));
+      });
+      card.appendChild(dl);
+      var note = el("p", "note-row");
+      note.appendChild(icon("verified_user"));
+      note.appendChild(el("span", null, t("demo.family.insured")));
+      card.appendChild(note);
+      box.appendChild(card);
+    }
+
+    go.onShow = function (name) { if (name === "bookings") renderBookings(); };
+    go("post");
+    go.ready = true;
   }
 
-  function levelById(id) {
-    var levels = raw("levels") || [];
-    for (var i = 0; i < levels.length; i++) if (levels[i].id === id) return levels[i];
-    return levels[0];
-  }
-
-  /* ---------- Demo: worker dashboard ---------- */
+  /* ---------- App demo: worker ---------- */
 
   function initWorker() {
-    var root = document.querySelector("[data-worker-dash]");
-    if (!root) return;
+    if (document.body.getAttribute("data-app") !== "worker") return;
     var data = window.DEMO_DATA;
     var me = data.me;
     var worker = data.workers.filter(function (w) { return w.id === me.workerId; })[0];
     var levels = raw("levels");
     var levelIndex = levels.findIndex(function (l) { return l.id === worker.level; });
+    var go = makeRouter();
 
     document.querySelector("[data-hello]").textContent = t("demo.worker.hello", { name: worker.name });
+    document.querySelectorAll("[data-initials]").forEach(function (n) { n.textContent = worker.initials; });
+    document.querySelector("[data-worker-name]").textContent = worker.name;
+    document.querySelector("[data-age-band]").textContent = worker.ageBand;
 
     // Level
     document.querySelector("[data-level-now]").textContent = levels[levelIndex].name;
@@ -542,7 +773,8 @@
       bar.setAttribute("aria-valuenow", String(worker.jobsDone));
       bar.setAttribute("aria-valuemax", String(target));
       bar.setAttribute("aria-valuetext", progressText.textContent);
-      bar.firstElementChild.style.width = Math.min(100, (worker.jobsDone / target) * 100) + "%";
+      var pct = Math.min(100, (worker.jobsDone / target) * 100);
+      bar.firstElementChild.style.width = pct + "%";
     } else {
       progressText.textContent = t("demo.worker.maxLevel");
       bar.hidden = true;
@@ -560,29 +792,25 @@
     document.querySelector("[data-month]").textContent =
       new Date(me.month + "-01T12:00:00").toLocaleDateString(t("meta.locale"), { month: "long", year: "numeric" });
     document.querySelector("[data-earnings]").textContent = money(earned);
-    document.querySelector("[data-earnings-note]").textContent =
-      t("demo.worker.earningsNote", { count: me.completedThisMonth.length });
+    document.querySelector("[data-earnings-note]").textContent = t("demo.worker.earningsNote", { count: me.completedThisMonth.length });
 
     // Upcoming jobs
     var list = document.querySelector("[data-upcoming]");
     me.upcoming.forEach(function (j) {
       var jt = jobByValue(j.job);
       var li = el("li");
-      var dateBlock = el("div", "date-block");
-      dateBlock.setAttribute("aria-hidden", "true");
       var dt = new Date(j.date + "T12:00:00");
-      dateBlock.appendChild(el("span", "day", String(dt.getDate())));
-      dateBlock.appendChild(el("span", "mon", dt.toLocaleDateString(t("meta.locale"), { month: "short" })));
-      li.appendChild(dateBlock);
-      var detail = el("div", "job-detail");
-      detail.appendChild(el("span", "title-md", jt.name));
-      var meta = el("span", "meta");
-      meta.appendChild(el("span", null, dateText(j.date) + ", " + j.start));
-      meta.appendChild(el("span", null, hoursText(j.hours)));
-      meta.appendChild(el("span", null, j.parish));
-      detail.appendChild(meta);
-      detail.appendChild(el("span", "job-earn mono", money(j.rate * j.hours)));
-      li.appendChild(detail);
+      var chip = el("span", "date-chip");
+      chip.setAttribute("aria-hidden", "true");
+      chip.appendChild(el("b", null, String(dt.getDate())));
+      chip.appendChild(el("span", null, dt.toLocaleDateString(t("meta.locale"), { month: "short" })));
+      li.appendChild(chip);
+      var main = el("div", "list-main");
+      main.appendChild(el("strong", null, jt.name));
+      main.appendChild(el("span", null, dateText(j.date) + ", " + j.start + ", " + hoursText(j.hours)));
+      main.appendChild(el("span", null, j.parish));
+      li.appendChild(main);
+      li.appendChild(el("span", "list-end num", money(j.rate * j.hours)));
       list.appendChild(li);
     });
 
@@ -590,16 +818,14 @@
     var badgeList = document.querySelector("[data-badges]");
     (raw("jobTypes") || []).forEach(function (jt) {
       var passed = me.coursesPassed[jt.value];
-      var li = el("li", "badge-item" + (passed ? "" : " is-locked"));
+      var li = el("li", "badge-tile" + (passed ? "" : " is-locked"));
       var medal = el("span", "medal");
-      medal.appendChild(icon(jt.icon));
+      medal.appendChild(icon(passed ? jt.icon : "lock"));
       li.appendChild(medal);
-      var txt = el("div");
-      txt.appendChild(el("strong", null, jt.name));
-      txt.appendChild(el("span", "meta", passed
+      li.appendChild(el("strong", null, jt.name));
+      li.appendChild(el("span", null, passed
         ? t("demo.worker.badgeEarned", { date: dateText(passed, { day: "numeric", month: "short", year: "numeric" }) })
         : t("demo.worker.badgeNotYet")));
-      li.appendChild(txt);
       badgeList.appendChild(li);
     });
 
@@ -607,12 +833,15 @@
     var tbody = document.querySelector("[data-skills]");
     me.skills.forEach(function (s) {
       var tr = el("tr");
-      tr.appendChild(el("td", null, jobByValue(s.job).name));
+      tr.appendChild(el("td", null, jobByValue(s.job).short));
       tr.appendChild(el("td", "num", String(s.jobs)));
       tr.appendChild(el("td", "num", s.rating.toFixed(1)));
-      tr.appendChild(el("td", "num", dateText(me.coursesPassed[s.job], { day: "numeric", month: "short", year: "numeric" })));
+      tr.appendChild(el("td", "num", dateText(me.coursesPassed[s.job], { day: "numeric", month: "short" })));
       tbody.appendChild(tr);
     });
+
+    go("home");
+    go.ready = true;
   }
 
   /* ---------- Start ---------- */
@@ -621,8 +850,12 @@
     renderLists(document);
     renderChoices(document);
     renderSelects(document);
+    renderSurvey(document);
     applyCopy(document);
+    document.querySelectorAll("[data-tabs]").forEach(initTabs);
     document.querySelectorAll("form[data-form]").forEach(initSignupForm);
+    initLanding();
+    initAppShell();
     initLogin();
     initFamily();
     initWorker();

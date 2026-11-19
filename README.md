@@ -1,16 +1,27 @@
 # Crew website
 
-A static website for Crew. It has a landing page with two sign-up forms and a clickable demo of the app. It runs from plain HTML, CSS and JavaScript, so there is no build step: open `index.html` in a browser.
+A static website for Crew. It has a landing page with two sign-up forms and a phone-app demo. It runs from plain HTML, CSS and JavaScript, so there is no build step: open `index.html` in a browser.
 
 | File | What it is |
 |---|---|
-| `index.html` | Landing page with the family and worker sign-up forms |
-| `login.html`, `family.html`, `worker.html` | The clickable demo (fake login and two dashboards) |
+| `index.html` | Landing page with the family and worker sign-up forms, and the live app demo inside "How it works" |
+| `login.html`, `family.html`, `worker.html` | The phone-app demo: fake login, the family app and the worker app |
 | `config.js` | **Settings and all site copy**: brand name, contact email, sign-up URL, every word on the site |
 | `demo-data.js` | Sample workers, jobs and earnings for the demo |
 | `styles.css` | All styling |
 | `script.js` | Fills in the copy, runs the forms and the demo |
+| `assets/` | Job photos (free Unsplash photos, see "Photo credits" below) |
 | `apps-script/Code.gs` | Google Apps Script that writes sign-ups into a Google Sheet |
+
+The live site is at https://coopersweetmore-cyber.github.io/crew/ and its sign-ups go to the "Crew sign-ups" Google Sheet.
+
+## The app demo
+
+- On a laptop or projector, the demo shows inside a phone frame, with a switch between the family app and the worker app. On a phone it fills the screen like a real app.
+- The landing page embeds the same demo in "How it works", so visitors can tap through it without leaving the page.
+- Family app: post a job, see a shortlist of 3 sample workers, pick one, and see the booking with its price breakdown. Jobs ending after 22:00 hide the under-18 sample worker.
+- Worker app: level and progress, earnings this month, upcoming jobs, badges and the skills record.
+- Everything in it comes from `demo-data.js` and is labelled as sample data.
 
 ## Set up sign-ups
 
@@ -59,3 +70,21 @@ Do these steps in order. They take about 15 minutes.
 ## What the demo does and doesn't do
 
 The login accepts anything and goes straight to the dashboard you chose. Nothing is checked, stored or sent. No payment is taken. All demo content is sample data, and each demo screen shows the banner "Demo with sample data. Crew launches January 2027."
+
+## Photo credits
+
+All photos are from [Unsplash](https://unsplash.com) and used under the Unsplash License (free to use, no permission needed). They show the jobs, not Crew workers or customers.
+
+| File | Source |
+|---|---|
+| `assets/hero-dog-walk.jpg` | https://unsplash.com/photos/person-walking-beside-golden-retriever-on-the-street-VehdYPKnX8Y |
+| `assets/job-pets.jpg` | https://unsplash.com/photos/woman-in-brown-jacket-and-black-pants-walking-with-black-labrador-retriever-on-brown-grass-field-d0oOCKu6n0A |
+| `assets/job-car.jpg` | https://unsplash.com/photos/a-person-cleaning-a-car-with-a-green-cloth-tt53GduAKHQ |
+| `assets/job-garden.jpg` | https://unsplash.com/photos/person-holding-gardening-tool-near-yellow-plant--rl4m0icZo4 |
+| `assets/job-windows.jpg` | https://unsplash.com/photos/woman-in-white-long-sleeve-shirt-and-blue-denim-jeans-standing-beside-white-wooden-framed-glass-VRpjDw3WqqI |
+| `assets/job-tech.jpg` | https://unsplash.com/photos/elderly-couple-looking-at-a-smartphone-together-BM3aFI-qv64 |
+| `assets/job-events.jpg` | https://unsplash.com/photos/wooden-table-set-for-outdoor-dining-with-floral-centerpieces-YrThd1lBFu4 |
+
+## A note on Google permissions
+
+`Code.gs` starts with `@OnlyCurrentDoc`, so the script can only touch the Sheet it belongs to. If you approved the script before this line was added, Google may still list wider access for it. You can review or remove that at myaccount.google.com, under Security, then "Third-party connections". The script asks again for access to just this Sheet next time it needs it.

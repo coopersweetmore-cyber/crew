@@ -8,6 +8,7 @@
 var DEMO_DATA = {
   family: {
     name: "Sample family",
+    demoToday: "2027-03-10",   // the demo's pretend "today", used for the date picker
     // Pre-filled on the "Post a job" form so the demo is quick to click through.
     sampleJob: {
       job: "Garden care",
