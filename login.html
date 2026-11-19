@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo: log in</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alata&family=Instrument+Sans:wght@400;500;600;700&family=Red+Hat+Mono:wght@500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="demo" data-title="meta.titleLogin">
+
+  <a class="skip-link" href="#main" data-t="common.skip"></a>
+
+  <div class="demo-banner" role="note">
+    <span class="icon" aria-hidden="true">science</span>
+    <span data-t="common.demoBanner"></span>
+  </div>
+
+  <main id="main" class="login-wrap" tabindex="-1">
+    <a class="back-link" href="index.html">
+      <span class="icon" aria-hidden="true">arrow_back</span>
+      <span data-t="common.backToSite"></span>
+    </a>
+
+    <div class="panel login-card">
+      <a class="logo" href="index.html">
+        <span class="logo-mark"><span class="icon" aria-hidden="true">handyman</span></span>
+        <span class="logo-text" data-brand></span>
+      </a>
+
+      <div class="panel-head login-head">
+        <h1 class="h3" data-t="demo.login.title"></h1>
+        <p data-t="demo.login.intro"></p>
+      </div>
+
+      <!-- Fake login: inputs have no name, so nothing is sent or saved anywhere. -->
+      <form id="login-form" class="form-fields" novalidate>
+        <fieldset class="field">
+          <legend data-t="demo.login.roleLegend"></legend>
+          <div class="segmented">
+            <label class="choice">
+              <input type="radio" name="role" value="family" checked>
+              <span data-t="demo.login.roleFamily"></span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="role" value="worker">
+              <span data-t="demo.login.roleWorker"></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="field">
+          <label class="label" for="l-email" data-t="demo.login.email"></label>
+          <input class="input" id="l-email" type="email" autocomplete="off" inputmode="email">
+        </div>
+
+        <div class="field">
+          <label class="label" for="l-pass" data-t="demo.login.password"></label>
+          <input class="input" id="l-pass" type="password" autocomplete="off">
+        </div>
+
+        <button class="btn btn-primary btn-block" type="submit">
+          <span data-t="demo.login.submit"></span>
+        </button>
+      </form>
+
+      <p class="login-foot">
+        <span data-t="demo.login.noAccount"></span>
+        <a href="index.html#signup" data-t="demo.login.signupLink"></a>
+      </p>
+    </div>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

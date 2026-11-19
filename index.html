@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The visible title and all copy come from config.js. This fallback is brand-neutral. -->
+  <title>Trained young people for local jobs in Cascais</title>
+  <meta name="description" content="Cascais households and older neighbours book trained young people aged 16 to 24 for paid local jobs. Launching January 2027.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alata&family=Instrument+Sans:wght@400;500;600;700&family=Red+Hat+Mono:wght@500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-title="meta.titleIndex">
+
+  <a class="skip-link" href="#main" data-t="common.skip"></a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="#main">
+        <span class="logo-mark"><span class="icon" aria-hidden="true">handyman</span></span>
+        <span class="logo-text" data-brand></span>
+        <span class="chip chip-mint logo-place" data-t="common.place"></span>
+      </a>
+      <nav class="site-nav" data-t-aria-label="nav.label">
+        <ul>
+          <li><a href="#how" data-t="nav.how"></a></li>
+          <li><a href="#jobs" data-t="nav.jobs"></a></li>
+          <li><a href="#safety" data-t="nav.safety"></a></li>
+          <li><a href="#pricing" data-t="nav.pricing"></a></li>
+          <li><a href="#faq" data-t="nav.faq"></a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a class="btn btn-outline hide-xs" href="login.html" data-t="nav.demo"></a>
+        <a class="btn btn-primary" href="#signup" data-t="nav.signup"></a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <p class="chip chip-sun">
+          <span class="icon" aria-hidden="true">calendar_month</span>
+          <span data-t="hero.badge"></span>
+        </p>
+        <h1 class="display" data-t="hero.title"></h1>
+        <p class="body-lg hero-intro" data-t="hero.intro"></p>
+
+        <div class="audience-grid">
+          <div class="audience audience-family">
+            <p class="audience-label" data-t="hero.familyLabel"></p>
+            <p class="audience-line" data-t="hero.familyLine"></p>
+            <a class="btn btn-primary" href="#family" data-t="hero.familyCta"></a>
+          </div>
+          <div class="audience audience-worker">
+            <p class="audience-label" data-t="hero.workerLabel"></p>
+            <p class="audience-line" data-t="hero.workerLine"></p>
+            <a class="btn btn-ink" href="#worker" data-t="hero.workerCta"></a>
+          </div>
+        </div>
+
+        <a class="btn btn-outline" href="login.html">
+          <span class="icon" aria-hidden="true">play_circle</span>
+          <span data-t="hero.demoCta"></span>
+        </a>
+
+        <div class="survey">
+          <p class="survey-title" data-t="hero.surveyTitle"></p>
+          <p class="stat">
+            <span class="stat-num" data-t="hero.stat1"></span>
+            <span class="stat-label" data-t="hero.stat1Label"></span>
+          </p>
+          <p class="stat">
+            <span class="stat-num" data-t="hero.stat2"></span>
+            <span class="stat-label" data-t="hero.stat2Label"></span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how" class="section bg-sun">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="h2" data-t="how.title"></h2>
+        </div>
+        <div class="how-grid">
+          <div class="card-white">
+            <div>
+              <h3 class="h3" data-t="how.familyTitle"></h3>
+              <ol class="steps" data-list="how.familySteps">
+                <template>
+                  <li>
+                    <span class="step-num" data-f="index" aria-hidden="true"></span>
+                    <div>
+                      <h4 class="title-md" data-f="title"></h4>
+                      <p data-f="text"></p>
+                    </div>
+                  </li>
+                </template>
+              </ol>
+            </div>
+            <div>
+              <a class="btn btn-primary" href="#family">
+                <span data-t="how.familyCta"></span>
+                <span class="icon" aria-hidden="true">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="card-green on-dark">
+            <div>
+              <h3 class="h3" data-t="how.workerTitle"></h3>
+              <ol class="steps" data-list="how.workerSteps">
+                <template>
+                  <li>
+                    <span class="step-num" data-f="index" aria-hidden="true"></span>
+                    <div>
+                      <h4 class="title-md" data-f="title"></h4>
+                      <p data-f="text"></p>
+                    </div>
+                  </li>
+                </template>
+              </ol>
+            </div>
+            <div>
+              <a class="btn btn-light" href="#worker">
+                <span data-t="how.workerCta"></span>
+                <span class="icon" aria-hidden="true">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Job types -->
+    <section id="jobs" class="section bg-mint">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="h2" data-t="jobs.title"></h2>
+          <p data-t="jobs.intro"></p>
+        </div>
+        <ul class="job-grid" data-list="jobTypes">
+          <template>
+            <li class="job-card">
+              <span class="job-icon"><span class="icon" data-f="icon" aria-hidden="true"></span></span>
+              <h3 class="title-md" data-f="name"></h3>
+              <p data-f="desc"></p>
+            </li>
+          </template>
+        </ul>
+        <p class="note">
+          <span class="icon" aria-hidden="true">info</span>
+          <span data-t="jobs.notOffered"></span>
+        </p>
+      </div>
+    </section>
+
+    <!-- Safety and insurance -->
+    <section id="safety" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="h2" data-t="safety.title"></h2>
+          <p data-t="safety.intro"></p>
+        </div>
+        <ul class="safety-grid" data-list="safety.items">
+          <template>
+            <li class="safety-item">
+              <div class="item-head">
+                <span class="icon" data-f="icon" aria-hidden="true"></span>
+                <h3 class="title-md" data-f="title"></h3>
+              </div>
+              <p data-f="text"></p>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Skills and badges -->
+    <section id="skills" class="section bg-primary skills on-dark">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="h2" data-t="skills.title"></h2>
+          <p data-t="skills.intro"></p>
+        </div>
+        <div class="skills-grid">
+          <div>
+            <h3 class="h3" data-t="skills.badgesTitle"></h3>
+            <ul class="badge-grid" data-list="jobTypes">
+              <template>
+                <li class="badge">
+                  <span class="medal"><span class="icon" data-f="icon" aria-hidden="true"></span></span>
+                  <span data-f="name"></span>
+                </li>
+              </template>
+            </ul>
+          </div>
+          <div>
+            <h3 class="h3" data-t="skills.levelsTitle"></h3>
+            <ol class="levels" data-list="levels">
+              <template>
+                <li class="level">
+                  <span class="level-num" data-f="index" aria-hidden="true"></span>
+                  <h4 class="level-name" data-f="name"></h4>
+                  <p class="level-rule" data-f="rule"></p>
+                  <p class="level-unlocks"><strong data-t="skills.unlocks"></strong>: <span data-f="unlocks"></span></p>
+                </li>
+              </template>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="h2" data-t="pricing.title"></h2>
+          <p data-t="pricing.intro"></p>
+        </div>
+        <div class="pricing-grid">
+          <div class="receipt">
+            <h3 class="title-lg" data-t="pricing.exampleTitle"></h3>
+            <p class="receipt-row">
+              <span data-t="pricing.exampleRate"></span>
+              <span class="mono" data-t="pricing.exampleRateValue"></span>
+            </p>
+            <p class="receipt-row is-struck">
+              <span data-t="pricing.exampleFee"></span>
+              <del class="mono" data-t="pricing.exampleFeeValue"></del>
+            </p>
+            <p class="receipt-row">
+              <span data-t="pricing.exampleFounding"></span>
+              <span class="mono" data-t="pricing.exampleFoundingValue"></span>
+            </p>
+            <p class="receipt-row is-total">
+              <span data-t="pricing.exampleTotal"></span>
+              <span class="mono" data-t="pricing.exampleTotalValue"></span>
+            </p>
+            <p class="receipt-foot">
+              <span class="icon" aria-hidden="true">check_circle</span>
+              <span data-t="pricing.exampleWorker"></span>
+            </p>
+          </div>
+          <ul class="price-points" data-list="pricing.points">
+            <template>
+              <li class="price-point">
+                <span class="job-icon"><span class="icon" data-f="icon" aria-hidden="true"></span></span>
+                <div>
+                  <h3 class="title-md" data-f="title"></h3>
+                  <p data-f="text"></p>
+                </div>
+              </li>
+            </template>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sign-up forms -->
+    <section id="signup" class="section bg-stone">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="h2" data-t="signup.title"></h2>
+          <p data-t="signup.intro"></p>
+        </div>
+
+        <div class="forms-grid">
+
+          <!-- Family form -->
+          <form id="family" class="form-card" data-form="family" novalidate>
+            <div class="form-card-head">
+              <h3 class="h3" data-t="forms.family.title"></h3>
+              <p data-t="forms.family.intro"></p>
+            </div>
+
+            <div class="form-fields" data-fields>
+              <div class="field" data-rule="required">
+                <label class="label" for="f-name" data-t="forms.family.name"></label>
+                <input class="input" id="f-name" name="name" type="text" autocomplete="name">
+                <p class="field-error"></p>
+              </div>
+
+              <div class="field-row">
+                <div class="field" data-rule="email">
+                  <label class="label" for="f-email" data-t="forms.family.email"></label>
+                  <input class="input" id="f-email" name="email" type="email" autocomplete="email" inputmode="email">
+                  <p class="field-error"></p>
+                </div>
+                <div class="field">
+                  <label class="label" for="f-phone" data-t="forms.family.phone"></label>
+                  <input class="input" id="f-phone" name="phone" type="tel" autocomplete="tel">
+                </div>
+              </div>
+
+              <div class="field" data-rule="required">
+                <label class="label" for="f-parish" data-t="forms.family.parish"></label>
+                <select class="select" id="f-parish" name="parish" data-options="forms.parishes" data-placeholder="forms.parishPlaceholder"></select>
+                <p class="field-error"></p>
+              </div>
+
+              <fieldset class="field" data-rule="many">
+                <legend data-t="forms.family.jobs"></legend>
+                <p class="hint" data-t="forms.chooseAll"></p>
+                <div class="choices" data-choices="jobTypes" data-name="jobs" data-type="checkbox"></div>
+                <p class="field-error"></p>
+              </fieldset>
+
+              <fieldset class="field" data-rule="one">
+                <legend data-t="forms.family.frequency"></legend>
+                <div class="choices" data-choices="forms.family.frequencyOptions" data-name="frequency"></div>
+                <p class="field-error"></p>
+              </fieldset>
+
+              <fieldset class="field" data-rule="one">
+                <legend data-t="forms.family.fee"></legend>
+                <div class="choices" data-choices="forms.family.feeOptions" data-name="booking_fee"></div>
+                <p class="field-error"></p>
+              </fieldset>
+
+              <fieldset class="field" data-rule="one">
+                <legend data-t="forms.family.rate"></legend>
+                <div class="choices" data-choices="forms.family.rateOptions" data-name="fair_rate"></div>
+                <p class="field-error"></p>
+              </fieldset>
+
+              <fieldset class="field" data-rule="one">
+                <legend data-t="forms.family.payment"></legend>
+                <div class="choices" data-choices="forms.family.paymentOptions" data-name="payment"></div>
+                <p class="field-error"></p>
+              </fieldset>
+
+              <div class="field" data-rule="consent">
+                <label class="consent">
+                  <input type="checkbox" name="consent" value="Yes">
+                  <span data-t="forms.family.consent"></span>
+                </label>
+                <p class="field-error"></p>
+              </div>
+
+              <div aria-live="polite"><div data-status hidden></div></div>
+
+              <button class="btn btn-primary btn-block" type="submit">
+                <span data-t="forms.family.submit"></span>
+              </button>
+            </div>
+
+            <div class="notice notice-success" data-success tabindex="-1" hidden>
+              <span class="icon icon-fill" aria-hidden="true">check_circle</span>
+              <span data-t="forms.family.success"></span>
+            </div>
+          </form>
+
+          <!-- Worker form -->
+          <form id="worker" class="form-card" data-form="worker" novalidate>
+            <div class="form-card-head">
+              <h3 class="h3" data-t="forms.worker.title"></h3>
+              <p data-t="forms.worker.intro"></p>
+            </div>
+
+            <div class="form-fields" data-fields>
+              <div class="field-row">
+                <div class="field" data-rule="required">
+                  <label class="label" for="w-name" data-t="forms.worker.name"></label>
+                  <input class="input" id="w-name" name="name" type="text" autocomplete="name">
+                  <p class="field-error"></p>
+                </div>
+                <div class="field" data-rule="email">
+                  <label class="label" for="w-email" data-t="forms.worker.email"></label>
+                  <input class="input" id="w-email" name="email" type="email" autocomplete="email" inputmode="email">
+                  <p class="field-error"></p>
+                </div>
+              </div>
+
+              <fieldset class="field" data-rule="one">
+                <legend data-t="forms.worker.age"></legend>
+                <div class="choices" data-choices="forms.worker.ageOptions" data-name="age_band"></div>
+                <p class="field-error"></p>
+              </fieldset>
+
+              <div aria-live="polite">
+                <div class="notice notice-info" data-under16 hidden>
+                  <span class="icon" aria-hidden="true">info</span>
+                  <span data-t="forms.worker.under16"></span>
+                </div>
+              </div>
+
+              <div class="field" data-rule="email" data-parent-field hidden>
+                <label class="label" for="w-parent" data-t="forms.worker.parentEmail"></label>
+                <p class="hint" id="w-parent-hint" data-t="forms.worker.parentHint"></p>
+                <input class="input" id="w-parent" name="parent_email" type="email" autocomplete="off" inputmode="email" aria-describedby="w-parent-hint" disabled>
+                <p class="field-error"></p>
+              </div>
+
+              <div class="field" data-rule="required">
+                <label class="label" for="w-school" data-t="forms.worker.school"></label>
+                <p class="hint" id="w-school-hint" data-t="forms.worker.schoolHint"></p>
+                <input class="input" id="w-school" name="school" type="text" aria-describedby="w-school-hint">
+                <p class="field-error"></p>
+              </div>
+
+              <div class="field" data-rule="required">
+                <label class="label" for="w-parish" data-t="forms.worker.parish"></label>
+                <select class="select" id="w-parish" name="parish" data-options="forms.parishes" data-placeholder="forms.parishPlaceholder"></select>
+                <p class="field-error"></p>
+              </div>
+
+              <fieldset class="field" data-rule="many">
+                <legend data-t="forms.worker.jobs"></legend>
+                <p class="hint" data-t="forms.chooseAll"></p>
+                <div class="choices" data-choices="jobTypes" data-name="jobs" data-type="checkbox"></div>
+                <p class="field-error"></p>
+              </fieldset>
+
+              <fieldset class="field" data-rule="one">
+                <legend data-t="forms.worker.hours"></legend>
+                <div class="choices" data-choices="forms.worker.hoursOptions" data-name="hours_per_week"></div>
+                <p class="field-error"></p>
+              </fieldset>
+
+              <fieldset class="field" data-rule="one">
+                <legend data-t="forms.worker.bank"></legend>
+                <div class="choices" data-choices="forms.worker.bankOptions" data-name="pt_bank_account"></div>
+                <p class="field-error"></p>
+              </fieldset>
+
+              <div class="field" data-rule="consent">
+                <label class="consent">
+                  <input type="checkbox" name="consent" value="Yes">
+                  <span data-t="forms.worker.consent"></span>
+                </label>
+                <p class="field-error"></p>
+              </div>
+
+              <div aria-live="polite"><div data-status hidden></div></div>
+
+              <button class="btn btn-ink btn-block" type="submit">
+                <span data-t="forms.worker.submit"></span>
+              </button>
+            </div>
+
+            <div class="notice notice-success" data-success tabindex="-1" hidden>
+              <span class="icon icon-fill" aria-hidden="true">check_circle</span>
+              <span data-t="forms.worker.success"></span>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section">
+      <div class="container faq-inner">
+        <h2 class="h2" data-t="faq.title"></h2>
+        <div class="faq-list" data-list="faq.items">
+          <template>
+            <details>
+              <summary>
+                <span data-f="q"></span>
+                <span class="icon" aria-hidden="true">add</span>
+              </summary>
+              <p data-f="a"></p>
+            </details>
+          </template>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer on-dark">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="logo-text" data-brand></span>
+        <p data-t="footer.project"></p>
+        <p><span data-t="footer.contact"></span> <span data-email></span></p>
+      </div>
+      <nav class="footer-links" data-t-aria-label="footer.nav">
+        <a href="#how" data-t="nav.how"></a>
+        <a href="#pricing" data-t="nav.pricing"></a>
+        <a href="#signup" data-t="nav.signup"></a>
+        <a href="login.html" data-t="nav.demo"></a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

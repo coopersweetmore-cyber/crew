@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo: family dashboard</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alata&family=Instrument+Sans:wght@400;500;600;700&family=Red+Hat+Mono:wght@500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="demo" data-title="meta.titleFamily">
+
+  <a class="skip-link" href="#main" data-t="common.skip"></a>
+
+  <div class="demo-banner" role="note">
+    <span class="icon" aria-hidden="true">science</span>
+    <span data-t="common.demoBanner"></span>
+  </div>
+
+  <header class="app-header">
+    <div class="container app-header-inner">
+      <a class="logo" href="index.html">
+        <span class="logo-mark"><span class="icon" aria-hidden="true">handyman</span></span>
+        <span class="logo-text" data-brand></span>
+      </a>
+      <nav class="app-nav" data-t-aria-label="demo.navLabel">
+        <ul>
+          <li><a href="family.html" aria-current="page"><span class="icon" aria-hidden="true">home</span><span data-t="demo.familyView"></span></a></li>
+          <li><a href="worker.html"><span class="icon" aria-hidden="true">person</span><span data-t="demo.workerView"></span></a></li>
+          <li><a href="login.html"><span class="icon" aria-hidden="true">logout</span><span data-t="demo.logout"></span></a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container app-main" tabindex="-1">
+    <a class="back-link" href="index.html">
+      <span class="icon" aria-hidden="true">arrow_back</span>
+      <span data-t="common.backToSite"></span>
+    </a>
+    <h1 class="h2 app-title" data-hello></h1>
+
+    <!-- Step 1: post a job -->
+    <section class="panel" data-step="post" aria-labelledby="post-title">
+      <div class="panel-head">
+        <h2 class="h3" id="post-title" tabindex="-1" data-focus data-t="demo.family.postTitle"></h2>
+        <p data-t="demo.family.postIntro"></p>
+      </div>
+      <form id="post-job" class="post-form" novalidate>
+        <div class="field-row">
+          <div class="field" data-rule="required">
+            <label class="label" for="p-job" data-t="demo.family.job"></label>
+            <select class="select" id="p-job" name="job"></select>
+            <p class="field-error"></p>
+          </div>
+          <div class="field" data-rule="required">
+            <label class="label" for="p-parish" data-t="demo.family.parish"></label>
+            <select class="select" id="p-parish" name="parish" data-options="forms.parishes" data-placeholder="forms.parishPlaceholder"></select>
+            <p class="field-error"></p>
+          </div>
+        </div>
+        <div class="field-row three">
+          <div class="field" data-rule="required">
+            <label class="label" for="p-date" data-t="demo.family.date"></label>
+            <input class="input" id="p-date" name="date" type="date">
+            <p class="field-error"></p>
+          </div>
+          <div class="field" data-rule="required">
+            <label class="label" for="p-time" data-t="demo.family.time"></label>
+            <select class="select" id="p-time" name="time"></select>
+            <p class="field-error"></p>
+          </div>
+          <div class="field" data-rule="required">
+            <label class="label" for="p-hours" data-t="demo.family.hours"></label>
+            <select class="select" id="p-hours" name="hours"></select>
+            <p class="field-error"></p>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="p-notes" data-t="demo.family.notes"></label>
+          <textarea class="textarea" id="p-notes" name="notes" rows="3"></textarea>
+        </div>
+        <div>
+          <button class="btn btn-primary" type="submit">
+            <span class="icon" aria-hidden="true">search</span>
+            <span data-t="demo.family.submit"></span>
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Step 2: shortlist -->
+    <section data-step="shortlist" aria-labelledby="sl-title" hidden>
+      <div class="panel-head">
+        <h2 class="h3" id="sl-title" tabindex="-1" data-focus data-t="demo.family.shortlistTitle"></h2>
+        <p data-shortlist-intro></p>
+      </div>
+      <p class="notice notice-info inline-note" data-late-note hidden>
+        <span class="icon" aria-hidden="true">bedtime</span>
+        <span data-t="demo.family.lateNote"></span>
+      </p>
+      <div class="shortlist-grid" data-shortlist></div>
+      <div class="button-row">
+        <button class="btn btn-outline" type="button" data-go="post">
+          <span class="icon" aria-hidden="true">edit</span>
+          <span data-t="demo.family.editJob"></span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Step 3: confirmation -->
+    <section class="panel" data-step="confirm" aria-labelledby="cf-title" hidden>
+      <div class="confirm-head">
+        <span class="icon icon-fill" aria-hidden="true">check_circle</span>
+        <h2 class="h3" id="cf-title" tabindex="-1" data-focus data-t="demo.family.confirmTitle"></h2>
+        <p class="muted" data-confirm-intro></p>
+      </div>
+
+      <div class="confirm-grid">
+        <div>
+          <dl class="summary-list">
+            <dt data-t="demo.family.summaryJob"></dt>
+            <dd data-sum-job></dd>
+            <dt data-t="demo.family.summaryWhen"></dt>
+            <dd data-sum-when></dd>
+            <dt data-t="demo.family.summaryWhere"></dt>
+            <dd data-sum-where></dd>
+          </dl>
+          <div class="confirm-notes">
+            <p><span class="icon" aria-hidden="true">shield</span><span data-t="demo.family.insured"></span></p>
+            <p><span class="icon" aria-hidden="true">payments</span><span data-worker-keeps></span></p>
+          </div>
+        </div>
+
+        <div class="receipt">
+          <p class="receipt-row">
+            <span data-rate-line></span>
+            <span class="mono" data-rate-value></span>
+          </p>
+          <p class="receipt-row is-struck">
+            <span data-t="demo.family.feeLine"></span>
+            <del class="mono" data-fee-value></del>
+          </p>
+          <p class="receipt-row">
+            <span data-t="demo.family.foundingLine"></span>
+            <span class="mono" data-founding-value></span>
+          </p>
+          <p class="receipt-row is-total">
+            <span data-t="demo.family.total"></span>
+            <span class="mono" data-total-value></span>
+          </p>
+          <p class="receipt-foot">
+            <span class="icon" aria-hidden="true">star</span>
+            <span data-t="demo.family.foundingNote"></span>
+          </p>
+        </div>
+      </div>
+
+      <div class="button-row">
+        <button class="btn btn-primary" type="button" data-go="post-new">
+          <span data-t="demo.family.another"></span>
+        </button>
+        <button class="btn btn-outline" type="button" data-go="shortlist">
+          <span data-t="demo.family.back"></span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="demo-data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

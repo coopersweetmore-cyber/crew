@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo: worker dashboard</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alata&family=Instrument+Sans:wght@400;500;600;700&family=Red+Hat+Mono:wght@500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="demo" data-title="meta.titleWorker">
+
+  <a class="skip-link" href="#main" data-t="common.skip"></a>
+
+  <div class="demo-banner" role="note">
+    <span class="icon" aria-hidden="true">science</span>
+    <span data-t="common.demoBanner"></span>
+  </div>
+
+  <header class="app-header">
+    <div class="container app-header-inner">
+      <a class="logo" href="index.html">
+        <span class="logo-mark"><span class="icon" aria-hidden="true">handyman</span></span>
+        <span class="logo-text" data-brand></span>
+      </a>
+      <nav class="app-nav" data-t-aria-label="demo.navLabel">
+        <ul>
+          <li><a href="family.html"><span class="icon" aria-hidden="true">home</span><span data-t="demo.familyView"></span></a></li>
+          <li><a href="worker.html" aria-current="page"><span class="icon" aria-hidden="true">person</span><span data-t="demo.workerView"></span></a></li>
+          <li><a href="login.html"><span class="icon" aria-hidden="true">logout</span><span data-t="demo.logout"></span></a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container app-main" tabindex="-1" data-worker-dash>
+    <a class="back-link" href="index.html">
+      <span class="icon" aria-hidden="true">arrow_back</span>
+      <span data-t="common.backToSite"></span>
+    </a>
+    <h1 class="h2 app-title" data-hello></h1>
+
+    <div class="dash-grid">
+      <section class="panel level-card on-dark area-level" aria-labelledby="lvl-title">
+        <h2 class="title-md meta-on-green" id="lvl-title" data-t="demo.worker.levelTitle"></h2>
+        <p class="level-now" data-level-now></p>
+        <div class="progress" role="progressbar" aria-labelledby="lvl-title" aria-valuemin="0" data-progress>
+          <div class="progress-fill"></div>
+        </div>
+        <p data-level-progress></p>
+        <ul class="level-steps" data-level-steps></ul>
+      </section>
+
+      <section class="panel area-earnings" aria-labelledby="earn-title">
+        <h2 class="title-md" id="earn-title" data-t="demo.worker.earningsTitle"></h2>
+        <p class="meta" data-month></p>
+        <p class="earnings-num mono" data-earnings></p>
+        <p class="meta" data-earnings-note></p>
+      </section>
+
+      <section class="panel area-upcoming" aria-labelledby="up-title">
+        <div class="panel-head">
+          <h2 class="h3" id="up-title" data-t="demo.worker.upcomingTitle"></h2>
+        </div>
+        <ul class="job-list" data-upcoming></ul>
+      </section>
+
+      <section class="panel area-badges" aria-labelledby="badge-title">
+        <div class="panel-head">
+          <h2 class="h3" id="badge-title" data-t="demo.worker.badgesTitle"></h2>
+        </div>
+        <ul class="badge-list" data-badges></ul>
+      </section>
+
+      <section class="panel area-skills" aria-labelledby="skills-title">
+        <div class="panel-head">
+          <h2 class="h3" id="skills-title" data-t="demo.worker.skillsTitle"></h2>
+          <p data-t="demo.worker.skillsIntro"></p>
+        </div>
+        <div class="table-wrap">
+          <table class="skills-table">
+            <thead>
+              <tr>
+                <th scope="col" data-t="demo.worker.colSkill"></th>
+                <th scope="col" data-t="demo.worker.colJobs"></th>
+                <th scope="col" data-t="demo.worker.colRating"></th>
+                <th scope="col" data-t="demo.worker.colPassed"></th>
+              </tr>
+            </thead>
+            <tbody data-skills></tbody>
+          </table>
+        </div>
+        <p class="reference-note">
+          <span class="icon" aria-hidden="true">description</span>
+          <span data-t="demo.worker.reference"></span>
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="demo-data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
