@@ -435,10 +435,34 @@
     // How it works: switch the live demo with the tab.
     var howTabs = document.querySelector("[data-how-tabs]");
     var frame = document.querySelector("[data-demo-frame]");
+    var wide = window.matchMedia("(min-width: 900px)");
+    var stepLists = [];
+    document.querySelectorAll("#how .steps").forEach(function (list) {
+      var steps = Array.prototype.slice.call(list.querySelectorAll(".step"));
+      function activate(btn, send) {
+        steps.forEach(function (b) { b.setAttribute("aria-pressed", b === btn ? "true" : "false"); });
+        if (send && frame && frame.contentWindow) {
+          var target = location.origin === "null" ? "*" : location.origin;
+          frame.contentWindow.postMessage({ crewGo: btn.getAttribute("data-screen") }, target);
+        }
+      }
+      steps.forEach(function (b) { b.addEventListener("click", function () { if (wide.matches) activate(b, true); }); });
+      list._reset = function () { if (steps[0]) activate(steps[0], false); };
+      list._sync = function () { steps.forEach(function (b) { b.disabled = !wide.matches; }); };
+      list._reset();
+      list._sync();
+      stepLists.push(list);
+    });
+    // On phones there is no embedded app, so the steps are a plain list.
+    wide.addEventListener("change", function () { stepLists.forEach(function (l) { l._sync(); }); });
+
     if (howTabs && frame) {
       howTabs.addEventListener("tabchange", function (e) {
         var src = e.detail.getAttribute("data-demo");
         if (src && frame.getAttribute("src") !== src) frame.setAttribute("src", src);
+        var panel = document.getElementById(e.detail.getAttribute("aria-controls"));
+        var list = panel && panel.querySelector(".steps");
+        if (list && list._reset) list._reset();
       });
     }
 
@@ -480,7 +504,7 @@
     var tabbar = document.querySelector("[data-tabbar]");
     if (!body) return null;
     var current = null;
-    function go(name, back) {
+    function go(name, back, quiet) {
       var target = body.querySelector('[data-screen="' + name + '"]');
       if (!target || target === current) return;
       body.querySelectorAll("[data-screen]").forEach(function (s) {
@@ -502,7 +526,7 @@
         });
       }
       var heading = target.querySelector("[data-focus]");
-      if (heading && go.ready) heading.focus({ preventScroll: true });
+      if (heading && go.ready && !quiet) heading.focus({ preventScroll: true });
       if (go.onShow) go.onShow(name);
     }
     document.addEventListener("click", function (e) {
@@ -609,25 +633,46 @@
     prefill();
     wireValidation(form);
 
+    var lastJob = null;
+    var lastWorkers = [];
+    function readJob() {
+      var d = data.family.sampleJob;
+      var picked = form.querySelector('input[name="job"]:checked');
+      return {
+        job: picked ? picked.value : d.job,
+        parish: form.querySelector("[name=parish]").value || d.parish,
+        date: form.querySelector("[name=date]").value || d.date,
+        start: parseInt(timeSelect.value, 10),
+        hours: parseInt(hoursInput.value, 10)
+      };
+    }
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       form.setAttribute("data-tried", "");
       if (!validateForm(form)) return;
-      var job = {
-        job: form.querySelector('input[name="job"]:checked').value,
-        parish: form.querySelector("[name=parish]").value,
-        date: form.querySelector("[name=date]").value,
-        start: parseInt(timeSelect.value, 10),
-        hours: parseInt(hoursInput.value, 10)
-      };
-      renderShortlist(job);
+      renderShortlist(readJob());
       go("shortlist");
+    });
+
+    // The landing page's "How it works" steps can send this app to a screen.
+    function ensureShortlist() { if (!lastJob) renderShortlist(readJob()); }
+    function ensureBooking() { ensureShortlist(); if (!booking && lastWorkers[0]) renderConfirm(lastJob, lastWorkers[0]); }
+    window.addEventListener("message", function (e) {
+      if (!e.data || !e.data.crewGo) return;
+      if (e.origin !== location.origin && location.origin !== "null") return;
+      var to = e.data.crewGo;
+      if (to === "shortlist") ensureShortlist();
+      if (to === "confirm" || to === "bookings") ensureBooking();
+      go(to, to === "post", true);
     });
 
     function renderShortlist(j) {
       var jobType = jobByValue(j.job);
       var late = j.start + j.hours > 22;
       var workers = data.workers.filter(function (w) { return !(late && w.ageBand === "16 to 17"); });
+      lastJob = j;
+      lastWorkers = workers;
 
       document.querySelector("[data-shortlist-intro]").textContent =
         t("demo.family.shortlistIntro", { job: jobType.name.toLowerCase() });
@@ -838,6 +883,12 @@
       tr.appendChild(el("td", "num", s.rating.toFixed(1)));
       tr.appendChild(el("td", "num", dateText(me.coursesPassed[s.job], { day: "numeric", month: "short" })));
       tbody.appendChild(tr);
+    });
+
+    window.addEventListener("message", function (e) {
+      if (!e.data || !e.data.crewGo) return;
+      if (e.origin !== location.origin && location.origin !== "null") return;
+      go(e.data.crewGo, e.data.crewGo === "home", true);
     });
 
     go("home");

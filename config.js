@@ -97,18 +97,19 @@ var SITE_COPY = {
       tabFamily: "Families",
       tabWorker: "Young people",
       familySteps: [
-        { title: "Post a job", text: "Tell us what you need, where and when." },
-        { title: "Get a shortlist", text: "We send you 2 or 3 vetted workers who fit the job." },
-        { title: "Pick one", text: "Compare their badges, reviews and hourly rates, then choose." },
-        { title: "The job gets done, insured", text: "Every booked job will be insured, with the policy in place before launch." },
-        { title: "Pay and review", text: "Pay through {brand} after the job. You both leave a review." }
+        { title: "Post a job", text: "Tell us what you need, where and when.", screen: "post" },
+        { title: "Get a shortlist", text: "We send you 2 or 3 vetted workers who fit the job.", screen: "shortlist" },
+        { title: "Pick one", text: "Compare their badges, reviews and hourly rates, then choose.", screen: "shortlist" },
+        { title: "The job gets done, insured", text: "Every booked job will be insured, with the policy in place before launch.", screen: "confirm" },
+        { title: "Pay and review", text: "Pay through {brand} after the job. You both leave a review.", screen: "bookings" }
       ],
       workerSteps: [
-        { title: "Sign up", text: "Tell us which jobs you'd like and how much time you have." },
-        { title: "Parent consent if you're under 18", text: "A parent or guardian says yes before your first job." },
-        { title: "Take a free course", text: "A short online course for each job type. Pass it to take that job." },
-        { title: "Earn badges and level up", text: "Go from Starter to Verified to Trusted as you complete jobs." }
+        { title: "Sign up", text: "Tell us which jobs you'd like and how much time you have.", screen: "account" },
+        { title: "Parent consent if you're under 18", text: "A parent or guardian says yes before your first job.", screen: "account" },
+        { title: "Take a free course", text: "A short online course for each job type. Pass it to take that job.", screen: "badges" },
+        { title: "Earn badges and level up", text: "Go from Starter to Verified to Trusted as you complete jobs.", screen: "home" }
       ],
+      stepsHint: "Tap a step to see it in the app.",
       familyCta: "Sign up as a family",
       workerCta: "Sign up to work",
       demoTitle: "Live app demo",
