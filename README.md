@@ -19,8 +19,8 @@ The live site is at https://coopersweetmore-cyber.github.io/crew/ and its sign-u
 
 - On a laptop or projector, the demo shows inside a phone frame, with a switch between the family app and the worker app. On a phone it fills the screen like a real app.
 - The landing page embeds the same demo in "How it works", so visitors can tap through it without leaving the page.
-- Family app: post a job, see a shortlist of 3 sample workers, pick one, and see the booking with its price breakdown. Jobs ending after 22:00 hide the under-18 sample worker.
-- Worker app: level and progress, earnings this month, upcoming jobs, badges and the skills record.
+- Family app: post a job, see a shortlist of 3 workers with their ratings, ages and Crew Certified status, pick one, and see the booking with its price breakdown (15% fee for a new match, 5% to book the same worker again). Jobs ending after 22:00 hide workers under 18.
+- Worker app: Crew Certified status or "X of 3 jobs toward Crew Certified", earnings this month, upcoming jobs, courses passed and the work record. Opened from a demo booking, it shows that worker one job closer.
 - Everything in it comes from `demo-data.js` and is labelled as sample data.
 
 ## Set up sign-ups

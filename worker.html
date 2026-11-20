@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400..800&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,500..600,0..1,0&display=block">
-  <link rel="stylesheet" href="styles.css?v=13">
+  <link rel="stylesheet" href="styles.css?v=14">
 </head>
 <body class="app-page" data-title="meta.titleWorker" data-app="worker">
 
@@ -38,8 +38,8 @@
       <div class="stage-switch">
         <p data-t="demo.switchLabel"></p>
         <nav data-t-aria-label="demo.switchLabel">
-          <a href="family.html?v=13" data-t="demo.familyView"></a>
-          <a href="worker.html?v=13" aria-current="page" data-t="demo.workerView"></a>
+          <a href="family.html?v=14" data-t="demo.familyView"></a>
+          <a href="worker.html?v=14" aria-current="page" data-t="demo.workerView"></a>
         </nav>
       </div>
       <a class="btn btn-outline" href="index.html">
@@ -60,6 +60,10 @@
 
           <!-- Home -->
           <section class="screen" data-screen="home" data-tab="home">
+            <p class="notice notice-success" data-just-done hidden>
+              <span class="icon icon-fill" aria-hidden="true">check_circle</span>
+              <span data-just-done-text></span>
+            </p>
             <div class="app-top">
               <a class="logo" href="index.html" data-keep-embed>
                 <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="12" fill="#0B5D4A"/><path d="M27.5 13.8a9.2 9.2 0 1 0 0 12.4" fill="none" stroke="#fff" stroke-width="4.6" stroke-linecap="round"/><circle cx="29.6" cy="20" r="3.3" fill="#FFC83D"/></svg>
@@ -70,11 +74,12 @@
             <h2 class="app-title" tabindex="-1" data-focus data-hello></h2>
 
             <div class="app-card level-hero on-dark">
-              <p class="on-green" id="lvl-title" data-t="demo.worker.levelTitle"></p>
+              <p class="on-green" id="lvl-title" data-t="demo.worker.statusTitle"></p>
               <p class="level-name" data-level-now></p>
               <div class="progress" role="progressbar" aria-labelledby="lvl-title" aria-valuemin="0" data-progress><div class="progress-fill"></div></div>
               <p data-level-progress></p>
               <ul class="level-steps" data-level-steps></ul>
+              <p class="on-green" data-cert-note></p>
             </div>
 
             <div class="app-card">
@@ -89,13 +94,13 @@
             </div>
           </section>
 
-          <!-- Badges -->
-          <section class="screen" data-screen="badges" data-tab="badges" hidden>
+          <!-- Courses -->
+          <section class="screen" data-screen="courses" data-tab="courses" hidden>
             <div class="screen-head pad-top">
-              <h2 class="app-title" tabindex="-1" data-focus data-t="demo.worker.badgesTitle"></h2>
-              <p class="app-sub" data-t="demo.worker.badgesIntro"></p>
+              <h2 class="app-title" tabindex="-1" data-focus data-t="demo.worker.coursesTitle"></h2>
+              <p class="app-sub" data-t="demo.worker.coursesIntro"></p>
             </div>
-            <ul class="badge-grid" data-badges></ul>
+            <ul class="badge-grid" data-courses></ul>
           </section>
 
           <!-- Skills record -->
@@ -115,7 +120,7 @@
                 <tbody data-skills></tbody>
               </table>
             </div>
-            <p class="note-row"><span class="icon" aria-hidden="true">description</span><span data-t="demo.worker.reference"></span></p>
+            <p class="note-row"><span class="icon" aria-hidden="true">description</span><span data-reference></span></p>
           </section>
 
           <!-- Account -->
@@ -126,14 +131,14 @@
             <div class="app-card">
               <div class="worker-top">
                 <span class="avatar" aria-hidden="true" data-initials></span>
-                <div><p class="worker-name" data-worker-name></p><p class="app-sub"><span data-t="demo.worker.ageBand"></span>: <span data-age-band></span></p></div>
+                <div><p class="worker-name" data-worker-name></p><p class="app-sub"><span data-t="demo.worker.ageLabel"></span>: <span data-age></span></p></div>
               </div>
             </div>
             <div data-consent></div>
-            <a class="btn btn-outline btn-block" href="family.html?v=13" data-keep-embed>
+            <a class="btn btn-outline btn-block" href="family.html?v=14" data-keep-embed>
               <span class="icon" aria-hidden="true">swap_horiz</span><span data-t="demo.worker.switchToFamily"></span>
             </a>
-            <a class="btn btn-ghost btn-block" href="login.html?v=13" data-keep-embed>
+            <a class="btn btn-ghost btn-block" href="login.html?v=14" data-keep-embed>
               <span class="icon" aria-hidden="true">logout</span><span data-t="demo.logout"></span>
             </a>
           </section>
@@ -141,7 +146,7 @@
 
         <nav class="tabbar" data-tabbar data-t-aria-label="demo.tabsLabel">
           <button type="button" data-go="home" data-tab-btn="home"><span class="icon" aria-hidden="true">home</span><span data-t="demo.worker.tabHome"></span></button>
-          <button type="button" data-go="badges" data-tab-btn="badges"><span class="icon" aria-hidden="true">workspace_premium</span><span data-t="demo.worker.tabBadges"></span></button>
+          <button type="button" data-go="courses" data-tab-btn="courses"><span class="icon" aria-hidden="true">school</span><span data-t="demo.worker.tabCourses"></span></button>
           <button type="button" data-go="record" data-tab-btn="record"><span class="icon" aria-hidden="true">assignment</span><span data-t="demo.worker.tabRecord"></span></button>
           <button type="button" data-go="account" data-tab-btn="account"><span class="icon" aria-hidden="true">person</span><span data-t="demo.worker.tabAccount"></span></button>
         </nav>
@@ -149,8 +154,8 @@
     </div>
   </div>
 
-  <script src="config.js?v=13"></script>
-  <script src="demo-data.js?v=13"></script>
-  <script src="script.js?v=13"></script>
+  <script src="config.js?v=14"></script>
+  <script src="demo-data.js?v=14"></script>
+  <script src="script.js?v=14"></script>
 </body>
 </html>

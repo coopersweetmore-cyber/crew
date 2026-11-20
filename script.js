@@ -81,10 +81,11 @@
     return { value: value, name: value, short: value, icon: "work" };
   }
 
-  function levelById(id) {
-    var levels = raw("levels") || [];
-    for (var i = 0; i < levels.length; i++) if (levels[i].id === id) return levels[i];
-    return levels[0];
+  // Crew Certified status, as shown on a worker card.
+  function certStatus(w) {
+    var need = window.DEMO_DATA.certification.jobsNeeded;
+    return w.certified ? t("demo.family.certified")
+      : t("demo.family.progress", { done: Math.min(w.jobsDone, need), target: need });
   }
 
   /* ---------- Render copy into the page ---------- */
@@ -705,7 +706,7 @@
       // Nothing is checked or stored: clear the fields and move on.
       form.reset();
       pass.type = "password";
-      window.location.href = page + "?v=13" + (EMBED ? "&embed=1" : "");
+      window.location.href = page + "?v=14" + (EMBED ? "&embed=1" : "");
     });
   }
 
@@ -812,11 +813,13 @@
     function ensureShortlist() { if (!lastJob) renderShortlist(readJob()); }
     function ensureBooking() {
       ensureShortlist();
-      var w = pickedWorker || lastWorkers[0];
+      var w = pickedWorker || demoPickWorker() || lastWorkers[0];
       if (w && (!booking || booking.worker !== w)) renderConfirm(lastJob, w);
     }
 
-    // "Pick one": browse the shortlist card by card, then choose the first worker.
+    function demoPickWorker() { return lastWorkers.filter(function (w) { return w.demoPick; })[0]; }
+
+    // "Pick one": browse the shortlist card by card, then choose the demo's worker.
     var pickFrame = null;
     function stopPickPreview() {
       pickTimers.forEach(clearTimeout); pickTimers = [];
@@ -856,7 +859,8 @@
       var cards = Array.prototype.slice.call(document.querySelectorAll("[data-shortlist] .worker-card"));
       cards.forEach(function (c) { c.classList.remove("is-browsing", "is-picked"); });
       if (!cards.length) return;
-      var i = cards.length > 1 ? 1 : 0;   // the second worker, so the swipe has somewhere to go
+      // The demo's chosen worker (the one at 1 of 3), so the swipe has somewhere to go.
+      var i = Math.max(0, lastWorkers.indexOf(demoPickWorker()));
       var card = cards[i];
       var top = card.getBoundingClientRect().top - body.getBoundingClientRect().top + body.scrollTop
         - (body.clientHeight - card.offsetHeight) / 2;
@@ -887,7 +891,7 @@
     function renderShortlist(j) {
       var jobType = jobByValue(j.job);
       var late = j.start + j.hours > 22;
-      var workers = data.workers.filter(function (w) { return !(late && w.ageBand === "16 to 17"); });
+      var workers = data.workers.filter(function (w) { return !(late && w.age < 18); });
       lastJob = j;
       lastWorkers = workers;
       pickedWorker = null;
@@ -906,9 +910,11 @@
         var who = el("div");
         who.appendChild(el("h3", "worker-name", w.name));
         var meta = el("p", "worker-meta");
-        var r = el("span"); r.appendChild(icon("star", "icon-fill")); r.appendChild(el("span", null, w.rating.toFixed(1)));
+        var r = el("span"); r.appendChild(icon("star", "icon-fill"));
+        r.appendChild(el("span", null, w.rating == null ? t("demo.family.newWorker") : w.rating.toFixed(1)));
         meta.appendChild(r);
-        meta.appendChild(el("span", null, w.jobsDone + " " + t("demo.family.jobsDone")));
+        meta.appendChild(el("span", null, t("demo.family.age", { age: w.age })));
+        meta.appendChild(el("span", null, w.jobsDone + " " + t(w.jobsDone === 1 ? "demo.family.jobDone" : "demo.family.jobsDone")));
         who.appendChild(meta);
         top.appendChild(who);
         var rate = el("p", "worker-rate num", money(w.rate));
@@ -917,10 +923,10 @@
         card.appendChild(top);
 
         var chips = el("ul", "chip-row");
-        var lvl = el("li", "pill pill-sun");
-        lvl.appendChild(icon("workspace_premium", "icon-fill"));
-        lvl.appendChild(el("span", null, levelById(w.level).name));
-        chips.appendChild(lvl);
+        var status = el("li", "pill " + (w.certified ? "pill-sun" : "pill-mist"));
+        status.appendChild(icon(w.certified ? "verified" : "trending_up", w.certified ? "icon-fill" : ""));
+        status.appendChild(el("span", null, certStatus(w)));
+        chips.appendChild(status);
         [j.job].concat(w.courses.filter(function (c) { return c !== j.job; })).forEach(function (c) {
           var jt = jobByValue(c);
           var li = el("li", "pill pill-green");
@@ -944,12 +950,11 @@
       });
     }
 
-    function renderConfirm(j, w) {
+    function renderConfirm(j, w, rebook) {
       var jobType = jobByValue(j.job);
       var subtotal = round2(w.rate * j.hours);
-      var fee = round2(subtotal * window.PRICING.bookingFee);
-      var founding = round2(subtotal * window.PRICING.foundingFee);
-      var total = round2(subtotal + founding);
+      var fee = round2(subtotal * (rebook ? window.PRICING.rebookFee : window.PRICING.bookingFee));
+      var total = round2(subtotal + fee);
       var startLabel = (j.start < 10 ? "0" : "") + j.start + ":00";
 
       document.querySelector("[data-confirm-intro]").textContent = t("demo.family.confirmIntro", { worker: w.name });
@@ -959,12 +964,13 @@
       document.querySelector("[data-rate-line]").textContent =
         t("demo.family.rateLine", { hours: hoursText(j.hours), rate: money(w.rate) + t("common.perHour") });
       document.querySelector("[data-rate-value]").textContent = money(subtotal);
+      document.querySelector("[data-fee-line]").textContent = t(rebook ? "demo.family.rebookFeeLine" : "demo.family.feeLine");
       document.querySelector("[data-fee-value]").textContent = money(fee);
-      document.querySelector("[data-founding-value]").textContent = money(founding);
+      document.querySelector("[data-rebook-note]").textContent = t("demo.family.rebookNote", { worker: w.name });
       document.querySelector("[data-total-value]").textContent = money(total);
       document.querySelector("[data-worker-keeps]").textContent = t("demo.family.workerKeeps", { worker: w.name });
 
-      booking = { job: jobType, worker: w, date: j.date, start: startLabel, hours: j.hours, parish: j.parish, total: total };
+      booking = { j: j, job: jobType, worker: w, date: j.date, start: startLabel, hours: j.hours, parish: j.parish, total: total };
     }
 
     function renderBookings() {
@@ -1002,6 +1008,27 @@
       note.appendChild(icon("verified_user"));
       note.appendChild(el("span", null, t("demo.family.insured")));
       card.appendChild(note);
+
+      var again = el("div", "rebook");
+      again.appendChild(el("h4", "rebook-title", t("demo.family.rebookTitle", { worker: booking.worker.name })));
+      var row = el("p", "receipt-row");
+      row.appendChild(el("span", null, t("demo.family.rebookLine", { hours: hoursText(booking.hours), rate: money(booking.worker.rate) + t("common.perHour") })));
+      var sub = round2(booking.worker.rate * booking.hours);
+      row.appendChild(el("span", "num", money(round2(sub + round2(sub * window.PRICING.rebookFee)))));
+      again.appendChild(row);
+      var btn = el("button", "btn btn-outline btn-block");
+      btn.type = "button";
+      btn.appendChild(icon("autorenew"));
+      btn.appendChild(el("span", null, t("demo.family.rebook")));
+      btn.addEventListener("click", function () { renderConfirm(booking.j, booking.worker, true); go("confirm"); });
+      again.appendChild(btn);
+      card.appendChild(again);
+
+      var link = el("a", "btn btn-ghost btn-block");
+      link.href = "worker.html?v=14&worker=" + booking.worker.id + "&done=1" + (EMBED ? "&embed=1" : "");
+      link.appendChild(icon("person"));
+      link.appendChild(el("span", null, t("demo.family.seeWorker", { worker: booking.worker.name })));
+      card.appendChild(link);
       box.appendChild(card);
     }
 
@@ -1015,22 +1042,47 @@
   function initWorker() {
     if (document.body.getAttribute("data-app") !== "worker") return;
     var data = window.DEMO_DATA;
-    var me = data.me;
-    var worker = data.workers.filter(function (w) { return w.id === me.workerId; })[0];
-    var levels = raw("levels");
-    var levelIndex = levels.findIndex(function (l) { return l.id === worker.level; });
+    var cert = data.certification;
+    var params = new URLSearchParams(window.location.search);
+    var id = data.workerViews[params.get("worker")] ? params.get("worker") : data.defaultWorker;
+    var worker = Object.assign({}, data.workers.filter(function (w) { return w.id === id; })[0]);
+    var view = JSON.parse(JSON.stringify(data.workerViews[id]));
     var go = makeRouter();
+
+    // Opened from a demo booking: count that job as completed and rated.
+    if (params.get("done") === "1") {
+      var d = data.family.sampleJob;
+      var wasCertified = worker.certified;
+      view.completedThisMonth.push({ date: d.date, job: d.job, hours: d.hours, rate: worker.rate });
+      var skill = view.skills.filter(function (s) { return s.job === d.job; })[0];
+      if (skill) {
+        skill.rating = (skill.rating * skill.jobs + data.demoJobRating) / (skill.jobs + 1);
+        skill.jobs += 1;
+      } else {
+        view.skills.push({ job: d.job, jobs: 1, rating: data.demoJobRating });
+      }
+      worker.rating = worker.rating == null ? data.demoJobRating
+        : (worker.rating * worker.jobsDone + data.demoJobRating) / (worker.jobsDone + 1);
+      worker.jobsDone += 1;
+      if (!worker.certified && worker.jobsDone >= cert.jobsNeeded) worker.certified = true;
+      if (worker.jobsDone >= cert.referenceAfter && !worker.references) worker.references = 1;
+      var vars = { job: jobByValue(d.job).name.toLowerCase(), family: data.family.name,
+                   done: Math.min(worker.jobsDone, cert.jobsNeeded), target: cert.jobsNeeded };
+      document.querySelector("[data-just-done-text]").textContent = t(
+        wasCertified ? "demo.worker.justDoneCertified" : worker.certified ? "demo.worker.justCertified" : "demo.worker.justDone", vars);
+      document.querySelector("[data-just-done]").hidden = false;
+    }
 
     document.querySelector("[data-hello]").textContent = t("demo.worker.hello", { name: worker.name });
     document.querySelectorAll("[data-initials]").forEach(function (n) { setAvatar(n, worker); });
     document.querySelector("[data-worker-name]").textContent = worker.name;
-    document.querySelector("[data-age-band]").textContent = worker.ageBand;
+    document.querySelector("[data-age]").textContent = String(worker.age);
 
     // Parent consent: shown as a status card for 16 and 17 year olds.
     var consentBox = document.querySelector("[data-consent]");
     if (consentBox) {
-      if (worker.ageBand === "16 to 17" && me.parentConsent) {
-        var pc = me.parentConsent;
+      if (worker.age < 18 && view.parentConsent) {
+        var pc = view.parentConsent;
         var card = el("div", "app-card consent-card");
         var head = el("div", "consent-head");
         head.appendChild(el("h3", null, t("demo.worker.consentTitle")));
@@ -1059,41 +1111,48 @@
       }
     }
 
-    // Level
-    document.querySelector("[data-level-now]").textContent = levels[levelIndex].name;
-    var next = levels[levelIndex + 1];
-    var progressText = document.querySelector("[data-level-progress]");
+    // Crew Certified status
+    var now = document.querySelector("[data-level-now]");
+    var detail = document.querySelector("[data-level-progress]");
     var bar = document.querySelector("[data-progress]");
-    if (next) {
-      var target = me.levelTargets[next.id];
-      progressText.textContent = t("demo.worker.progress", { done: worker.jobsDone, target: target, next: next.name });
-      bar.setAttribute("aria-valuenow", String(worker.jobsDone));
-      bar.setAttribute("aria-valuemax", String(target));
-      bar.setAttribute("aria-valuetext", progressText.textContent);
-      var pct = Math.min(100, (worker.jobsDone / target) * 100);
-      bar.firstElementChild.style.width = pct + "%";
-    } else {
-      progressText.textContent = t("demo.worker.maxLevel");
+    var certNote = document.querySelector("[data-cert-note]");
+    var done = Math.min(worker.jobsDone, cert.jobsNeeded);
+    if (worker.certified) {
+      now.textContent = t("demo.worker.certified");
+      detail.textContent = t("demo.worker.certifiedDetail", { jobs: worker.jobsDone, rating: worker.rating.toFixed(1) });
       bar.hidden = true;
+      certNote.hidden = true;
+    } else {
+      now.textContent = t("demo.worker.progress", { done: done, target: cert.jobsNeeded });
+      detail.hidden = true;
+      bar.setAttribute("aria-valuenow", String(done));
+      bar.setAttribute("aria-valuemax", String(cert.jobsNeeded));
+      bar.setAttribute("aria-valuetext", now.textContent);
+      bar.firstElementChild.style.width = Math.min(100, (done / cert.jobsNeeded) * 100) + "%";
+      certNote.textContent = t("demo.worker.progressNote");
     }
     var steps = document.querySelector("[data-level-steps]");
-    levels.forEach(function (l, i) {
-      var li = el("li", i <= levelIndex ? "is-done" : "");
-      li.appendChild(icon(i <= levelIndex ? "check" : "lock"));
-      li.appendChild(el("span", null, l.name));
+    [
+      [true, "demo.worker.stepCourse"],
+      [worker.certified, "demo.worker.stepJobs"],
+      [worker.references > 0, worker.references > 0 ? "demo.worker.stepReferenceDone" : "demo.worker.stepReference"]
+    ].forEach(function (st) {
+      var li = el("li", st[0] ? "is-done" : "");
+      li.appendChild(icon(st[0] ? "check" : "lock"));
+      li.appendChild(el("span", null, t(st[1])));
       steps.appendChild(li);
     });
 
     // Earnings this month
-    var earned = me.completedThisMonth.reduce(function (sum, j) { return sum + j.rate * j.hours; }, 0);
+    var earned = view.completedThisMonth.reduce(function (sum, j) { return sum + j.rate * j.hours; }, 0);
     document.querySelector("[data-month]").textContent =
-      new Date(me.month + "-01T12:00:00").toLocaleDateString(t("meta.locale"), { month: "long", year: "numeric" });
+      new Date(view.month + "-01T12:00:00").toLocaleDateString(t("meta.locale"), { month: "long", year: "numeric" });
     document.querySelector("[data-earnings]").textContent = money(earned);
-    document.querySelector("[data-earnings-note]").textContent = t("demo.worker.earningsNote", { count: me.completedThisMonth.length });
+    document.querySelector("[data-earnings-note]").textContent = t("demo.worker.earningsNote", { count: view.completedThisMonth.length });
 
     // Upcoming jobs
     var list = document.querySelector("[data-upcoming]");
-    me.upcoming.forEach(function (j) {
+    view.upcoming.forEach(function (j) {
       var jt = jobByValue(j.job);
       var li = el("li");
       var dt = new Date(j.date + "T12:00:00");
@@ -1111,31 +1170,34 @@
       list.appendChild(li);
     });
 
-    // Badges
-    var badgeList = document.querySelector("[data-badges]");
+    // Courses passed (course and quiz)
+    var courseList = document.querySelector("[data-courses]");
     (raw("jobTypes") || []).forEach(function (jt) {
-      var passed = me.coursesPassed[jt.value];
+      var passed = view.coursesPassed[jt.value];
       var li = el("li", "badge-tile" + (passed ? "" : " is-locked"));
       var medal = el("span", "medal");
       medal.appendChild(icon(passed ? jt.icon : "lock"));
       li.appendChild(medal);
       li.appendChild(el("strong", null, jt.name));
       li.appendChild(el("span", null, passed
-        ? t("demo.worker.badgeEarned", { date: dateText(passed, { day: "numeric", month: "short", year: "numeric" }) })
-        : t("demo.worker.badgeNotYet")));
-      badgeList.appendChild(li);
+        ? t("demo.worker.courseEarned", { date: dateText(passed, { day: "numeric", month: "short", year: "numeric" }) })
+        : t("demo.worker.courseNotYet")));
+      courseList.appendChild(li);
     });
 
-    // Skills record
+    // Work record
     var tbody = document.querySelector("[data-skills]");
-    me.skills.forEach(function (s) {
+    view.skills.forEach(function (s) {
       var tr = el("tr");
       tr.appendChild(el("td", null, jobByValue(s.job).short));
       tr.appendChild(el("td", "num", String(s.jobs)));
       tr.appendChild(el("td", "num", s.rating.toFixed(1)));
-      tr.appendChild(el("td", "num", dateText(me.coursesPassed[s.job], { day: "numeric", month: "short" })));
+      tr.appendChild(el("td", "num", dateText(view.coursesPassed[s.job], { day: "numeric", month: "short" })));
       tbody.appendChild(tr);
     });
+    document.querySelector("[data-reference]").textContent = worker.references > 0
+      ? t("demo.worker.referenceDone", { count: worker.references })
+      : t("demo.worker.referenceLocked");
 
     window.addEventListener("message", function (e) {
       if (!e.data || !e.data.crewGo) return;

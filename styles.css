@@ -779,3 +779,9 @@ body.app-page { background: var(--mist); }
   .skills-media { padding-bottom: 70px; }
   .skills-record { position: absolute; right: -18px; bottom: 0; margin: 0; width: 300px; }
 }
+
+/* Crew Certified and rebooking */
+.receipt .receipt-sub { margin-top: 22px; }
+.skills-note { color: var(--muted); font-size: 1rem; line-height: 1.6; }
+.rebook { display: grid; gap: 8px; padding-top: 12px; border-top: 1px solid var(--line); }
+.rebook-title { font-size: 0.97rem; font-weight: 750; }

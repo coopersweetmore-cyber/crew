@@ -16,10 +16,11 @@ var SIGNUP_ENDPOINT = "https://script.google.com/macros/s/AKfycbx5E5Ur-9kYOksBxM
 // Which language from SITE_COPY to show. Add a "pt" block below to translate.
 var SITE_LANGUAGE = "en";
 
-// Pricing used by the demo calculator (locked decisions).
+// Pricing used by the demo calculator. Workers keep 100% of their rate;
+// the family pays the fee on top.
 var PRICING = {
-  bookingFee: 0.15,   // 15% on top of the worker's rate, includes insurance
-  foundingFee: 0.075  // founding families pay half, until 30 June 2027
+  bookingFee: 0.15,   // new match: 15% on top of the worker's rate, includes insurance
+  rebookFee: 0.05     // rebooking the same worker: 5%
 };
 
 /* =====================================================================
@@ -80,8 +81,8 @@ var SITE_COPY = {
       previewLabel: "App preview with sample data",
       chipShortlistTitle: "Your shortlist is ready",
       chipShortlistText: "3 trained dog walkers",
-      chipBadgeTitle: "Course passed",
-      chipBadgeText: "Pet care course, level Starter",
+      chipBadgeTitle: "Crew Certified",
+      chipBadgeText: "Course passed and 3 jobs rated 4+ stars",
       trust: [
         { icon: "school", text: "Trained for every job type" },
         { icon: "verified_user", text: "Every booked job will be insured" },
@@ -99,15 +100,15 @@ var SITE_COPY = {
       familySteps: [
         { title: "Post a job", text: "Tell us what you need, where and when.", screen: "post" },
         { title: "Get a shortlist", text: "We send you 2 or 3 vetted workers who fit the job.", screen: "shortlist" },
-        { title: "Pick one", text: "Compare their badges, reviews and hourly rates, then choose.", screen: "pick" },
+        { title: "Pick one", text: "Compare their ratings, Crew Certified status and hourly rates, then choose.", screen: "pick" },
         { title: "The job gets done, insured", text: "Every booked job will be insured, with the policy in place before launch.", screen: "confirm" },
         { title: "Pay and review", text: "Pay through {brand} after the job. You both leave a review.", screen: "bookings" }
       ],
       workerSteps: [
         { title: "Sign up", text: "Tell us which jobs you'd like and how much time you have.", screen: "account" },
         { title: "Parent consent if you're under 18", text: "A parent or guardian says yes before your first job.", screen: "account" },
-        { title: "Take a free course", text: "A short online course for each job type. Pass it to take that job.", screen: "badges" },
-        { title: "Earn badges and level up", text: "Go from Starter to Verified to Trusted as you complete jobs.", screen: "home" }
+        { title: "Take a free course and quiz", text: "A short online course and quiz for each job type. Pass it to take that job.", screen: "courses" },
+        { title: "Become Crew Certified", text: "Complete 3 jobs booked through Crew, each rated 4 stars or more. After 5 jobs you also get a written reference.", screen: "home" }
       ],
       stepsHint: "Click a step to jump to it in the app.",
       familyCta: "Sign up as a family",
@@ -140,20 +141,20 @@ var SITE_COPY = {
       intro: "Every young person goes through the same four steps before they work for you. Nobody skips one.",
       steps: [
         { title: "They sign up", text: "We know their name, age, school and parish before anything else." },
-        { title: "They pass the course", text: "A short course for each job type. No pass, no jobs of that type." },
+        { title: "They pass the course and quiz", text: "A short course and quiz for each job type. No pass, no jobs of that type." },
         { title: "A parent says yes", text: "Under 18? A parent or guardian approves the account first." },
         { title: "They arrive, insured", text: "Every booked job will be insured, and you both leave a review afterwards." }
       ],
       ui: {
         nameLabel: "Name",
-        nameValue: "Inês, 17",
+        nameValue: "Marta, 17",
         parishLabel: "Parish",
-        parishValue: "Cascais e Estoril",
+        parishValue: "Carcavelos e Parede",
         signupButton: "Sign up to work",
-        coursePassed: "Pet care course",
+        coursePassed: "Car washing course and quiz",
         coursePassedMeta: "Passed, 9 of 10 right",
-        courseLocked: "Garden care course",
-        courseLockedMeta: "Not taken yet, so no garden jobs",
+        courseLocked: "Window cleaning course",
+        courseLockedMeta: "Not taken yet, so no window jobs",
         consentTitle: "Parent consent",
         consentGiven: "Given",
         consentLine1: "A parent said yes on 8 Jan 2027",
@@ -164,56 +165,53 @@ var SITE_COPY = {
     },
 
     skills: {
-      title: "Skills that count for young people",
-      intro: "Each job type has its own free online course. Pass it and you earn the badge. Do good work and you build a record that schools and employers can see.",
+      title: "Crew Certified",
+      intro: "Pass the free course and quiz for a job type, then complete 3 jobs booked through {brand}, each rated 4 stars or more, and you're Crew Certified. After 5 jobs you also get a written reference.",
+      recordNote: "It's a verified work record: jobs done, average rating and courses passed. Families see it on your profile and in the shortlist, and you can share it with employers through a link. Only jobs booked through {brand} count toward it.",
       surveyLead: "We asked 33 local students.",
       survey: "{stat1} have already done some paid work, and {stat2} would take a free short course if it led to paid work.",
       stat1: "82%",
       stat2: "97%",
-      badgesTitle: "Course badges",
+      badgesTitle: "Courses, each with a quiz",
       photoAlt: "A young woman with headphones doing an online course on her laptop",
       record: {
-        kicker: "{brand} skills record",
-        name: "Inês, 17",
-        level: "Verified",
+        kicker: "{brand} work record",
+        name: "Marta, 17",
+        level: "Crew Certified",
         colSkill: "Skill",
         colJobs: "Jobs",
         colRating: "Rating",
         rows: [
-          { skill: "Pet care", jobs: "12", rating: "4.9" },
-          { skill: "Car washing", jobs: "7", rating: "4.8" },
-          { skill: "Tech help", jobs: "4", rating: "5.0" }
+          { skill: "Car washing", jobs: "5", rating: "4.9" },
+          { skill: "Pet care", jobs: "5", rating: "5.0" },
+          { skill: "Garden care", jobs: "2", rating: "4.8" }
         ],
-        foot: "23 jobs since January 2027. Written reference available."
+        foot: "12 jobs booked through {brand}, 4.9 average rating, 1 written reference."
       }
     },
 
-    // Levels, in order. Used on the website and in the worker demo.
-    levels: [
-      { id: "starter", name: "Starter", rule: "Pass your first course.", unlocks: "Take jobs of that type." },
-      { id: "verified", name: "Verified", rule: "Complete 5 well-rated jobs.", unlocks: "A written reference and a skills record." },
-      { id: "trusted", name: "Trusted", rule: "Complete 20 jobs.", unlocks: "Help train newcomers." }
-    ],
 
     pricing: {
       title: "Simple, fair pricing",
-      intro: "Workers keep everything they earn. Families pay a small fee that includes insurance.",
-      offerTitle: "Founding family offer",
-      offerText: "Sign up before launch and pay half the booking fee, 7.5%, until 30 June 2027.",
-      exampleTitle: "Example: 2 hours of garden care",
+      intro: "Workers keep everything they earn. Families pay a small fee on top that includes insurance.",
+      offerTitle: "Rebook for 5%",
+      offerText: "Book the same worker again and the fee drops from 15% to 5%.",
+      exampleTitle: "Example: a 2-hour car wash at €10 an hour",
       exampleRate: "Worker's rate: 2 hours at €10",
       exampleRateValue: "€20.00",
-      exampleFee: "Booking fee (15%, includes insurance)",
+      exampleFee: "Booking fee, new match (15%)",
       exampleFeeValue: "€3.00",
-      exampleFounding: "Founding family fee (7.5%)",
-      exampleFoundingValue: "€1.50",
       exampleTotal: "You pay",
-      exampleTotalValue: "€21.50",
-      exampleWorker: "The worker keeps all €20.00.",
+      exampleTotalValue: "€23.00",
+      rebookTitle: "Rebooking the same worker",
+      rebookFee: "Booking fee, rebooking (5%)",
+      rebookFeeValue: "€1.00",
+      rebookTotalValue: "€21.00",
+      exampleWorker: "The worker keeps all €20.00 either way.",
       points: [
         { icon: "payments", title: "Workers set their own rate", text: "Usually around €10 an hour. Workers keep 100% of their rate." },
-        { icon: "receipt_long", title: "15% booking fee for families", text: "Added on top of the worker's rate. It includes insurance." },
-        { icon: "card_membership", title: "Membership from July 2027", text: "€6 a month or €15 for 3 months, with no booking fees." }
+        { icon: "receipt_long", title: "15% booking fee for a new match", text: "Added on top of the worker's rate. It includes insurance." },
+        { icon: "autorenew", title: "5% to rebook the same worker", text: "Book someone you already know again for a smaller fee." }
       ]
     },
 
@@ -249,7 +247,7 @@ var SITE_COPY = {
 
       family: {
         title: "Sign up as a family",
-        intro: "Founding families pay half the booking fee until 30 June 2027. Your answers also help us plan the service.",
+        intro: "Tell us what you would book. Your answers also help us plan the service.",
         name: "Your name",
         email: "Email",
         phone: "Phone (optional)",
@@ -329,8 +327,8 @@ var SITE_COPY = {
       items: [
         { q: "When does {brand} start?", a: "We launch in Cascais in January 2027. Sign up now and we'll email you when bookings open." },
         { q: "Is every job insured?", a: "Yes. Every booked job will be insured, and the policy will be in place before we launch. Insurance is included in the booking fee." },
-        { q: "How are workers checked?", a: "Workers pass a short online course for each job type before they can take that job. Under-18s need a parent or guardian's consent, and every job ends with reviews from both sides." },
-        { q: "How much does it cost?", a: "Workers set their own rate, usually around €10 an hour. Families pay a 15% booking fee on top, which includes insurance. Founding families pay 7.5% until 30 June 2027. You pay through {brand} after the job." },
+        { q: "How are workers checked?", a: "Workers pass a short online course and quiz for each job type before they can take that job. Under-18s need a parent or guardian's consent, and every job ends with reviews from both sides." },
+        { q: "How much does it cost?", a: "Workers set their own rate, usually around €10 an hour, and keep 100% of it. Families pay a 15% booking fee on top for a new match, or 5% to rebook the same worker. The fee includes insurance. You pay through {brand} after the job." },
         { q: "I'm 16 or 17. Can I join?", a: "Yes, with a parent or guardian's consent. You won't be offered jobs after 22:00." },
         { q: "What can't I book?", a: "No babysitting or childcare at launch, and nothing that needs ladders, power tools, a pool or driving." }
       ]
@@ -350,8 +348,8 @@ var SITE_COPY = {
       stageText: "This is how {brand} will work on your phone. Everything here is sample data, and nothing you type is saved.",
       tryTitle: "Try this",
       tryLogin: ["Choose A family or A worker.", "Type anything, or nothing, and tap Log in."],
-      tryFamily: ["Pick a job and tap Find workers.", "Compare the shortlist and tap Pick.", "Check the price breakdown with the founding discount.", "Set the start time to 21:00 and search again: the under-18 workers disappear."],
-      tryWorker: ["See the level and progress to Trusted.", "Open Badges to see passed and locked courses.", "Open Record for the skills record schools and employers can see."],
+      tryFamily: ["Tap Find workers for the sample car wash.", "Compare ratings, ages and Crew Certified status, then tap Pick.", "Check the price: €20 for the worker plus a 15% fee is €23.", "In Bookings, tap Book again to see the 5% rebooking fee, then open the worker's app.", "Set the start time to 21:00 and search again: workers under 18 disappear."],
+      tryWorker: ["See progress toward Crew Certified.", "Open Courses to see passed and locked courses.", "Open Record for the work record employers can see."],
       switchLabel: "Switch view",
       familyView: "Family app",
       workerView: "Worker app",
@@ -379,7 +377,6 @@ var SITE_COPY = {
         tabBookings: "Bookings",
         tabAccount: "Account",
         hello: "Hello, {name}",
-        founding: "Founding family",
         postTitle: "Post a job",
         postIntro: "Tell us what you need. We'll send you a shortlist of trained workers.",
         job: "Which job?",
@@ -395,7 +392,12 @@ var SITE_COPY = {
         shortlistIntro: "Free at that time and passed the {job} course.",
         lateNote: "This job ends after 22:00, so workers under 18 are not shown.",
         rating: "rating",
+        newWorker: "New",
+        age: "Age {age}",
         jobsDone: "jobs",
+        jobDone: "job",
+        certified: "Crew Certified",
+        progress: "{done} of {target} jobs toward Crew Certified",
         pick: "Pick",
         picked: "Picked",
         confirmTitle: "Booking confirmed",
@@ -404,9 +406,13 @@ var SITE_COPY = {
         summaryWhen: "When",
         summaryWhere: "Where",
         rateLine: "{hours} at {rate}",
-        feeLine: "Booking fee (15%, includes insurance)",
-        foundingLine: "Founding family fee (7.5%)",
-        foundingNote: "Founding families pay half the fee until 30 June 2027.",
+        feeLine: "Booking fee (15%, new match)",
+        rebookFeeLine: "Booking fee (5%, rebooking)",
+        rebookNote: "Book {worker} again later for a 5% fee.",
+        rebookTitle: "Book {worker} again",
+        rebookLine: "{hours} at {rate} plus a 5% fee",
+        rebook: "Book again",
+        seeWorker: "Job done? See {worker}'s app",
         total: "You pay after the job",
         workerKeeps: "{worker} keeps 100% of their rate.",
         insured: "This job is insured.",
@@ -416,35 +422,44 @@ var SITE_COPY = {
         bookingsEmpty: "No bookings yet. Post a job and pick a worker from your shortlist.",
         bookingsCta: "Post a job",
         accountTitle: "Account",
-        foundingText: "You pay a 7.5% booking fee instead of 15% until 30 June 2027.",
         switchToWorker: "See the worker app"
       },
 
       worker: {
         tabHome: "Home",
-        tabBadges: "Badges",
+        tabCourses: "Courses",
         tabRecord: "Record",
         tabAccount: "Account",
         hello: "Hello, {name}",
-        levelTitle: "Your level",
-        progress: "{done} of {target} jobs to {next}",
-        maxLevel: "You've reached the top level.",
+        statusTitle: "Your status",
+        certified: "Crew Certified",
+        certifiedDetail: "{jobs} jobs done, {rating} average rating.",
+        progress: "{done} of {target} jobs toward Crew Certified",
+        progressNote: "Only jobs booked through {brand} and rated 4 stars or more count.",
+        stepCourse: "Course and quiz passed",
+        stepJobs: "3 jobs rated 4+ stars",
+        stepReference: "Written reference after 5 jobs",
+        stepReferenceDone: "Written reference",
+        justDone: "Job completed: {job} for {family}. You're one job closer to Crew Certified: {done} of {target}.",
+        justCertified: "Job completed: {job} for {family}. You're now Crew Certified.",
+        justDoneCertified: "Job completed: {job} for {family}. It's been added to your Crew Certified record.",
         earningsTitle: "Earned this month",
         earningsNote: "From {count} jobs. You keep 100% of your rate.",
         upcomingTitle: "Upcoming jobs",
-        badgesTitle: "Your badges",
-        badgesIntro: "Pass a free course to unlock each job type.",
-        badgeEarned: "Passed {date}",
-        badgeNotYet: "Free course available",
-        recordTitle: "Skills record",
-        recordIntro: "Your jobs and ratings in one place. Share it with schools and employers.",
+        coursesTitle: "Your courses",
+        coursesIntro: "Pass a job type's free course and quiz to take that job.",
+        courseEarned: "Passed {date}",
+        courseNotYet: "Free course and quiz available",
+        recordTitle: "Work record",
+        recordIntro: "Jobs done, average rating and courses passed. Families see it on your profile, and you can share it with employers through a link.",
         colSkill: "Skill",
         colJobs: "Jobs",
         colRating: "Rating",
         colPassed: "Course passed",
-        reference: "Written reference: unlocked at Verified.",
+        referenceDone: "Written references: {count}",
+        referenceLocked: "Written reference after 5 jobs booked through {brand}.",
         accountTitle: "Account",
-        ageBand: "Age band",
+        ageLabel: "Age",
         consentNote: "Parent consent is only needed for 16 and 17 year olds.",
         consentTitle: "Parent consent",
         consentGiven: "Given",
