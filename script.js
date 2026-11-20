@@ -457,7 +457,7 @@
     var device = document.querySelector("#how .device");
     var howSection = document.getElementById("how");
     var wide = window.matchMedia("(min-width: 900px)");
-    var STEP_MS = 1200, PICK_MS = 1900, CLICKED_MS = 3200;
+    var STEP_MS = 1200, PICK_MS = 2500, CLICKED_MS = 3200;
     var stepLists = [];
     var tour = { list: null, index: 0, playing: false, stopped: false, inView: false,
                  hovering: false, timer: null, startedAt: 0, remaining: 0 };
@@ -486,7 +486,12 @@
     function nextStep() {
       var list = tour.list;
       if (!list) return;
-      if (tour.index >= list._steps.length - 1) { tour.playing = false; clearTimer(); return; } // ends on the last step
+      if (tour.index >= list._steps.length - 1) {
+        // After the families path, move on to the young people path.
+        var nextTab = list.closest("#how-family") && document.getElementById("how-tab-worker");
+        if (nextTab && howTabs && howTabs._select) { howTabs._select(nextTab); return; }
+        tour.playing = false; clearTimer(); return;       // ends on the last step
+      }
       show(list, tour.index + 1, true);
       runTimer(stepMs(list._steps[tour.index]));
       if (tour.hovering || !tour.inView) hold(true);
@@ -522,6 +527,7 @@
     document.querySelectorAll("#how .steps").forEach(function (list) {
       var steps = Array.prototype.slice.call(list.querySelectorAll(".step"));
       list._steps = steps;
+      Array.prototype.forEach.call(list.children, function (li, n) { li.style.setProperty("--i", n); });
       steps.forEach(function (b, i) {
         // Clicking a step jumps to it; the tour then carries on from there.
         b.addEventListener("click", function () {
@@ -574,12 +580,31 @@
     }
 
     if (howTabs && frame) {
+      var swapTimer = null;
+      frame.addEventListener("load", function () {
+        // Let the new app reach the right screen before it pops back in.
+        setTimeout(function () { if (device) device.classList.remove("is-swapping"); }, 140);
+      });
       howTabs.addEventListener("tabchange", function (e) {
         var src = e.detail.getAttribute("data-demo");
-        if (src && frame.getAttribute("src") !== src) frame.setAttribute("src", src);
+        if (src && frame.getAttribute("src") !== src) {
+          // Pop the phone out, load the other app, pop it back in once loaded.
+          clearTimeout(swapTimer);
+          if (device && !REDUCED) {
+            device.classList.add("is-swapping");
+            swapTimer = setTimeout(function () { frame.setAttribute("src", src); }, 180);
+          } else {
+            frame.setAttribute("src", src);
+          }
+        }
         var panel = document.getElementById(e.detail.getAttribute("aria-controls"));
         var list = panel && panel.querySelector(".steps");
         if (!list) return;
+        if (!REDUCED) {
+          panel.classList.remove("pop-in");
+          void panel.offsetWidth;
+          panel.classList.add("pop-in");
+        }
         stop(false);
         tour.list = list; tour.stopped = false;
         show(list, 0, false);
@@ -680,7 +705,7 @@
       // Nothing is checked or stored: clear the fields and move on.
       form.reset();
       pass.type = "password";
-      window.location.href = page + "?v=9" + (EMBED ? "&embed=1" : "");
+      window.location.href = page + "?v=10" + (EMBED ? "&embed=1" : "");
     });
   }
 
@@ -792,11 +817,28 @@
     }
 
     // "Pick one": browse the shortlist card by card, then choose the first worker.
-    function stopPickPreview() { pickTimers.forEach(clearTimeout); pickTimers = []; }
-    function scrollAppTo(card) {
+    var pickFrame = null;
+    function stopPickPreview() {
+      pickTimers.forEach(clearTimeout); pickTimers = [];
+      if (pickFrame) cancelAnimationFrame(pickFrame);
+      pickFrame = null;
+    }
+    // One smooth, eased scroll of the app body to a position.
+    function glideTo(top, ms, done) {
       var body = document.querySelector("[data-app-body]");
-      var top = card.getBoundingClientRect().top - body.getBoundingClientRect().top + body.scrollTop - 90;
-      body.scrollTo({ top: Math.max(0, top), behavior: REDUCED ? "auto" : "smooth" });
+      var from = body.scrollTop;
+      top = Math.max(0, Math.min(top, body.scrollHeight - body.clientHeight));
+      if (REDUCED || ms <= 0 || Math.abs(top - from) < 2) { body.scrollTop = top; if (done) done(); return; }
+      var t0 = null;
+      function ease(x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
+      function frameStep(now) {
+        if (t0 === null) t0 = now;
+        var k = Math.min(1, (now - t0) / ms);
+        body.scrollTop = from + (top - from) * ease(k);
+        if (k < 1) pickFrame = requestAnimationFrame(frameStep);
+        else { pickFrame = null; if (done) done(); }
+      }
+      pickFrame = requestAnimationFrame(frameStep);
     }
     function markPicked(card, w) {
       card.classList.add("is-picked");
@@ -807,23 +849,21 @@
       btn.appendChild(el("span", "sr-only", " " + w.name));
       pickedWorker = w;
     }
+    // "Pick one": a single smooth swipe down the shortlist, then pick a worker.
     function runPickPreview() {
       stopPickPreview();
+      var body = document.querySelector("[data-app-body]");
       var cards = Array.prototype.slice.call(document.querySelectorAll("[data-shortlist] .worker-card"));
       cards.forEach(function (c) { c.classList.remove("is-browsing", "is-picked"); });
       if (!cards.length) return;
-      var step = REDUCED ? 0 : 260;
-      cards.forEach(function (card, i) {
-        pickTimers.push(setTimeout(function () {
-          cards.forEach(function (c) { c.classList.toggle("is-browsing", c === card); });
-          scrollAppTo(card);
-        }, 40 + i * step));
+      var i = cards.length > 1 ? 1 : 0;   // the second worker, so the swipe has somewhere to go
+      var card = cards[i];
+      var top = card.getBoundingClientRect().top - body.getBoundingClientRect().top + body.scrollTop
+        - (body.clientHeight - card.offsetHeight) / 2;
+      body.scrollTop = 0;
+      glideTo(top, 1300, function () {
+        pickTimers.push(setTimeout(function () { markPicked(card, lastWorkers[i]); }, REDUCED ? 0 : 120));
       });
-      pickTimers.push(setTimeout(function () {
-        cards.forEach(function (c) { c.classList.remove("is-browsing"); });
-        scrollAppTo(cards[0]);
-        markPicked(cards[0], lastWorkers[0]);
-      }, 40 + cards.length * step + (REDUCED ? 0 : 120)));
     }
     window.addEventListener("message", function (e) {
       if (!e.data || !e.data.crewGo) return;
@@ -839,6 +879,7 @@
       }
       if (to === "shortlist") {
         document.querySelectorAll("[data-shortlist] .worker-card").forEach(function (c) { c.classList.remove("is-browsing"); });
+        glideTo(0, 500);
       }
       go(to, to === "post", true);
     });

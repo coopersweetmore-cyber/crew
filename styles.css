@@ -508,6 +508,11 @@ body.app-page { background: var(--mist); }
 .screen.is-entering { animation: screen-in 320ms var(--ease-out) both; }
 .screen.is-entering.back { animation-name: screen-back; }
 .screen.is-entering.quick { animation: screen-pop 340ms var(--pop) both; transform-origin: 50% 0; }
+/* Families <-> young people: the steps and the phone pop out and back in. */
+.pop-in .steps li, .pop-in .how-cta { animation: list-pop 420ms var(--pop) both; animation-delay: calc(var(--i, 5) * 55ms); }
+@keyframes list-pop { from { opacity: 0; transform: translateY(12px) scale(0.97); } to { opacity: 1; transform: none; } }
+.device { transition: transform 360ms var(--pop), opacity 220ms ease-out; }
+.device.is-swapping { opacity: 0; transform: scale(0.94) translateY(8px); transition: transform 180ms ease-in, opacity 180ms ease-in; }
 @keyframes screen-pop { from { opacity: 0; transform: translateY(10px) scale(0.97); } to { opacity: 1; transform: none; } }
 @keyframes screen-in { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: none; } }
 @keyframes screen-back { from { opacity: 0; transform: translateX(-28px); } to { opacity: 1; transform: none; } }
