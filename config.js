@@ -110,9 +110,6 @@ var SITE_COPY = {
         { title: "Earn badges and level up", text: "Go from Starter to Verified to Trusted as you complete jobs.", screen: "home" }
       ],
       stepsHint: "Click a step to jump to it in the app.",
-      play: "Play",
-      pause: "Pause",
-      replay: "Replay",
       familyCta: "Sign up as a family",
       workerCta: "Sign up to work",
       demoTitle: "Live app demo",
