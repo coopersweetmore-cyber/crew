@@ -513,6 +513,12 @@ body.app-page { background: var(--mist); }
 @keyframes list-pop { from { opacity: 0; transform: translateY(12px) scale(0.97); } to { opacity: 1; transform: none; } }
 .device { transition: transform 360ms var(--pop), opacity 220ms ease-out; }
 .device.is-swapping { opacity: 0; transform: scale(0.94) translateY(8px); transition: transform 180ms ease-in, opacity 180ms ease-in; }
+.consent-card { display: grid; gap: 10px; }
+.consent-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.consent-head h3 { font-size: 1.05rem; font-weight: 800; }
+.consent-list { display: grid; gap: 8px; list-style: none; padding: 0; margin: 0; font-size: 0.92rem; }
+.consent-list li { display: flex; align-items: flex-start; gap: 8px; }
+.consent-list .icon { font-size: 20px; color: var(--green-700); flex-shrink: 0; }
 @keyframes screen-pop { from { opacity: 0; transform: translateY(10px) scale(0.97); } to { opacity: 1; transform: none; } }
 @keyframes screen-in { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: none; } }
 @keyframes screen-back { from { opacity: 0; transform: translateX(-28px); } to { opacity: 1; transform: none; } }

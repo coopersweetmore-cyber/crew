@@ -705,7 +705,7 @@
       // Nothing is checked or stored: clear the fields and move on.
       form.reset();
       pass.type = "password";
-      window.location.href = page + "?v=11" + (EMBED ? "&embed=1" : "");
+      window.location.href = page + "?v=12" + (EMBED ? "&embed=1" : "");
     });
   }
 
@@ -1025,6 +1025,39 @@
     document.querySelectorAll("[data-initials]").forEach(function (n) { setAvatar(n, worker); });
     document.querySelector("[data-worker-name]").textContent = worker.name;
     document.querySelector("[data-age-band]").textContent = worker.ageBand;
+
+    // Parent consent: shown as a status card for 16 and 17 year olds.
+    var consentBox = document.querySelector("[data-consent]");
+    if (consentBox) {
+      if (worker.ageBand === "16 to 17" && me.parentConsent) {
+        var pc = me.parentConsent;
+        var card = el("div", "app-card consent-card");
+        var head = el("div", "consent-head");
+        head.appendChild(el("h3", null, t("demo.worker.consentTitle")));
+        var pill = el("span", "pill pill-green");
+        pill.appendChild(icon("verified", "icon-fill"));
+        pill.appendChild(el("span", null, t("demo.worker.consentGiven")));
+        head.appendChild(pill);
+        card.appendChild(head);
+        card.appendChild(el("p", "app-sub", t("demo.worker.consentWhy")));
+        var dl = el("ul", "consent-list");
+        [["family_restroom", t("demo.worker.consentBy", { parent: pc.parent, date: dateText(pc.date, { day: "numeric", month: "short", year: "numeric" }) })],
+         ["mail", t("demo.worker.consentEmail", { email: pc.email })],
+         ["bedtime", t("demo.worker.consentLimit")]].forEach(function (row) {
+          var li = el("li");
+          li.appendChild(icon(row[0]));
+          li.appendChild(el("span", null, row[1]));
+          dl.appendChild(li);
+        });
+        card.appendChild(dl);
+        consentBox.appendChild(card);
+      } else {
+        var note = el("p", "note-row");
+        note.appendChild(icon("family_restroom"));
+        note.appendChild(el("span", null, t("demo.worker.consentNote")));
+        consentBox.appendChild(note);
+      }
+    }
 
     // Level
     document.querySelector("[data-level-now]").textContent = levels[levelIndex].name;

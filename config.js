@@ -122,16 +122,16 @@ var SITE_COPY = {
       title: "Jobs you can book at launch",
       intro: "Workers set their own rate, usually around €10 an hour.",
       notOffered: "Not offered at launch: babysitting or childcare.",
-      cardCta: "Sign up for this job"
+      cardCta: "Book this job"
     },
 
     // Job types. "value" is what gets saved to the Google Sheet.
     jobTypes: [
       { value: "Event help", icon: "celebration", photo: "assets/job-events.jpg", name: "Event help", short: "Events", desc: "Setting up, serving and cleaning up at parties and family gatherings.", alt: "An outdoor table set for a lunch with flowers" },
-      { value: "Pet care and dog walking", icon: "pets", photo: "assets/job-pets.jpg", name: "Pet care and dog walking", short: "Pet care", desc: "Walks, feeding and company for your pets while you're out.", alt: "A dog on a lead in a field" },
+      { value: "Pet care and dog walking", icon: "pets", photo: "assets/job-dog-walk.jpg", name: "Pet care and dog walking", short: "Pet care", desc: "Walks, feeding and company for your pets while you're out.", alt: "Someone walking a small white dog along a path lined with sunflowers" },
       { value: "Car washing", icon: "local_car_wash", photo: "assets/job-car.jpg", name: "Car washing", short: "Car wash", desc: "A careful hand wash at your home.", alt: "Hands cleaning a car with a green cloth" },
       { value: "Garden care", icon: "yard", photo: "assets/job-garden.jpg", name: "Garden care", short: "Garden", desc: "Weeding, watering, raking and tidying, with hand tools only.", alt: "Gloved hands planting with a hand trowel" },
-      { value: "Window cleaning", icon: "window", photo: "assets/job-windows.jpg", name: "Window cleaning", short: "Windows", desc: "Ground-level windows only. No ladders, ever.", alt: "A person cleaning a window from inside the room" },
+      { value: "Window cleaning", icon: "window", photo: "assets/job-window-squeegee.jpg", name: "Window cleaning", short: "Windows", desc: "Ground-level windows only. No ladders, ever.", alt: "A hand wiping a soapy window clean with a squeegee" },
       { value: "Tech help for seniors", icon: "devices", photo: "assets/job-tech.jpg", name: "Tech help for seniors", short: "Tech help", desc: "Patient help with phones, video calls, apps and email.", alt: "An older couple looking at a smartphone together" }
     ],
 
@@ -322,7 +322,7 @@ var SITE_COPY = {
       stageText: "This is how {brand} will work on your phone. Everything here is sample data, and nothing you type is saved.",
       tryTitle: "Try this",
       tryLogin: ["Choose A family or A worker.", "Type anything, or nothing, and tap Log in."],
-      tryFamily: ["Pick a job and tap Find workers.", "Compare the shortlist and tap Pick.", "Check the price breakdown with the founding discount.", "Set the start time to 21:00 and search again: the under-18 worker disappears."],
+      tryFamily: ["Pick a job and tap Find workers.", "Compare the shortlist and tap Pick.", "Check the price breakdown with the founding discount.", "Set the start time to 21:00 and search again: the under-18 workers disappear."],
       tryWorker: ["See the level and progress to Trusted.", "Open Badges to see passed and locked courses.", "Open Record for the skills record schools and employers can see."],
       switchLabel: "Switch view",
       familyView: "Family app",
@@ -418,6 +418,12 @@ var SITE_COPY = {
         accountTitle: "Account",
         ageBand: "Age band",
         consentNote: "Parent consent is only needed for 16 and 17 year olds.",
+        consentTitle: "Parent consent",
+        consentGiven: "Given",
+        consentBy: "{parent} said yes on {date}.",
+        consentEmail: "Sent to {email}",
+        consentLimit: "No jobs after 22:00 until you turn 18.",
+        consentWhy: "You're 16 or 17, so a parent or guardian approved your account before your first job.",
         switchToFamily: "See the family app"
       }
     }

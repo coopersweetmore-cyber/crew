@@ -78,10 +78,10 @@ All photos are from [Unsplash](https://unsplash.com) and used under the Unsplash
 | File | Source |
 |---|---|
 | `assets/hero-dog-walk.jpg` | https://unsplash.com/photos/person-walking-beside-golden-retriever-on-the-street-VehdYPKnX8Y |
-| `assets/job-pets.jpg` | https://unsplash.com/photos/woman-in-brown-jacket-and-black-pants-walking-with-black-labrador-retriever-on-brown-grass-field-d0oOCKu6n0A |
+| `assets/job-dog-walk.jpg` | https://unsplash.com/photos/man-in-blue-t-shirt-and-blue-denim-jeans-walking-with-white-dog-on-road-during-byFmFcBqPNY |
 | `assets/job-car.jpg` | https://unsplash.com/photos/a-person-cleaning-a-car-with-a-green-cloth-tt53GduAKHQ |
 | `assets/job-garden.jpg` | https://unsplash.com/photos/person-holding-gardening-tool-near-yellow-plant--rl4m0icZo4 |
-| `assets/job-windows.jpg` | https://unsplash.com/photos/woman-in-white-long-sleeve-shirt-and-blue-denim-jeans-standing-beside-white-wooden-framed-glass-VRpjDw3WqqI |
+| `assets/job-window-squeegee.jpg` | https://unsplash.com/photos/a-person-is-drawing-a-picture-on-a-window-jr9wXKcwjt0 |
 | `assets/job-tech.jpg` | https://unsplash.com/photos/elderly-couple-looking-at-a-smartphone-together-BM3aFI-qv64 |
 | `assets/job-events.jpg` | https://unsplash.com/photos/wooden-table-set-for-outdoor-dining-with-floral-centerpieces-YrThd1lBFu4 |
 | `assets/people/worker-a.jpg` | https://unsplash.com/photos/smiling-woman-at-wooden-table-Ll9YOG20UFI |

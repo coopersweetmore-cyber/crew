@@ -39,7 +39,7 @@ var DEMO_DATA = {
       name: "Sample worker B",
       initials: "B",
       photo: "assets/people/worker-b.jpg",
-      ageBand: "18 to 20",
+      ageBand: "16 to 17",   // the worker app shows this worker, so it shows parent consent
       level: "verified",
       rate: 10,
       rating: 4.8,
@@ -63,6 +63,7 @@ var DEMO_DATA = {
   // The worker dashboard shows this worker.
   me: {
     workerId: "b",
+    parentConsent: { parent: "Sample parent", email: "parent@example.com", date: "2027-01-08" },
     month: "2027-03",
     levelTargets: { verified: 5, trusted: 20 },
 
