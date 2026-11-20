@@ -136,28 +136,56 @@ var SITE_COPY = {
     ],
 
     safety: {
-      title: "Safety is built in from day one",
-      intro: "Families and older neighbours will be trusting us with their homes. These rules are not optional.",
-      items: [
-        { icon: "verified_user", title: "Every booked job insured", text: "Every booked job will be insured. The policy will be in place before we launch." },
-        { icon: "school", title: "Trained for each job", text: "Workers pass a short course for a job type before they can take that job." },
-        { icon: "family_restroom", title: "Parent consent under 18", text: "Workers aged 16 and 17 need a parent or guardian's consent to join." },
-        { icon: "bedtime", title: "No late jobs for under-18s", text: "Nobody under 18 works after 22:00." },
-        { icon: "do_not_touch", title: "Low-risk jobs only", text: "No ladders, power tools, pools or driving." },
-        { icon: "reviews", title: "Reviews both ways", text: "After every job, the family and the worker review each other." }
-      ]
+      title: "From sign-up to your front door",
+      intro: "Every young person goes through the same four steps before they work for you. Nobody skips one.",
+      steps: [
+        { title: "They sign up", text: "We know their name, age, school and parish before anything else." },
+        { title: "They pass the course", text: "A short course for each job type. No pass, no jobs of that type." },
+        { title: "A parent says yes", text: "Under 18? A parent or guardian approves the account first." },
+        { title: "They arrive, insured", text: "Every booked job will be insured, and you both leave a review afterwards." }
+      ],
+      ui: {
+        nameLabel: "Name",
+        nameValue: "Inês, 17",
+        parishLabel: "Parish",
+        parishValue: "Cascais e Estoril",
+        signupButton: "Sign up to work",
+        coursePassed: "Pet care course",
+        coursePassedMeta: "Passed, 9 of 10 right",
+        courseLocked: "Garden care course",
+        courseLockedMeta: "Not taken yet, so no garden jobs",
+        consentTitle: "Parent consent",
+        consentGiven: "Given",
+        consentLine1: "A parent said yes on 8 Jan 2027",
+        consentLine2: "No jobs after 22:00 until 18"
+      },
+      photoAlt: "A young man handing fruit to an older woman at her front door",
+      rules: ["No ladders", "No power tools", "No pools or driving", "No late jobs for under-18s", "Reviews both ways"]
     },
 
     skills: {
       title: "Skills that count for young people",
-      intro: "Each job type has its own free online course. Pass it and you earn that badge. Complete jobs and you move up a level.",
+      intro: "Each job type has its own free online course. Pass it and you earn the badge. Do good work and you build a record that schools and employers can see.",
       surveyLead: "We asked 33 local students.",
       survey: "{stat1} have already done some paid work, and {stat2} would take a free short course if it led to paid work.",
       stat1: "82%",
       stat2: "97%",
       badgesTitle: "Course badges",
-      levelsTitle: "Levels",
-      unlocks: "Unlocks"
+      photoAlt: "A young woman with headphones doing an online course on her laptop",
+      record: {
+        kicker: "{brand} skills record",
+        name: "Inês, 17",
+        level: "Verified",
+        colSkill: "Skill",
+        colJobs: "Jobs",
+        colRating: "Rating",
+        rows: [
+          { skill: "Pet care", jobs: "12", rating: "4.9" },
+          { skill: "Car washing", jobs: "7", rating: "4.8" },
+          { skill: "Tech help", jobs: "4", rating: "5.0" }
+        ],
+        foot: "23 jobs since January 2027. Written reference available."
+      }
     },
 
     // Levels, in order. Used on the website and in the worker demo.

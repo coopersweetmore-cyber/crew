@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400..800&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,500..600,0..1,0&display=block">
   <link rel="preload" as="image" href="assets/hero-dog-walk.jpg">
-  <link rel="stylesheet" href="styles.css?v=12">
+  <link rel="stylesheet" href="styles.css?v=13">
 </head>
 <body data-title="meta.titleIndex">
 
@@ -34,7 +34,7 @@
         </ul>
       </nav>
       <div class="header-actions">
-        <a class="btn btn-ghost header-demo" href="login.html?v=12">
+        <a class="btn btn-ghost header-demo" href="login.html?v=13">
           <span class="icon" aria-hidden="true">smartphone</span>
           <span data-t="nav.demo"></span>
         </a>
@@ -133,8 +133,8 @@
             <p class="lead" data-t="how.intro"></p>
           </div>
           <div class="segmented" role="tablist" data-tabs data-how-tabs data-t-aria-label="how.tabsLabel">
-            <button type="button" role="tab" id="how-tab-family" aria-controls="how-family" aria-selected="true" data-demo="family.html?v=12&embed=1" data-t="how.tabFamily"></button>
-            <button type="button" role="tab" id="how-tab-worker" aria-controls="how-worker" aria-selected="false" tabindex="-1" data-demo="worker.html?v=12&embed=1" data-t="how.tabWorker"></button>
+            <button type="button" role="tab" id="how-tab-family" aria-controls="how-family" aria-selected="true" data-demo="family.html?v=13&embed=1" data-t="how.tabFamily"></button>
+            <button type="button" role="tab" id="how-tab-worker" aria-controls="how-worker" aria-selected="false" tabindex="-1" data-demo="worker.html?v=13&embed=1" data-t="how.tabWorker"></button>
           </div>
           <p class="steps-hint"><span class="icon" aria-hidden="true">touch_app</span><span data-t="how.stepsHint"></span></p>
           <div role="tabpanel" id="how-family" aria-labelledby="how-tab-family">
@@ -165,9 +165,9 @@
             <p data-t="how.demoText"></p>
           </div>
           <div class="device">
-            <iframe src="family.html?v=12&embed=1" loading="lazy" data-demo-frame data-t-title="how.demoFrameTitle"></iframe>
+            <iframe src="family.html?v=13&embed=1" loading="lazy" data-demo-frame data-t-title="how.demoFrameTitle"></iframe>
           </div>
-          <a class="btn btn-sun" href="login.html?v=12">
+          <a class="btn btn-sun" href="login.html?v=13">
             <span class="icon" aria-hidden="true">open_in_full</span>
             <span data-t="how.demoOpen"></span>
           </a>
@@ -198,48 +198,91 @@
       </div>
     </section>
 
-    <!-- Safety and insurance -->
+    <!-- Safety: the four steps every young person goes through -->
     <section id="safety" class="section safety on-dark">
-      <div class="container safety-grid">
-        <div class="safety-head">
+      <div class="container">
+        <div class="journey-head">
           <h2 class="h2" data-t="safety.title"></h2>
           <p class="lead" data-t="safety.intro"></p>
         </div>
-        <ul class="safety-list" data-list="safety.items">
-          <template>
-            <li><span class="ico"><span class="icon" data-f="icon" aria-hidden="true"></span></span><div><h3 data-f="title"></h3><p data-f="text"></p></div></li>
-          </template>
+        <ol class="journey">
+          <li>
+            <div class="journey-visual" aria-hidden="true">
+              <div class="jv-field"><span data-t="safety.ui.nameLabel"></span><b data-t="safety.ui.nameValue"></b></div>
+              <div class="jv-field"><span data-t="safety.ui.parishLabel"></span><b data-t="safety.ui.parishValue"></b></div>
+              <div class="jv-button" data-t="safety.ui.signupButton"></div>
+            </div>
+            <span class="journey-dot num">1</span>
+            <h3 data-t="safety.steps.0.title"></h3>
+            <p data-t="safety.steps.0.text"></p>
+          </li>
+          <li>
+            <div class="journey-visual" aria-hidden="true">
+              <div class="jv-row"><span class="jv-medal"><span class="icon">check</span></span><div><b data-t="safety.ui.coursePassed"></b><span data-t="safety.ui.coursePassedMeta"></span></div></div>
+              <div class="jv-row is-locked"><span class="jv-medal"><span class="icon">lock</span></span><div><b data-t="safety.ui.courseLocked"></b><span data-t="safety.ui.courseLockedMeta"></span></div></div>
+            </div>
+            <span class="journey-dot num">2</span>
+            <h3 data-t="safety.steps.1.title"></h3>
+            <p data-t="safety.steps.1.text"></p>
+          </li>
+          <li>
+            <div class="journey-visual" aria-hidden="true">
+              <div class="jv-consent">
+                <div class="jv-consent-head"><b data-t="safety.ui.consentTitle"></b><span class="jv-pill"><span class="icon icon-fill">verified</span><span data-t="safety.ui.consentGiven"></span></span></div>
+                <p><span class="icon">family_restroom</span><span data-t="safety.ui.consentLine1"></span></p>
+                <p><span class="icon">bedtime</span><span data-t="safety.ui.consentLine2"></span></p>
+              </div>
+            </div>
+            <span class="journey-dot num">3</span>
+            <h3 data-t="safety.steps.2.title"></h3>
+            <p data-t="safety.steps.2.text"></p>
+          </li>
+          <li>
+            <div class="journey-visual is-photo">
+              <img src="assets/safety-doorstep.jpg" width="840" height="560" loading="lazy" data-t-alt="safety.photoAlt">
+            </div>
+            <span class="journey-dot num">4</span>
+            <h3 data-t="safety.steps.3.title"></h3>
+            <p data-t="safety.steps.3.text"></p>
+          </li>
+        </ol>
+        <ul class="journey-rules" data-list="safety.rules">
+          <template><li data-f-self></li></template>
         </ul>
       </div>
     </section>
 
     <!-- Skills and badges -->
     <section id="skills" class="section">
-      <div class="container skills-grid">
+      <div class="container skills-layout">
         <div class="skills-copy">
           <h2 class="h2" data-t="skills.title"></h2>
           <p class="lead" data-t="skills.intro"></p>
+          <ul class="badge-row" data-list="jobTypes" data-t-aria-label="skills.badgesTitle">
+            <template>
+              <li><span class="medal"><span class="icon" data-f="icon" aria-hidden="true"></span></span><span data-f="short"></span></li>
+            </template>
+          </ul>
           <div class="survey-quote">
             <p class="lead-in" data-t="skills.surveyLead"></p>
             <p class="q" data-survey></p>
           </div>
         </div>
-        <div class="record-card">
-          <div>
-            <h3 data-t="skills.badgesTitle"></h3>
-            <ul class="badge-row" data-list="jobTypes">
-              <template>
-                <li><span class="medal"><span class="icon" data-f="icon" aria-hidden="true"></span></span><span data-f="short"></span></li>
-              </template>
-            </ul>
-          </div>
-          <div>
-            <h3 data-t="skills.levelsTitle"></h3>
-            <ol class="level-track" data-list="levels">
-              <template>
-                <li><span class="lvl" data-f="index" aria-hidden="true"></span><div><h4 data-f="name"></h4><p><span data-f="rule"></span> <b data-t="skills.unlocks"></b>: <span data-f="unlocks"></span></p></div></li>
-              </template>
-            </ol>
+        <div class="skills-media">
+          <img class="skills-photo" src="assets/skills-laptop.jpg" width="840" height="560" loading="lazy" data-t-alt="skills.photoAlt">
+          <div class="skills-record">
+            <div class="skills-record-top">
+              <span class="skills-record-logo" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M27.5 13.8a9.2 9.2 0 1 0 0 12.4" fill="none" stroke="#fff" stroke-width="4.6" stroke-linecap="round"/><circle cx="29.6" cy="20" r="3.3" fill="#FFC83D"/></svg></span>
+              <div><p class="skills-record-kicker" data-t="skills.record.kicker"></p><p class="skills-record-name" data-t="skills.record.name"></p></div>
+              <span class="pill pill-green" data-t="skills.record.level"></span>
+            </div>
+            <table>
+              <thead><tr><th data-t="skills.record.colSkill"></th><th data-t="skills.record.colJobs"></th><th data-t="skills.record.colRating"></th></tr></thead>
+              <tbody data-list="skills.record.rows">
+                <template><tr><td data-f="skill"></td><td class="num" data-f="jobs"></td><td class="num" data-f="rating"></td></tr></template>
+              </tbody>
+            </table>
+            <p class="skills-record-foot" data-t="skills.record.foot"></p>
           </div>
         </div>
       </div>
@@ -507,13 +550,13 @@
         <a href="#how" data-t="nav.how"></a>
         <a href="#pricing" data-t="nav.pricing"></a>
         <a href="#signup" data-t="nav.signup"></a>
-        <a href="login.html?v=12" data-t="nav.demo"></a>
+        <a href="login.html?v=13" data-t="nav.demo"></a>
       </nav>
       <p class="footer-small" data-t="footer.photos"></p>
     </div>
   </footer>
 
-  <script src="config.js?v=12"></script>
-  <script src="script.js?v=12"></script>
+  <script src="config.js?v=13"></script>
+  <script src="script.js?v=13"></script>
 </body>
 </html>

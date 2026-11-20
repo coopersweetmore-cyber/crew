@@ -705,7 +705,7 @@
       // Nothing is checked or stored: clear the fields and move on.
       form.reset();
       pass.type = "password";
-      window.location.href = page + "?v=12" + (EMBED ? "&embed=1" : "");
+      window.location.href = page + "?v=13" + (EMBED ? "&embed=1" : "");
     });
   }
 

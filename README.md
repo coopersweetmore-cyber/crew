@@ -84,6 +84,8 @@ All photos are from [Unsplash](https://unsplash.com) and used under the Unsplash
 | `assets/job-window-squeegee.jpg` | https://unsplash.com/photos/a-person-is-drawing-a-picture-on-a-window-jr9wXKcwjt0 |
 | `assets/job-tech.jpg` | https://unsplash.com/photos/elderly-couple-looking-at-a-smartphone-together-BM3aFI-qv64 |
 | `assets/job-events.jpg` | https://unsplash.com/photos/wooden-table-set-for-outdoor-dining-with-floral-centerpieces-YrThd1lBFu4 |
+| `assets/safety-doorstep.jpg` | https://unsplash.com/photos/mens-blue-button-up-collared-long-sleeved-shirt-WQWJd6mZS7Q |
+| `assets/skills-laptop.jpg` | https://unsplash.com/photos/young-woman-wearing-headphones-using-laptop-at-desk-4JFBqeP3VRQ |
 | `assets/people/worker-a.jpg` | https://unsplash.com/photos/smiling-woman-at-wooden-table-Ll9YOG20UFI |
 | `assets/people/worker-b.jpg` | https://unsplash.com/photos/mens-blue-crew-neck-t-shirt-gRslJX1S4h0 |
 | `assets/people/worker-c.jpg` | https://unsplash.com/photos/a-smiling-student-with-backpack-and-books-walks-outside-dPQBwZ6d-NU |
