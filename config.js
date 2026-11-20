@@ -129,7 +129,7 @@ var SITE_COPY = {
     jobTypes: [
       { value: "Event help", icon: "celebration", photo: "assets/job-events.jpg", name: "Event help", short: "Events", desc: "Setting up, serving and cleaning up at parties and family gatherings.", alt: "An outdoor table set for a lunch with flowers" },
       { value: "Pet care and dog walking", icon: "pets", photo: "assets/job-dog-walk.jpg", name: "Pet care and dog walking", short: "Pet care", desc: "Walks, feeding and company for your pets while you're out.", alt: "Someone walking a small white dog along a path lined with sunflowers" },
-      { value: "Car washing", icon: "local_car_wash", photo: "assets/job-car.jpg", name: "Car washing", short: "Car wash", desc: "A careful hand wash at your home.", alt: "Hands cleaning a car with a green cloth" },
+      { value: "Car washing", icon: "local_car_wash", photo: "assets/job-car-sponge.jpg", name: "Car washing", short: "Car wash", desc: "A careful hand wash at your home.", alt: "Soapy hands washing a car mirror with a sponge" },
       { value: "Garden care", icon: "yard", photo: "assets/job-garden.jpg", name: "Garden care", short: "Garden", desc: "Weeding, watering, raking and tidying, with hand tools only.", alt: "Gloved hands planting with a hand trowel" },
       { value: "Window cleaning", icon: "window", photo: "assets/job-window-squeegee.jpg", name: "Window cleaning", short: "Windows", desc: "Ground-level windows only. No ladders, ever.", alt: "A hand wiping a soapy window clean with a squeegee" },
       { value: "Tech help for seniors", icon: "devices", photo: "assets/job-tech.jpg", name: "Tech help for seniors", short: "Tech help", desc: "Patient help with phones, video calls, apps and email.", alt: "An older couple looking at a smartphone together" }

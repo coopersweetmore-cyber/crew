@@ -79,7 +79,7 @@ All photos are from [Unsplash](https://unsplash.com) and used under the Unsplash
 |---|---|
 | `assets/hero-dog-walk.jpg` | https://unsplash.com/photos/person-walking-beside-golden-retriever-on-the-street-VehdYPKnX8Y |
 | `assets/job-dog-walk.jpg` | https://unsplash.com/photos/man-in-blue-t-shirt-and-blue-denim-jeans-walking-with-white-dog-on-road-during-byFmFcBqPNY |
-| `assets/job-car.jpg` | https://unsplash.com/photos/a-person-cleaning-a-car-with-a-green-cloth-tt53GduAKHQ |
+| `assets/job-car-sponge.jpg` | https://unsplash.com/photos/a-person-washing-a-car-with-a-sponge-K5y-NA_5U1I |
 | `assets/job-garden.jpg` | https://unsplash.com/photos/person-holding-gardening-tool-near-yellow-plant--rl4m0icZo4 |
 | `assets/job-window-squeegee.jpg` | https://unsplash.com/photos/a-person-is-drawing-a-picture-on-a-window-jr9wXKcwjt0 |
 | `assets/job-tech.jpg` | https://unsplash.com/photos/elderly-couple-looking-at-a-smartphone-together-BM3aFI-qv64 |
