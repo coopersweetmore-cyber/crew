@@ -439,14 +439,26 @@
     var stepLists = [];
     document.querySelectorAll("#how .steps").forEach(function (list) {
       var steps = Array.prototype.slice.call(list.querySelectorAll(".step"));
-      function activate(btn, send) {
+      var hoverTimer = null;
+      function activate(btn, send, force) {
+        if (!force && btn.getAttribute("aria-pressed") === "true") return;
         steps.forEach(function (b) { b.setAttribute("aria-pressed", b === btn ? "true" : "false"); });
         if (send && frame && frame.contentWindow) {
           var target = location.origin === "null" ? "*" : location.origin;
           frame.contentWindow.postMessage({ crewGo: btn.getAttribute("data-screen") }, target);
         }
       }
-      steps.forEach(function (b) { b.addEventListener("click", function () { if (wide.matches) activate(b, true); }); });
+      steps.forEach(function (b) {
+        // Click always replays the step; hover and keyboard focus preview it.
+        b.addEventListener("click", function () { if (wide.matches) activate(b, true, true); });
+        b.addEventListener("focus", function () { if (wide.matches) activate(b, true); });
+        b.addEventListener("mouseenter", function () {
+          if (!wide.matches) return;
+          clearTimeout(hoverTimer);
+          hoverTimer = setTimeout(function () { activate(b, true); }, 160);
+        });
+        b.addEventListener("mouseleave", function () { clearTimeout(hoverTimer); });
+      });
       list._reset = function () { if (steps[0]) activate(steps[0], false); };
       list._sync = function () { steps.forEach(function (b) { b.disabled = !wide.matches; }); };
       list._reset();
@@ -635,6 +647,8 @@
 
     var lastJob = null;
     var lastWorkers = [];
+    var pickedWorker = null;
+    var pickTimers = [];
     function readJob() {
       var d = data.family.sampleJob;
       var picked = form.querySelector('input[name="job"]:checked');
@@ -657,13 +671,61 @@
 
     // The landing page's "How it works" steps can send this app to a screen.
     function ensureShortlist() { if (!lastJob) renderShortlist(readJob()); }
-    function ensureBooking() { ensureShortlist(); if (!booking && lastWorkers[0]) renderConfirm(lastJob, lastWorkers[0]); }
+    function ensureBooking() {
+      ensureShortlist();
+      var w = pickedWorker || lastWorkers[0];
+      if (w && (!booking || booking.worker !== w)) renderConfirm(lastJob, w);
+    }
+
+    // "Pick one": browse the shortlist card by card, then choose the first worker.
+    function stopPickPreview() { pickTimers.forEach(clearTimeout); pickTimers = []; }
+    function scrollAppTo(card) {
+      var body = document.querySelector("[data-app-body]");
+      var top = card.getBoundingClientRect().top - body.getBoundingClientRect().top + body.scrollTop - 90;
+      body.scrollTo({ top: Math.max(0, top), behavior: REDUCED ? "auto" : "smooth" });
+    }
+    function markPicked(card, w) {
+      card.classList.add("is-picked");
+      var btn = card.querySelector(".btn");
+      btn.textContent = "";
+      btn.appendChild(icon("check_circle", "icon-fill"));
+      btn.appendChild(el("span", null, t("demo.family.picked")));
+      btn.appendChild(el("span", "sr-only", " " + w.name));
+      pickedWorker = w;
+    }
+    function runPickPreview() {
+      stopPickPreview();
+      var cards = Array.prototype.slice.call(document.querySelectorAll("[data-shortlist] .worker-card"));
+      cards.forEach(function (c) { c.classList.remove("is-browsing", "is-picked"); });
+      if (!cards.length) return;
+      var step = REDUCED ? 0 : 650;
+      cards.forEach(function (card, i) {
+        pickTimers.push(setTimeout(function () {
+          cards.forEach(function (c) { c.classList.toggle("is-browsing", c === card); });
+          scrollAppTo(card);
+        }, 250 + i * step));
+      });
+      pickTimers.push(setTimeout(function () {
+        cards.forEach(function (c) { c.classList.remove("is-browsing"); });
+        scrollAppTo(cards[0]);
+        markPicked(cards[0], lastWorkers[0]);
+      }, 250 + cards.length * step + (REDUCED ? 0 : 200)));
+    }
     window.addEventListener("message", function (e) {
       if (!e.data || !e.data.crewGo) return;
       if (e.origin !== location.origin && location.origin !== "null") return;
       var to = e.data.crewGo;
-      if (to === "shortlist") ensureShortlist();
+      stopPickPreview();
+      if (to === "shortlist" || to === "pick") ensureShortlist();
       if (to === "confirm" || to === "bookings") ensureBooking();
+      if (to === "pick") {
+        go("shortlist", false, true);
+        runPickPreview();
+        return;
+      }
+      if (to === "shortlist") {
+        document.querySelectorAll("[data-shortlist] .worker-card").forEach(function (c) { c.classList.remove("is-browsing"); });
+      }
       go(to, to === "post", true);
     });
 
@@ -673,6 +735,7 @@
       var workers = data.workers.filter(function (w) { return !(late && w.ageBand === "16 to 17"); });
       lastJob = j;
       lastWorkers = workers;
+      pickedWorker = null;
 
       document.querySelector("[data-shortlist-intro]").textContent =
         t("demo.family.shortlistIntro", { job: jobType.name.toLowerCase() });
@@ -717,6 +780,7 @@
         pick.appendChild(el("span", null, t("demo.family.pick")));
         pick.appendChild(el("span", "sr-only", " " + w.name));
         pick.addEventListener("click", function () {
+          pickedWorker = w;
           renderConfirm(j, w);
           go("confirm");
         });

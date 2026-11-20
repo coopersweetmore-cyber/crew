@@ -99,7 +99,7 @@ var SITE_COPY = {
       familySteps: [
         { title: "Post a job", text: "Tell us what you need, where and when.", screen: "post" },
         { title: "Get a shortlist", text: "We send you 2 or 3 vetted workers who fit the job.", screen: "shortlist" },
-        { title: "Pick one", text: "Compare their badges, reviews and hourly rates, then choose.", screen: "shortlist" },
+        { title: "Pick one", text: "Compare their badges, reviews and hourly rates, then choose.", screen: "pick" },
         { title: "The job gets done, insured", text: "Every booked job will be insured, with the policy in place before launch.", screen: "confirm" },
         { title: "Pay and review", text: "Pay through {brand} after the job. You both leave a review.", screen: "bookings" }
       ],
@@ -109,7 +109,7 @@ var SITE_COPY = {
         { title: "Take a free course", text: "A short online course for each job type. Pass it to take that job.", screen: "badges" },
         { title: "Earn badges and level up", text: "Go from Starter to Verified to Trusted as you complete jobs.", screen: "home" }
       ],
-      stepsHint: "Tap a step to see it in the app.",
+      stepsHint: "Hover over a step, or tap it, to see it in the app.",
       familyCta: "Sign up as a family",
       workerCta: "Sign up to work",
       demoTitle: "Live app demo",
@@ -369,6 +369,7 @@ var SITE_COPY = {
         rating: "rating",
         jobsDone: "jobs",
         pick: "Pick",
+        picked: "Picked",
         confirmTitle: "Booking confirmed",
         confirmIntro: "{worker} will do your job. You pay through {brand} after the job is done.",
         summaryJob: "Job",

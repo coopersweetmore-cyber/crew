@@ -696,3 +696,9 @@ body.app-page { background: var(--mist); }
   .step[aria-pressed="true"] .step-text { display: block; animation: step-text-in 240ms var(--ease-out); }
 }
 @keyframes step-text-in { from { opacity: 0.2; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
+/* Demo shortlist: browsing and picked states (driven by "Pick one") */
+.worker-card { transition: outline-color 200ms var(--ease-out), background-color 200ms var(--ease-out); outline: 2px solid transparent; outline-offset: -1px; }
+.worker-card.is-browsing { outline-color: var(--green-600); }
+.worker-card.is-picked { outline-color: var(--green-700); background: var(--green-50); }
+.worker-card.is-picked .btn { background: var(--green-900); }
