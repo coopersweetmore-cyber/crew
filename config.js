@@ -106,7 +106,7 @@ var SITE_COPY = {
       ],
       workerSteps: [
         { title: "Sign up", text: "Tell us which jobs you'd like and how much time you have.", screen: "account" },
-        { title: "Parent consent if you're under 18", text: "A parent or guardian says yes before your first job.", screen: "account" },
+        { title: "Parent consent if you're under 18", text: "A parent or guardian says yes before your first job.", screen: "consent" },
         { title: "Take a free course and quiz", text: "A short online course and quiz for each job type. Pass it to take that job.", screen: "courses" },
         { title: "Become Crew Certified", text: "Complete 3 jobs booked through Crew, each rated 4 stars or more. After 5 jobs you also get a written reference.", screen: "home" }
       ],
@@ -467,6 +467,11 @@ var SITE_COPY = {
         consentEmail: "Sent to {email}",
         consentLimit: "No jobs after 22:00 until you turn 18.",
         consentWhy: "You're 16 or 17, so a parent or guardian approved your account before your first job.",
+        consentAsk: "You're {age}, so a parent or guardian needs to say yes before your first job.",
+        consentWaiting: "Waiting for {parent}",
+        consentSent: "Request sent to {email}",
+        consentYes: "{parent} said yes",
+        consentClose: "Close",
         switchToFamily: "See the family app"
       }
     }

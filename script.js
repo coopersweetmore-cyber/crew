@@ -458,7 +458,7 @@
     var device = document.querySelector("#how .device");
     var howSection = document.getElementById("how");
     var wide = window.matchMedia("(min-width: 900px)");
-    var STEP_MS = 1560, PICK_MS = 3250, CLICKED_MS = 4160;
+    var STEP_MS = 1560, PICK_MS = 3250, CONSENT_MS = 3000, CLICKED_MS = 4160;
     var stepLists = [];
     var tour = { list: null, index: 0, playing: false, stopped: false, inView: false,
                  hovering: false, timer: null, startedAt: 0, remaining: 0 };
@@ -469,7 +469,10 @@
       frame.contentWindow.postMessage({ crewGo: btn.getAttribute("data-screen") }, target);
     }
     function canAutoplay() { return wide.matches && !REDUCED; }
-    function stepMs(btn) { return btn && btn.getAttribute("data-screen") === "pick" ? PICK_MS : STEP_MS; }
+    function stepMs(btn) {
+      var s = btn && btn.getAttribute("data-screen");
+      return s === "pick" ? PICK_MS : (s === "consent" ? CONSENT_MS : STEP_MS);
+    }
     function clearTimer() { clearTimeout(tour.timer); tour.timer = null; }
     function runTimer(ms) {
       clearTimer();
@@ -706,7 +709,7 @@
       // Nothing is checked or stored: clear the fields and move on.
       form.reset();
       pass.type = "password";
-      window.location.href = page + "?v=14" + (EMBED ? "&embed=1" : "");
+      window.location.href = page + "?v=15" + (EMBED ? "&embed=1" : "");
     });
   }
 
@@ -1025,7 +1028,7 @@
       card.appendChild(again);
 
       var link = el("a", "btn btn-ghost btn-block");
-      link.href = "worker.html?v=14&worker=" + booking.worker.id + "&done=1" + (EMBED ? "&embed=1" : "");
+      link.href = "worker.html?v=15&worker=" + booking.worker.id + "&done=1" + (EMBED ? "&embed=1" : "");
       link.appendChild(icon("person"));
       link.appendChild(el("span", null, t("demo.family.seeWorker", { worker: booking.worker.name })));
       card.appendChild(link);
@@ -1199,10 +1202,93 @@
       ? t("demo.worker.referenceDone", { count: worker.references })
       : t("demo.worker.referenceLocked");
 
+    // Parent consent pop-up: a sheet slides up over the Account screen, shows the
+    // request going to the parent, then flips to "Given".
+    var sheetTimers = [];
+    var sheet = null;
+    var pcView = view.parentConsent;
+    if (worker.age < 18 && pcView) {
+      sheet = el("div", "consent-sheet");
+      sheet.hidden = true;
+      var scrim = el("div", "sheet-scrim");
+      var panel = el("div", "sheet");
+      panel.setAttribute("role", "dialog");
+      panel.setAttribute("aria-modal", "false");
+      panel.setAttribute("aria-label", t("demo.worker.consentTitle"));
+      panel.appendChild(el("span", "sheet-grab"));
+      var badge = el("span", "sheet-badge");
+      badge.appendChild(icon("family_restroom"));
+      panel.appendChild(badge);
+      panel.appendChild(el("h3", "sheet-title", t("demo.worker.consentTitle")));
+      panel.appendChild(el("p", "sheet-text", t("demo.worker.consentAsk", { age: worker.age })));
+      var status = el("div", "sheet-status");
+      var pending = el("div", "sheet-row is-pending");
+      pending.appendChild(el("span", "sheet-spinner"));
+      var pendText = el("div");
+      pendText.appendChild(el("strong", null, t("demo.worker.consentWaiting", { parent: pcView.parent })));
+      pendText.appendChild(el("span", null, t("demo.worker.consentSent", { email: pcView.email })));
+      pending.appendChild(pendText);
+      var given = el("div", "sheet-row is-given");
+      var tick = el("span", "sheet-tick");
+      tick.appendChild(icon("check", "icon-fill"));
+      given.appendChild(tick);
+      var givenText = el("div");
+      givenText.appendChild(el("strong", null, t("demo.worker.consentYes", { parent: pcView.parent })));
+      givenText.appendChild(el("span", null, dateText(pcView.date, { day: "numeric", month: "short", year: "numeric" })));
+      given.appendChild(givenText);
+      var givenPill = el("span", "pill pill-green");
+      givenPill.appendChild(icon("verified", "icon-fill"));
+      givenPill.appendChild(el("span", null, t("demo.worker.consentGiven")));
+      given.appendChild(givenPill);
+      status.appendChild(pending);
+      status.appendChild(given);
+      panel.appendChild(status);
+      var limit = el("p", "sheet-note");
+      limit.appendChild(icon("bedtime"));
+      limit.appendChild(el("span", null, t("demo.worker.consentLimit")));
+      panel.appendChild(limit);
+      var closeBtn = el("button", "btn btn-primary btn-block", t("demo.worker.consentClose"));
+      closeBtn.type = "button";
+      panel.appendChild(closeBtn);
+      sheet.appendChild(scrim);
+      sheet.appendChild(panel);
+      document.querySelector(".phone-screen").appendChild(sheet);
+      scrim.addEventListener("click", function () { hideConsent(); });
+      closeBtn.addEventListener("click", function () { hideConsent(); });
+    }
+    function clearSheetTimers() { sheetTimers.forEach(clearTimeout); sheetTimers = []; }
+    function showConsent() {
+      if (!sheet) return;
+      clearSheetTimers();
+      sheet.classList.remove("is-given", "is-leaving");
+      sheet.hidden = false;
+      void sheet.offsetWidth;
+      sheet.classList.add("is-open");
+      sheetTimers.push(setTimeout(function () { sheet.classList.add("is-given"); }, REDUCED ? 0 : 1250));
+    }
+    function hideConsent() {
+      if (!sheet || sheet.hidden) return;
+      clearSheetTimers();
+      if (REDUCED) { sheet.hidden = true; sheet.classList.remove("is-open", "is-given"); return; }
+      sheet.classList.add("is-leaving");
+      sheet.classList.remove("is-open");
+      sheetTimers.push(setTimeout(function () {
+        sheet.hidden = true;
+        sheet.classList.remove("is-leaving", "is-given");
+      }, 240));
+    }
+
     window.addEventListener("message", function (e) {
       if (!e.data || !e.data.crewGo) return;
       if (e.origin !== location.origin && location.origin !== "null") return;
-      go(e.data.crewGo, e.data.crewGo === "home", true);
+      var to = e.data.crewGo;
+      if (to === "consent") {
+        go("account", false, true);
+        showConsent();
+        return;
+      }
+      hideConsent();
+      go(to, to === "home", true);
     });
 
     go("home");
