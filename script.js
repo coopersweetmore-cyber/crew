@@ -450,38 +450,180 @@
       });
     });
 
-    // How it works: switch the live demo with the tab.
+    // How it works: a guided tour. The steps play one after another and drive
+    // the live app demo. Clicking a step jumps to it and stops the tour.
     var howTabs = document.querySelector("[data-how-tabs]");
     var frame = document.querySelector("[data-demo-frame]");
+    var device = document.querySelector("#how .device");
+    var howSection = document.getElementById("how");
+    var playBtn = document.querySelector("[data-tour-toggle]");
     var wide = window.matchMedia("(min-width: 900px)");
+    var STEP_MS = 3500, PICK_MS = 5200;
     var stepLists = [];
+    var tour = { list: null, index: 0, playing: false, stopped: false, ended: false,
+                 inView: false, hovering: false, timer: null, startedAt: 0, remaining: 0 };
+
+    function sendScreen(btn) {
+      if (!frame || !frame.contentWindow || !btn) return;
+      var target = location.origin === "null" ? "*" : location.origin;
+      frame.contentWindow.postMessage({ crewGo: btn.getAttribute("data-screen") }, target);
+    }
+    function canAutoplay() { return wide.matches && !REDUCED; }
+    function stepMs(btn) { return btn && btn.getAttribute("data-screen") === "pick" ? PICK_MS : STEP_MS; }
+
+    function setPlayButton() {
+      if (!playBtn) return;
+      playBtn.hidden = !canAutoplay();
+      var label = tour.playing ? "how.pause" : (tour.ended ? "how.replay" : "how.play");
+      var ic = tour.playing ? "pause" : (tour.ended ? "replay" : "play_arrow");
+      playBtn.querySelector("[data-tour-icon]").textContent = ic;
+      playBtn.querySelector("[data-tour-label]").textContent = t(label);
+      playBtn.setAttribute("aria-pressed", tour.playing ? "true" : "false");
+    }
+
+    function clearTimer() { clearTimeout(tour.timer); tour.timer = null; }
+
+    function runTimer(ms) {
+      clearTimer();
+      tour.remaining = ms;
+      tour.startedAt = Date.now();
+      tour.timer = setTimeout(nextStep, ms);
+    }
+
+    // Shows step i: highlights it, restarts its progress bar and moves the app.
+    function show(list, i, send) {
+      list._steps.forEach(function (b, n) {
+        b.setAttribute("aria-pressed", n === i ? "true" : "false");
+        b.classList.remove("is-timing");
+      });
+      var btn = list._steps[i];
+      if (tour.playing) {
+        btn.style.setProperty("--step-ms", stepMs(btn) + "ms");
+        void btn.offsetWidth;            // restart the progress animation
+        btn.classList.add("is-timing");
+      }
+      tour.list = list; tour.index = i;
+      if (send) sendScreen(btn);
+    }
+
+    function nextStep() {
+      var list = tour.list;
+      if (!list) return;
+      if (tour.index >= list._steps.length - 1) {
+        // Stop on the last step instead of looping.
+        tour.playing = false; tour.ended = true;
+        list.classList.remove("is-playing");
+        list._steps[tour.index].classList.remove("is-timing");
+        setPlayButton();
+        return;
+      }
+      show(list, tour.index + 1, true);
+      runTimer(stepMs(list._steps[tour.index]));
+    }
+
+    function play(fromStart) {
+      var list = tour.list;
+      if (!list || !canAutoplay()) return;
+      tour.playing = true; tour.stopped = false;
+      if (fromStart || tour.ended) { tour.ended = false; tour.index = 0; }
+      list.classList.add("is-playing");
+      list.classList.remove("is-held");
+      show(list, tour.index, true);
+      runTimer(stepMs(list._steps[tour.index]));
+      if (tour.hovering) hold(true);
+      setPlayButton();
+    }
+
+    function stop(byUser) {
+      clearTimer();
+      tour.playing = false;
+      if (byUser) tour.stopped = true;
+      if (tour.list) {
+        tour.list.classList.remove("is-playing", "is-held");
+        tour.list._steps.forEach(function (b) { b.classList.remove("is-timing"); });
+      }
+      setPlayButton();
+    }
+
+    // Pause in place (mouse over the phone, section off screen), keeping progress.
+    function hold(on) {
+      if (!tour.playing || !tour.list) return;
+      if (on) {
+        if (!tour.timer) return;
+        clearTimer();
+        tour.remaining = Math.max(0, tour.remaining - (Date.now() - tour.startedAt));
+        tour.list.classList.add("is-held");
+      } else if (!tour.timer && tour.inView && !tour.hovering) {
+        tour.list.classList.remove("is-held");
+        runTimer(tour.remaining);
+        tour.remaining = tour.remaining; // runTimer resets startedAt
+      }
+    }
+
     document.querySelectorAll("#how .steps").forEach(function (list) {
       var steps = Array.prototype.slice.call(list.querySelectorAll(".step"));
-      function activate(btn, send, force) {
-        if (!force && btn.getAttribute("aria-pressed") === "true") return;
-        steps.forEach(function (b) { b.setAttribute("aria-pressed", b === btn ? "true" : "false"); });
-        if (send && frame && frame.contentWindow) {
-          var target = location.origin === "null" ? "*" : location.origin;
-          frame.contentWindow.postMessage({ crewGo: btn.getAttribute("data-screen") }, target);
-        }
-      }
-      steps.forEach(function (b) {
-        // Click always replays the step; hover and keyboard focus preview it.
-        b.addEventListener("click", function () { if (wide.matches) activate(b, true, true); });
-        b.addEventListener("focus", function () { if (wide.matches) activate(b, true); });
-        // Preview straight away on hover: no delay.
-        b.addEventListener("pointerenter", function (e) {
-          if (wide.matches && e.pointerType !== "touch") activate(b, true);
+      list._steps = steps;
+      steps.forEach(function (b, i) {
+        var bar = el("span", "step-progress");
+        bar.setAttribute("aria-hidden", "true");
+        b.appendChild(bar);
+        // Clicking a step jumps to it and hands control to the visitor.
+        b.addEventListener("click", function () {
+          if (!wide.matches) return;
+          stop(true);
+          tour.ended = false;
+          show(list, i, true);
+          setPlayButton();
         });
       });
-      list._reset = function () { if (steps[0]) activate(steps[0], false); };
       list._sync = function () { steps.forEach(function (b) { b.disabled = !wide.matches; }); };
-      list._reset();
       list._sync();
       stepLists.push(list);
+      if (!list.closest("[hidden]")) { tour.list = list; show(list, 0, false); }
     });
+
     // On phones there is no embedded app, so the steps are a plain list.
-    wide.addEventListener("change", function () { stepLists.forEach(function (l) { l._sync(); }); });
+    wide.addEventListener("change", function () {
+      stepLists.forEach(function (l) { l._sync(); });
+      if (!wide.matches) stop(false);
+      setPlayButton();
+    });
+
+    if (playBtn) {
+      playBtn.addEventListener("click", function () {
+        if (tour.playing) stop(true);
+        else play(tour.ended);
+      });
+    }
+
+    // Start when the section is on screen; pause while it's off screen.
+    if (howSection && "IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        tour.inView = entries[0].isIntersecting;
+        if (tour.inView) {
+          if (!tour.playing && !tour.stopped && !tour.ended && canAutoplay()) play(false);
+          else hold(false);
+        } else {
+          hold(true);
+        }
+      }, { threshold: 0.45 }).observe(howSection);
+    }
+
+    // Mouse over the phone pauses the tour; clicking inside the app stops it.
+    if (device) {
+      device.addEventListener("mouseenter", function () { tour.hovering = true; hold(true); });
+      device.addEventListener("mouseleave", function () { tour.hovering = false; hold(false); });
+    }
+    window.addEventListener("blur", function () {
+      setTimeout(function () { if (document.activeElement === frame && tour.playing) stop(true); }, 0);
+    });
+
+    // A freshly loaded app starts on its own first screen: catch it up.
+    if (frame) {
+      frame.addEventListener("load", function () {
+        if (tour.list && (tour.playing || tour.index > 0)) sendScreen(tour.list._steps[tour.index]);
+      });
+    }
 
     if (howTabs && frame) {
       howTabs.addEventListener("tabchange", function (e) {
@@ -489,9 +631,15 @@
         if (src && frame.getAttribute("src") !== src) frame.setAttribute("src", src);
         var panel = document.getElementById(e.detail.getAttribute("aria-controls"));
         var list = panel && panel.querySelector(".steps");
-        if (list && list._reset) list._reset();
+        if (!list) return;
+        stop(false);
+        tour.list = list; tour.index = 0; tour.ended = false; tour.stopped = false;
+        show(list, 0, false);
+        // Switching paths starts that path's tour from step 1.
+        if (canAutoplay()) play(true); else setPlayButton();
       });
     }
+    setPlayButton();
 
     // Header gets a hairline once the page scrolls.
     var header = document.querySelector("[data-header]");
@@ -585,7 +733,7 @@
       // Nothing is checked or stored: clear the fields and move on.
       form.reset();
       pass.type = "password";
-      window.location.href = page + "?v=7" + (EMBED ? "&embed=1" : "");
+      window.location.href = page + "?v=8" + (EMBED ? "&embed=1" : "");
     });
   }
 

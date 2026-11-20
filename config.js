@@ -109,7 +109,10 @@ var SITE_COPY = {
         { title: "Take a free course", text: "A short online course for each job type. Pass it to take that job.", screen: "badges" },
         { title: "Earn badges and level up", text: "Go from Starter to Verified to Trusted as you complete jobs.", screen: "home" }
       ],
-      stepsHint: "Hover over a step, or tap it, to see it in the app.",
+      stepsHint: "Click a step to jump to it in the app.",
+      play: "Play",
+      pause: "Pause",
+      replay: "Replay",
       familyCta: "Sign up as a family",
       workerCta: "Sign up to work",
       demoTitle: "Live app demo",

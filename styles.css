@@ -507,6 +507,7 @@ body.app-page { background: var(--mist); }
 .screen.is-entering { animation: screen-in 320ms var(--ease-out) both; }
 .screen.is-entering.back { animation-name: screen-back; }
 .screen.is-entering.quick { animation: screen-quick 140ms ease-out both; }
+@keyframes step-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes screen-quick { from { opacity: 0.35; } to { opacity: 1; } }
 @keyframes screen-in { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: none; } }
 @keyframes screen-back { from { opacity: 0; transform: translateX(-28px); } to { opacity: 1; transform: none; } }
@@ -670,7 +671,17 @@ body.app-page { background: var(--mist); }
 .float-card .small { text-wrap: balance; }
 
 /* ---------- How it works: steps that drive the live demo ---------- */
-.steps-hint { display: none; align-items: center; gap: 8px; color: var(--muted); font-size: 0.95rem; }
+.steps-bar { display: none; align-items: center; justify-content: space-between; gap: 12px; }
+.steps-hint { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 0.95rem; margin: 0; }
+.tour-toggle {
+  display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0;
+  min-height: 36px; padding: 6px 14px 6px 10px; border: 1px solid var(--line); border-radius: var(--r-pill);
+  background: var(--white); color: var(--ink); font: inherit; font-size: 0.9rem; font-weight: 700; cursor: pointer;
+  transition: background-color 120ms ease-out, border-color 120ms ease-out;
+}
+.tour-toggle:hover { background: var(--mist); }
+.tour-toggle .icon { font-size: 20px; color: var(--green-700); }
+.tour-toggle[hidden] { display: none; }
 .steps-hint .icon { color: var(--green-700); font-size: 20px; }
 .steps { display: grid; border-top: 1px solid var(--line); }
 .steps li { border-bottom: 1px solid var(--line); }
@@ -685,7 +696,7 @@ body.app-page { background: var(--mist); }
 
 /* With the phone beside it, a step is a control: one active card, the rest quiet. */
 @media (min-width: 900px) {
-  .steps-hint { display: flex; }
+  .steps-bar { display: flex; }
   .steps { border-top: 0; gap: 4px; }
   .steps li { border-bottom: 0; }
   .step {
@@ -700,6 +711,14 @@ body.app-page { background: var(--mist); }
   .step[aria-pressed="true"] .step-n { color: var(--green-700); }
   .step[aria-pressed="true"] .step-title { color: var(--ink); }
   .step[aria-pressed="true"] .step-text { opacity: 1; }
+  /* Tour progress: a thin bar along the bottom of the active step. */
+  .step { position: relative; overflow: hidden; }
+  .step-progress {
+    position: absolute; left: 18px; right: 18px; bottom: 8px; height: 3px; border-radius: 3px;
+    background: var(--green-700); transform: scaleX(0); transform-origin: left; opacity: 0; pointer-events: none;
+  }
+  .step.is-timing .step-progress { opacity: 1; animation: step-progress var(--step-ms, 3500ms) linear forwards; }
+  .is-held .step.is-timing .step-progress { animation-play-state: paused; }
 }
 
 /* Demo shortlist: browsing and picked states (driven by "Pick one") */
