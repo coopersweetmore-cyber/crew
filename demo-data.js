@@ -8,6 +8,7 @@
 var DEMO_DATA = {
   family: {
     name: "Sample family",
+    photo: "assets/people/family.jpg",
     demoToday: "2027-03-10",   // the demo's pretend "today", used for the date picker
     // Pre-filled on the "Post a job" form so the demo is quick to click through.
     sampleJob: {
@@ -25,6 +26,7 @@ var DEMO_DATA = {
       id: "a",
       name: "Sample worker A",
       initials: "A",
+      photo: "assets/people/worker-a.jpg",
       ageBand: "21 to 24",
       level: "trusted",
       rate: 11,
@@ -36,6 +38,7 @@ var DEMO_DATA = {
       id: "b",
       name: "Sample worker B",
       initials: "B",
+      photo: "assets/people/worker-b.jpg",
       ageBand: "18 to 20",
       level: "verified",
       rate: 10,
@@ -47,6 +50,7 @@ var DEMO_DATA = {
       id: "c",
       name: "Sample worker C",
       initials: "C",
+      photo: "assets/people/worker-c.jpg",
       ageBand: "16 to 17",   // under 18: hidden from jobs that end after 22:00
       level: "starter",
       rate: 9.5,

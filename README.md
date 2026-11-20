@@ -73,7 +73,7 @@ The login accepts anything and goes straight to the dashboard you chose. Nothing
 
 ## Photo credits
 
-All photos are from [Unsplash](https://unsplash.com) and used under the Unsplash License (free to use, no permission needed). They show the jobs, not Crew workers or customers.
+All photos are from [Unsplash](https://unsplash.com) and used under the Unsplash License (free to use, no permission needed). The job photos show the jobs, and the profile photos in the demo are stand-ins for sample workers and families: none of them are real Crew workers or customers.
 
 | File | Source |
 |---|---|
@@ -84,6 +84,10 @@ All photos are from [Unsplash](https://unsplash.com) and used under the Unsplash
 | `assets/job-windows.jpg` | https://unsplash.com/photos/woman-in-white-long-sleeve-shirt-and-blue-denim-jeans-standing-beside-white-wooden-framed-glass-VRpjDw3WqqI |
 | `assets/job-tech.jpg` | https://unsplash.com/photos/elderly-couple-looking-at-a-smartphone-together-BM3aFI-qv64 |
 | `assets/job-events.jpg` | https://unsplash.com/photos/wooden-table-set-for-outdoor-dining-with-floral-centerpieces-YrThd1lBFu4 |
+| `assets/people/worker-a.jpg` | https://unsplash.com/photos/smiling-woman-at-wooden-table-Ll9YOG20UFI |
+| `assets/people/worker-b.jpg` | https://unsplash.com/photos/mens-blue-crew-neck-t-shirt-gRslJX1S4h0 |
+| `assets/people/worker-c.jpg` | https://unsplash.com/photos/a-smiling-student-with-backpack-and-books-walks-outside-dPQBwZ6d-NU |
+| `assets/people/family.jpg` | https://unsplash.com/photos/woman-in-white-long-sleeve-shirt-smiling-RBtFAZXlJDA |
 
 ## A note on Google permissions
 

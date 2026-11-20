@@ -57,6 +57,24 @@
     return i;
   }
 
+  // Fills an avatar circle with a photo, falling back to initials.
+  function setAvatar(node, person) {
+    node.textContent = "";
+    if (person && person.photo) {
+      var img = el("img");
+      img.src = person.photo;
+      img.alt = "";
+      img.width = 52; img.height = 52;
+      img.decoding = "async";
+      img.onerror = function () { node.textContent = person.initials || ""; };
+      node.appendChild(img);
+      node.classList.add("has-photo");
+    } else {
+      node.textContent = (person && person.initials) || "";
+    }
+    return node;
+  }
+
   function jobByValue(value) {
     var list = raw("jobTypes") || [];
     for (var i = 0; i < list.length; i++) if (list[i].value === value) return list[i];
@@ -439,7 +457,6 @@
     var stepLists = [];
     document.querySelectorAll("#how .steps").forEach(function (list) {
       var steps = Array.prototype.slice.call(list.querySelectorAll(".step"));
-      var hoverTimer = null;
       function activate(btn, send, force) {
         if (!force && btn.getAttribute("aria-pressed") === "true") return;
         steps.forEach(function (b) { b.setAttribute("aria-pressed", b === btn ? "true" : "false"); });
@@ -452,12 +469,10 @@
         // Click always replays the step; hover and keyboard focus preview it.
         b.addEventListener("click", function () { if (wide.matches) activate(b, true, true); });
         b.addEventListener("focus", function () { if (wide.matches) activate(b, true); });
-        b.addEventListener("mouseenter", function () {
-          if (!wide.matches) return;
-          clearTimeout(hoverTimer);
-          hoverTimer = setTimeout(function () { activate(b, true); }, 160);
+        // Preview straight away on hover: no delay.
+        b.addEventListener("pointerenter", function (e) {
+          if (wide.matches && e.pointerType !== "touch") activate(b, true);
         });
-        b.addEventListener("mouseleave", function () { clearTimeout(hoverTimer); });
       });
       list._reset = function () { if (steps[0]) activate(steps[0], false); };
       list._sync = function () { steps.forEach(function (b) { b.disabled = !wide.matches; }); };
@@ -521,12 +536,13 @@
       if (!target || target === current) return;
       body.querySelectorAll("[data-screen]").forEach(function (s) {
         s.hidden = s !== target;
-        s.classList.remove("is-entering", "back");
+        s.classList.remove("is-entering", "back", "quick");
       });
       if (!REDUCED && current) {
         void target.offsetWidth;
         target.classList.add("is-entering");
-        if (back) target.classList.add("back");
+        if (quiet) target.classList.add("quick");
+        else if (back) target.classList.add("back");
       }
       current = target;
       body.scrollTop = 0;
@@ -578,6 +594,7 @@
   function initFamily() {
     if (document.body.getAttribute("data-app") !== "family") return;
     var data = window.DEMO_DATA;
+    data.workers.forEach(function (w) { if (w.photo) { var p = new Image(); p.src = w.photo; } });
     var go = makeRouter();
     var form = document.getElementById("post-job");
     var booking = null;
@@ -585,6 +602,8 @@
     document.querySelector("[data-hello]").textContent = t("demo.family.hello", { name: data.family.name });
     document.querySelector("[data-family-name]").textContent = data.family.name;
     document.querySelector("[data-family-parish]").textContent = data.family.sampleJob.parish;
+    var famAvatar = document.querySelector("[data-family-avatar]");
+    if (famAvatar && data.family.photo) setAvatar(famAvatar, { photo: data.family.photo, initials: "" });
 
     // Job tiles
     var tiles = document.querySelector("[data-job-tiles]");
@@ -698,18 +717,18 @@
       var cards = Array.prototype.slice.call(document.querySelectorAll("[data-shortlist] .worker-card"));
       cards.forEach(function (c) { c.classList.remove("is-browsing", "is-picked"); });
       if (!cards.length) return;
-      var step = REDUCED ? 0 : 650;
+      var step = REDUCED ? 0 : 520;
       cards.forEach(function (card, i) {
         pickTimers.push(setTimeout(function () {
           cards.forEach(function (c) { c.classList.toggle("is-browsing", c === card); });
           scrollAppTo(card);
-        }, 250 + i * step));
+        }, 40 + i * step));
       });
       pickTimers.push(setTimeout(function () {
         cards.forEach(function (c) { c.classList.remove("is-browsing"); });
         scrollAppTo(cards[0]);
         markPicked(cards[0], lastWorkers[0]);
-      }, 250 + cards.length * step + (REDUCED ? 0 : 200)));
+      }, 40 + cards.length * step + (REDUCED ? 0 : 160)));
     }
     window.addEventListener("message", function (e) {
       if (!e.data || !e.data.crewGo) return;
@@ -746,7 +765,7 @@
       workers.forEach(function (w) {
         var card = el("article", "app-card worker-card");
         var top = el("div", "worker-top");
-        var av = el("span", "avatar", w.initials); av.setAttribute("aria-hidden", "true");
+        var av = setAvatar(el("span", "avatar"), w); av.setAttribute("aria-hidden", "true");
         top.appendChild(av);
         var who = el("div");
         who.appendChild(el("h3", "worker-name", w.name));
@@ -828,7 +847,7 @@
       }
       var card = el("article", "app-card");
       var top = el("div", "worker-top");
-      var av = el("span", "avatar", booking.worker.initials); av.setAttribute("aria-hidden", "true");
+      var av = setAvatar(el("span", "avatar"), booking.worker); av.setAttribute("aria-hidden", "true");
       top.appendChild(av);
       var who = el("div");
       who.appendChild(el("h3", "worker-name", booking.job.name));
@@ -867,7 +886,7 @@
     var go = makeRouter();
 
     document.querySelector("[data-hello]").textContent = t("demo.worker.hello", { name: worker.name });
-    document.querySelectorAll("[data-initials]").forEach(function (n) { n.textContent = worker.initials; });
+    document.querySelectorAll("[data-initials]").forEach(function (n) { setAvatar(n, worker); });
     document.querySelector("[data-worker-name]").textContent = worker.name;
     document.querySelector("[data-age-band]").textContent = worker.ageBand;
 
