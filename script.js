@@ -457,7 +457,7 @@
     var device = document.querySelector("#how .device");
     var howSection = document.getElementById("how");
     var wide = window.matchMedia("(min-width: 900px)");
-    var STEP_MS = 1200, PICK_MS = 2500, CLICKED_MS = 3200;
+    var STEP_MS = 1560, PICK_MS = 3250, CLICKED_MS = 4160;
     var stepLists = [];
     var tour = { list: null, index: 0, playing: false, stopped: false, inView: false,
                  hovering: false, timer: null, startedAt: 0, remaining: 0 };
@@ -705,7 +705,7 @@
       // Nothing is checked or stored: clear the fields and move on.
       form.reset();
       pass.type = "password";
-      window.location.href = page + "?v=10" + (EMBED ? "&embed=1" : "");
+      window.location.href = page + "?v=11" + (EMBED ? "&embed=1" : "");
     });
   }
 
@@ -861,7 +861,7 @@
       var top = card.getBoundingClientRect().top - body.getBoundingClientRect().top + body.scrollTop
         - (body.clientHeight - card.offsetHeight) / 2;
       body.scrollTop = 0;
-      glideTo(top, 1300, function () {
+      glideTo(top, 1690, function () {
         pickTimers.push(setTimeout(function () { markPicked(card, lastWorkers[i]); }, REDUCED ? 0 : 120));
       });
     }
