@@ -94,9 +94,9 @@ var SITE_COPY = {
       chipShortlistTitle: "Your shortlist is ready",
       chipShortlistText: "3 trained dog walkers",
       chipBadgeTitle: "Crew Certified",
-      chipBadgeText: "Course passed and 3 jobs rated 4+ stars",
+      chipBadgeText: "Trained online and in person, 3 jobs rated 4+",
       trust: [
-        { icon: "school", text: "Trained for every job type" },
+        { icon: "school", text: "Trained online and in person" },
         { icon: "verified_user", text: "Every booked job will be insured" },
         { icon: "family_restroom", text: "Parent consent for under-18s" },
         { icon: "payments", text: "Pay through {brand} after the job" }
@@ -120,8 +120,8 @@ var SITE_COPY = {
       workerSteps: [
         { title: "Sign up", text: "Tell us which jobs you'd like and how much time you have.", screen: "account" },
         { title: "Parent consent if you're under 18", text: "A parent or guardian says yes before your first job.", screen: "consent" },
-        { title: "Take a free course and quiz", text: "A short online course and quiz for each job type. Pass it to take that job.", screen: "courses" },
-        { title: "Become Crew Certified", text: "Complete 3 jobs booked through Crew, each rated 4 stars or more. After 5 jobs you also get a written reference.", screen: "home" }
+        { title: "Train online, then in person", text: "A free online course and quiz for each job type. Then in-person training: a {brand} supervisor on your first job, or a 5 to 10 minute briefing from the hotel or business you work for.", screen: "courses" },
+        { title: "Earn your badges", text: "Complete 3 jobs booked through {brand}, each rated 4 stars or more, to become Crew Certified. Businesses that train you add their company badge. After 5 jobs you also get a written reference.", screen: "home" }
       ],
       stepsHint: "Click a step to jump to it in the app.",
       familyCta: "Sign up as a family",
@@ -155,7 +155,7 @@ var SITE_COPY = {
       intro: "Every young person goes through the same four steps before they work for you. Nobody skips one.",
       steps: [
         { title: "They sign up", text: "We know their name, age, school and parish before anything else." },
-        { title: "They pass the course and quiz", text: "A short course and quiz for each job type. No pass, no jobs of that type." },
+        { title: "They train online and in person", text: "A short online course and quiz for each job type, then in-person training from a {brand} supervisor or the business they work for. No training, no jobs of that type." },
         { title: "A parent says yes", text: "Under 18? A parent or guardian approves the account first." },
         { title: "They arrive, insured", text: "Every booked job will be insured, and you both leave a review afterwards." }
       ],
@@ -180,8 +180,13 @@ var SITE_COPY = {
 
     skills: {
       title: "Crew Certified",
-      intro: "Pass the free course and quiz for a job type, then complete 3 jobs booked through {brand}, each rated 4 stars or more, and you're Crew Certified. After 5 jobs you also get a written reference.",
-      recordNote: "It's a verified work record: jobs done, average rating and courses passed. Families and businesses see it on your profile and in the shortlist, and you can share it with employers through a link. Only jobs booked through {brand} count toward it.",
+      intro: "Every worker trains online and in person. Then their record earns them badges that employers trust.",
+      badges: [
+        { icon: "workspace_premium", title: "Crew Certified", text: "Complete 3 jobs booked through {brand}, each rated 4 stars or more." },
+        { icon: "apartment", title: "Company badge", text: "Given by a hotel or business that trains you in person before a shift. Professional training, on your record." }
+      ],
+      referenceNote: "After 5 jobs you also get a written reference.",
+      recordNote: "It's a verified work record: jobs done, average rating, courses passed and badges earned. Families and businesses see it on your profile and in the shortlist, and you can share it with employers through a link. Only jobs booked through {brand} count toward it.",
       surveyLead: "We asked 33 local students.",
       survey: "{stat1} have already done some paid work, and {stat2} would take a free short course if it led to paid work.",
       stat1: "82%",
@@ -208,14 +213,14 @@ var SITE_COPY = {
     business: {
       kicker: "FOR HOTELS, RESTAURANTS AND EVENTS",
       title: "Trained young people for local businesses too",
-      intro: "Hotels, restaurants, beach clubs and event companies in Cascais need reliable extra hands. Train young people on the job with us, or book ones we've already trained.",
+      intro: "Hotels, restaurants, beach clubs and event companies in Cascais need reliable extra hands. Every young person arrives trained online by {brand}, and you train them in person, your way.",
       stat: "45,000",
       statText: "workers missing in Portugal's tourism sector, says the Hotel Association of Portugal (AHP). Waiting staff, kitchen, cleaning and reception are the hardest jobs to fill.",
       statSource: "Source: AHP, reported by Diário de Notícias and HR Portugal, 2023",
       offers: [
-        { tag: "Train on the job", title: "Train them yourself, on real shifts", text: "Agree to teach the young people who work for you. They learn your way and finish with a proper certificate from your business and {brand}. Your staff train them, so they don't need a {brand} supervisor." },
-        { tag: "Trained by {brand}", title: "Book workers we've trained", text: "For events and busy seasons. They've passed our online course and done their first job with a {brand} supervisor. Workers aged 18 and over, daytime shifts." },
-        { tag: "Hire", title: "Hire Crew Certified young people", text: "Take on trained, reviewed young people for seasonal and first jobs, with their skills record to check." }
+        { tag: "Book", title: "Extra hands for events and busy seasons", text: "Workers aged 18 and over, daytime shifts. Every one has passed our online course and quiz for the job." },
+        { tag: "Train", title: "Train them for 5 to 10 minutes before the shift", text: "Show them how your business does it. You give the in-person training, so no {brand} supervisor is needed, and they earn your company badge on their {brand} record." },
+        { tag: "Hire", title: "Hire Crew Certified young people", text: "Take on the ones who've done well: jobs done, high ratings and company badges, all on their skills record." }
       ],
       timing: "Businesses can sign up as partners now. Business shifts start in summer 2027.",
       cta: "Partner with {brand}",
@@ -244,7 +249,7 @@ var SITE_COPY = {
         { icon: "payments", title: "Workers set their own rate", text: "Usually around €10 an hour. Workers keep 100% of their rate." },
         { icon: "receipt_long", title: "15% booking fee for a new match", text: "Added on top of the worker's rate. It includes insurance." },
         { icon: "autorenew", title: "5% to rebook the same worker", text: "Book someone you already know again for a smaller fee." },
-        { icon: "storefront", title: "Businesses", text: "Training partnerships are free. Event shifts and hiring are priced per partner. Ask us." }
+        { icon: "storefront", title: "Businesses", text: "Event shifts and hiring are priced per partner. Ask us." }
       ]
     },
 
@@ -311,8 +316,8 @@ var SITE_COPY = {
         ],
         interests: "What are you interested in?",
         interestOptions: [
-          { value: "Training on the job", label: "Training young people on the job" },
-          { value: "Crew-trained workers", label: "Booking Crew-trained workers for events and busy seasons" },
+          { value: "Event and season shifts", label: "Booking young people for events and busy seasons" },
+          { value: "Training and company badge", label: "Training them before shifts and giving our company badge" },
           { value: "Hiring", label: "Hiring Crew Certified young people" },
           { value: "Sponsoring", label: "Sponsoring training places or kits" }
         ],
@@ -404,10 +409,11 @@ var SITE_COPY = {
       items: [
         { q: "When does {brand} start?", a: "We launch for households in Cascais in January 2027, and businesses can sign up as partners now. Sign up and we'll email you when bookings open." },
         { q: "Is every job insured?", a: "Yes. Every booked job will be insured, and the policy will be in place before we launch. Insurance is included in the booking fee." },
-        { q: "How are workers checked?", a: "Workers pass a short online course and quiz for each job type before they can take that job. Under-18s need a parent or guardian's consent, and only workers aged 18 and over take business shifts. Every job ends with reviews from both sides." },
-        { q: "How much does it cost?", a: "Workers set their own rate, usually around €10 an hour, and keep 100% of it. Households pay a 15% booking fee on top for a new match, or 5% to rebook the same worker. The fee includes insurance. You pay through {brand} after the job. Training partnerships for businesses are free, and business shifts and hiring are priced per partner." },
+        { q: "How are workers checked?", a: "Every worker is trained online and in person. They pass a short online course and quiz for each job type, then get in-person training: from a {brand} supervisor on their first job, or a 5 to 10 minute briefing from the hotel or business they work for. Under-18s need a parent or guardian's consent, and only workers aged 18 and over take business shifts. Every job ends with reviews from both sides." },
+        { q: "How much does it cost?", a: "Workers set their own rate, usually around €10 an hour, and keep 100% of it. Households pay a 15% booking fee on top for a new match, or 5% to rebook the same worker. The fee includes insurance. You pay through {brand} after the job. For businesses, event shifts and hiring are priced per partner." },
         { q: "I'm 16 or 17. Can I join?", a: "Yes, with a parent or guardian's consent. You won't be offered jobs after 22:00." },
-        { q: "Can businesses use {brand}?", a: "Yes. Hotels, restaurants, beach clubs and event companies can train young people on the job, book workers {brand} has trained, or hire Crew Certified young people. When a business trains them, the young people get a certificate from that business and {brand}, and no {brand} supervisor is needed. Businesses can sign up as partners now, and business shifts start in summer 2027." },
+        { q: "Can businesses use {brand}?", a: "Yes. Hotels, restaurants, beach clubs and event companies can book young people for events and busy seasons, and hire Crew Certified young people. Every worker has done our online course, and the business trains them in person for 5 to 10 minutes before the shift, so no {brand} supervisor is needed. Businesses can sign up as partners now, and business shifts start in summer 2027." },
+        { q: "What badges can workers earn?", a: "Two kinds. Crew Certified: 3 jobs booked through {brand}, each rated 4 stars or more. A company badge: given by a hotel or business that trains them in person before a shift. Both show on their work record, and after 5 jobs they also get a written reference." },
         { q: "Can under-18s work for a business?", a: "Not at first. Business shifts start with workers aged 18 and over, daytime only. Workers aged 16 and 17 do household jobs, with a parent or guardian's consent." },
         { q: "What can't I book?", a: "No babysitting or childcare at launch, and nothing that needs ladders, power tools, a pool or driving." }
       ]
@@ -463,7 +469,7 @@ var SITE_COPY = {
         // Shown beside the "Post a job" form on the website layout.
         webPoints: [
           { icon: "verified_user", text: "Every booked job will be insured." },
-          { icon: "school", text: "Every worker has passed a free course and quiz for the job." },
+          { icon: "school", text: "Every worker is trained for the job, online and in person." },
           { icon: "payments", text: "You pay through {brand} after the job is done." }
         ],
         job: "Which job?",
@@ -523,7 +529,7 @@ var SITE_COPY = {
         certifiedDetail: "{jobs} jobs done, {rating} average rating.",
         progress: "{done} of {target} jobs toward Crew Certified",
         progressNote: "Only jobs booked through {brand} and rated 4 stars or more count.",
-        stepCourse: "Course and quiz passed",
+        stepCourse: "Trained online and in person",
         stepJobs: "3 jobs rated 4+ stars",
         stepReference: "Written reference after 5 jobs",
         stepReferenceDone: "Written reference",
@@ -534,11 +540,11 @@ var SITE_COPY = {
         earningsNote: "From {count} jobs. You keep 100% of your rate.",
         upcomingTitle: "Upcoming jobs",
         coursesTitle: "Your courses",
-        coursesIntro: "Pass a job type's free course and quiz to take that job.",
+        coursesIntro: "Pass a job type's free course and quiz, then get in-person training on your first job of that type.",
         courseEarned: "Passed {date}",
         courseNotYet: "Free course and quiz available",
         recordTitle: "Work record",
-        recordIntro: "Jobs done, average rating and courses passed. Families and businesses see it on your profile, and you can share it with employers through a link.",
+        recordIntro: "Jobs done, average rating, courses passed and badges earned. Families and businesses see it on your profile, and you can share it with employers through a link.",
         colSkill: "Skill",
         colJobs: "Jobs",
         colRating: "Rating",

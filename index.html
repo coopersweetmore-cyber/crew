@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400..800&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,500..600,0..1,0&display=block">
   <link rel="preload" as="image" href="assets/hero-dog-walk.jpg">
-  <link rel="stylesheet" href="styles.css?v=21">
+  <link rel="stylesheet" href="styles.css?v=22">
 </head>
 <body data-title="meta.titleIndex">
 
@@ -35,7 +35,7 @@
         </ul>
       </nav>
       <div class="header-actions">
-        <a class="btn btn-ghost header-demo" href="login.html?v=21">
+        <a class="btn btn-ghost header-demo" href="login.html?v=22">
           <span class="icon" aria-hidden="true">smartphone</span>
           <span data-t="nav.demo"></span>
         </a>
@@ -147,8 +147,8 @@
             <p class="biz-link"><span class="icon" aria-hidden="true">storefront</span><a href="#business" data-t="how.businessNote"></a></p>
           </div>
           <div class="segmented" role="tablist" data-tabs data-how-tabs data-t-aria-label="how.tabsLabel">
-            <button type="button" role="tab" id="how-tab-family" aria-controls="how-family" aria-selected="true" data-demo="family.html?v=21&embed=1" data-t="how.tabFamily"></button>
-            <button type="button" role="tab" id="how-tab-worker" aria-controls="how-worker" aria-selected="false" tabindex="-1" data-demo="worker.html?v=21&embed=1" data-t="how.tabWorker"></button>
+            <button type="button" role="tab" id="how-tab-family" aria-controls="how-family" aria-selected="true" data-demo="family.html?v=22&embed=1" data-t="how.tabFamily"></button>
+            <button type="button" role="tab" id="how-tab-worker" aria-controls="how-worker" aria-selected="false" tabindex="-1" data-demo="worker.html?v=22&embed=1" data-t="how.tabWorker"></button>
           </div>
           <p class="steps-hint"><span class="icon" aria-hidden="true">touch_app</span><span data-t="how.stepsHint"></span></p>
           <div role="tabpanel" id="how-family" aria-labelledby="how-tab-family">
@@ -179,9 +179,9 @@
             <p data-t="how.demoText"></p>
           </div>
           <div class="device">
-            <iframe src="family.html?v=21&embed=1" loading="lazy" data-demo-frame data-t-title="how.demoFrameTitle"></iframe>
+            <iframe src="family.html?v=22&embed=1" loading="lazy" data-demo-frame data-t-title="how.demoFrameTitle"></iframe>
           </div>
-          <a class="btn btn-sun" href="login.html?v=21">
+          <a class="btn btn-sun" href="login.html?v=22">
             <span class="icon" aria-hidden="true">open_in_full</span>
             <span data-t="how.demoOpen"></span>
           </a>
@@ -302,7 +302,12 @@
         <div class="skills-copy">
           <h2 class="h2" data-t="skills.title"></h2>
           <p class="lead" data-t="skills.intro"></p>
-          <p class="skills-note" data-t="skills.recordNote"></p>
+          <ul class="badge-types" data-list="skills.badges">
+            <template>
+              <li><span class="badge-type-icon"><span class="icon icon-fill" data-f="icon" aria-hidden="true"></span></span><div><h3 data-f="title"></h3><p data-f="text"></p></div></li>
+            </template>
+          </ul>
+          <p class="skills-note"><span data-t="skills.referenceNote"></span> <span data-t="skills.recordNote"></span></p>
           <ul class="badge-row" data-list="jobTypes" data-t-aria-label="skills.badgesTitle">
             <template>
               <li><span class="medal"><span class="icon" data-f="icon" aria-hidden="true"></span></span><span data-f="short"></span></li>
@@ -441,7 +446,7 @@
                 <div class="success-body">
                   <p data-t="forms.family.success"></p>
                   <p class="success-next" data-t="forms.demoNext"></p>
-                  <a class="btn btn-primary" href="login.html?v=21&amp;role=family">
+                  <a class="btn btn-primary" href="login.html?v=22&amp;role=family">
                     <span data-t="forms.demoLogin"></span>
                     <span class="icon" aria-hidden="true">arrow_forward</span>
                   </a>
@@ -549,7 +554,7 @@
                 <div class="success-body">
                   <p data-t="forms.worker.success"></p>
                   <p class="success-next" data-t="forms.demoNext"></p>
-                  <a class="btn btn-primary" href="login.html?v=21&amp;role=worker">
+                  <a class="btn btn-primary" href="login.html?v=22&amp;role=worker">
                     <span data-t="forms.demoLogin"></span>
                     <span class="icon" aria-hidden="true">arrow_forward</span>
                   </a>
@@ -670,13 +675,13 @@
         <a href="#pricing" data-t="nav.pricing"></a>
         <a href="#business" data-t="nav.business"></a>
         <a href="#signup" data-t="nav.signup"></a>
-        <a href="login.html?v=21" data-t="nav.demo"></a>
+        <a href="login.html?v=22" data-t="nav.demo"></a>
       </nav>
       <p class="footer-small" data-t="footer.photos"></p>
     </div>
   </footer>
 
-  <script src="config.js?v=21"></script>
-  <script src="script.js?v=21"></script>
+  <script src="config.js?v=22"></script>
+  <script src="script.js?v=22"></script>
 </body>
 </html>

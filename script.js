@@ -801,7 +801,7 @@
       // Nothing is checked or stored: clear the fields and move on.
       form.reset();
       pass.type = "password";
-      window.location.href = keepView(page + "?v=21");
+      window.location.href = keepView(page + "?v=22");
     });
   }
 
@@ -1120,7 +1120,7 @@
       card.appendChild(again);
 
       var link = el("a", "btn btn-ghost btn-block");
-      link.href = keepView("worker.html?v=21&worker=" + booking.worker.id + "&done=1");
+      link.href = keepView("worker.html?v=22&worker=" + booking.worker.id + "&done=1");
       link.appendChild(icon("person"));
       link.appendChild(el("span", null, t("demo.family.seeWorker", { worker: booking.worker.name })));
       card.appendChild(link);
