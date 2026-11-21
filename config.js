@@ -105,7 +105,8 @@ var SITE_COPY = {
 
     how: {
       title: "How it works",
-      intro: "Two simple paths, and a live app demo you can tap through.",
+      intro: "Two simple paths, for households and for young people, and a live app demo you can tap through.",
+      businessNote: "Run a hotel, restaurant or events company? See how {brand} works for businesses.",
       tabsLabel: "Show steps for",
       tabFamily: "Families",
       tabWorker: "Young people",
@@ -134,13 +135,14 @@ var SITE_COPY = {
     jobs: {
       title: "Jobs you can book at launch",
       intro: "Workers set their own rate, usually around €10 an hour.",
+      businessNote: "Businesses can book event help and busy-season shifts from summer 2027, with workers aged 18 and over.",
       notOffered: "Not offered at launch: babysitting or childcare.",
       cardCta: "Book this job"
     },
 
     // Job types. "value" is what gets saved to the Google Sheet.
     jobTypes: [
-      { value: "Event help", icon: "celebration", photo: "assets/job-events.jpg", name: "Event help", short: "Events", desc: "Setting up, serving and cleaning up at parties and family gatherings.", alt: "An outdoor table set for a lunch with flowers" },
+      { value: "Event help", icon: "celebration", photo: "assets/job-events.jpg", name: "Event help", short: "Events", desc: "Setting up, serving and cleaning up at parties, family gatherings and local events.", alt: "An outdoor table set for a lunch with flowers" },
       { value: "Pet care and dog walking", icon: "pets", photo: "assets/job-dog-walk.jpg", name: "Pet care and dog walking", short: "Pet care", desc: "Walks, feeding and company for your pets while you're out.", alt: "Someone walking a small white dog along a path lined with sunflowers" },
       { value: "Car washing", icon: "local_car_wash", photo: "assets/job-car-sponge.jpg", name: "Car washing", short: "Car wash", desc: "A careful hand wash at your home.", alt: "Soapy hands washing a car mirror with a sponge" },
       { value: "Garden care", icon: "yard", photo: "assets/job-garden.jpg", name: "Garden care", short: "Garden", desc: "Weeding, watering, raking and tidying, with hand tools only.", alt: "Gloved hands planting with a hand trowel" },
@@ -149,7 +151,7 @@ var SITE_COPY = {
     ],
 
     safety: {
-      title: "From sign-up to your front door",
+      title: "From sign-up to your door",
       intro: "Every young person goes through the same four steps before they work for you. Nobody skips one.",
       steps: [
         { title: "They sign up", text: "We know their name, age, school and parish before anything else." },
@@ -179,7 +181,7 @@ var SITE_COPY = {
     skills: {
       title: "Crew Certified",
       intro: "Pass the free course and quiz for a job type, then complete 3 jobs booked through {brand}, each rated 4 stars or more, and you're Crew Certified. After 5 jobs you also get a written reference.",
-      recordNote: "It's a verified work record: jobs done, average rating and courses passed. Families see it on your profile and in the shortlist, and you can share it with employers through a link. Only jobs booked through {brand} count toward it.",
+      recordNote: "It's a verified work record: jobs done, average rating and courses passed. Families and businesses see it on your profile and in the shortlist, and you can share it with employers through a link. Only jobs booked through {brand} count toward it.",
       surveyLead: "We asked 33 local students.",
       survey: "{stat1} have already done some paid work, and {stat2} would take a free short course if it led to paid work.",
       stat1: "82%",
@@ -222,7 +224,7 @@ var SITE_COPY = {
 
     pricing: {
       title: "Simple, fair pricing",
-      intro: "Workers keep everything they earn. Families pay a small fee on top that includes insurance.",
+      intro: "Workers keep everything they earn. Households pay a small fee on top that includes insurance. Businesses agree their terms with us.",
       offerTitle: "Rebook for 5%",
       offerText: "Book the same worker again and the fee drops from 15% to 5%.",
       exampleTitle: "Example: a 2-hour car wash at €10 an hour",
@@ -247,7 +249,7 @@ var SITE_COPY = {
 
     signup: {
       title: "Join {brand} before we launch",
-      intro: "It takes about two minutes. We'll email you before we launch in January 2027.",
+      intro: "For households, young people and businesses. It takes about two minutes, and we'll email you before we launch in January 2027.",
       tabsLabel: "Sign up as",
       tabFamily: "A family",
       tabWorker: "A young person (16 to 24)",
@@ -399,10 +401,10 @@ var SITE_COPY = {
       title: "Questions",
       intro: "Can't find your answer? Email us at {email}.",
       items: [
-        { q: "When does {brand} start?", a: "We launch in Cascais in January 2027. Sign up now and we'll email you when bookings open." },
+        { q: "When does {brand} start?", a: "We launch for households in Cascais in January 2027, and businesses can join as training partners now. Sign up and we'll email you when bookings open." },
         { q: "Is every job insured?", a: "Yes. Every booked job will be insured, and the policy will be in place before we launch. Insurance is included in the booking fee." },
-        { q: "How are workers checked?", a: "Workers pass a short online course and quiz for each job type before they can take that job. Under-18s need a parent or guardian's consent, and every job ends with reviews from both sides." },
-        { q: "How much does it cost?", a: "Workers set their own rate, usually around €10 an hour, and keep 100% of it. Families pay a 15% booking fee on top for a new match, or 5% to rebook the same worker. The fee includes insurance. You pay through {brand} after the job." },
+        { q: "How are workers checked?", a: "Workers pass a short online course and quiz for each job type before they can take that job. Under-18s need a parent or guardian's consent, and only workers aged 18 and over take business shifts. Every job ends with reviews from both sides." },
+        { q: "How much does it cost?", a: "Workers set their own rate, usually around €10 an hour, and keep 100% of it. Households pay a 15% booking fee on top for a new match, or 5% to rebook the same worker. The fee includes insurance. You pay through {brand} after the job. Training partnerships for businesses are free, and business shifts and hiring are priced per partner." },
         { q: "I'm 16 or 17. Can I join?", a: "Yes, with a parent or guardian's consent. You won't be offered jobs after 22:00." },
         { q: "Can businesses use {brand}?", a: "Yes. Hotels, restaurants, beach clubs and event companies can join as training partners now. From summer 2027 they can also book event and season shifts and hire Crew Certified young people. Sign up as a business and we'll get in touch." },
         { q: "Can under-18s work for a business?", a: "Not at first. Business shifts start with workers aged 18 and over, daytime only. Workers aged 16 and 17 do household jobs, with a parent or guardian's consent." },
@@ -535,7 +537,7 @@ var SITE_COPY = {
         courseEarned: "Passed {date}",
         courseNotYet: "Free course and quiz available",
         recordTitle: "Work record",
-        recordIntro: "Jobs done, average rating and courses passed. Families see it on your profile, and you can share it with employers through a link.",
+        recordIntro: "Jobs done, average rating and courses passed. Families and businesses see it on your profile, and you can share it with employers through a link.",
         colSkill: "Skill",
         colJobs: "Jobs",
         colRating: "Rating",
