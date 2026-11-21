@@ -11,6 +11,13 @@
   var BRAND = window.BRAND_NAME || "";
   var EMAIL = window.CONTACT_EMAIL || "";
   var EMBED = /[?&]embed=1\b/.test(window.location.search);
+  // "Phone app view" on a laptop: the app in a phone frame instead of the website layout.
+  var PHONE = !EMBED && /[?&]view=phone\b/.test(window.location.search);
+  // Links between demo pages keep the embed or phone-view flag.
+  function keepView(href) {
+    var flag = EMBED ? "embed=1" : PHONE ? "view=phone" : "";
+    return flag ? href + (href.indexOf("?") > -1 ? "&" : "?") + flag : href;
+  }
   var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ---------- Copy helpers ---------- */
@@ -170,10 +177,17 @@
         o.value = "";
         select.appendChild(o);
       }
+      var group = null;
       (raw(select.getAttribute("data-options")) || []).forEach(function (item) {
         var opt = el("option", null, fill(item.label || item.name));
         opt.value = item.value;
-        select.appendChild(opt);
+        // Items with a "group" are listed under that heading in the dropdown.
+        if (item.group && (!group || group.label !== item.group)) {
+          group = el("optgroup");
+          group.label = item.group;
+          select.appendChild(group);
+        }
+        (item.group ? group : select).appendChild(opt);
       });
     });
   }
@@ -362,6 +376,20 @@
       applyAge();
     }
 
+    // Worker form: "Another school or university" opens a box to type the name.
+    var otherField = form.querySelector("[data-school-other]");
+    function applySchool() {
+      if (!otherField) return;
+      var on = form.querySelector("select[name=school]").value === "Other";
+      otherField.hidden = !on;
+      otherField.querySelector("input").disabled = !on;
+      if (!on) showFieldError(otherField, "");
+    }
+    if (otherField) {
+      form.addEventListener("change", function (e) { if (e.target.tagName === "SELECT" && e.target.name === "school") applySchool(); });
+      applySchool();
+    }
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       if (parentField && currentAge() === "Under 16") { applyAge(); return; }
@@ -383,6 +411,7 @@
 
       sendToSheet(params).then(function () {
         form.reset();
+        applySchool();
         fields.hidden = true;
         success.hidden = false;
         success.focus();
@@ -648,11 +677,23 @@
         a.setAttribute("href", href + (href.indexOf("?") > -1 ? "&" : "?") + "embed=1");
       });
     }
+    // Phone app view keeps itself when you switch between the family and worker apps.
+    if (PHONE) {
+      document.querySelectorAll("a[data-keep-embed], .stage-switch a").forEach(function (a) {
+        var href = a.getAttribute("href");
+        if (href && href !== "index.html") a.setAttribute("href", keepView(href));
+      });
+    }
+    // "Phone app view" and "Website view" switch the same page between the two layouts.
+    var page = window.location.pathname.split("/").pop() || "index.html";
+    var rest = window.location.search.replace(/[?&]view=phone\b/, "").replace(/^&/, "?");
+    document.querySelectorAll("[data-view-toggle]").forEach(function (a) {
+      a.setAttribute("href", PHONE ? page + rest : page + rest + (rest ? "&" : "?") + "view=phone");
+    });
   }
 
   function makeRouter() {
     var body = document.querySelector("[data-app-body]");
-    var tabbar = document.querySelector("[data-tabbar]");
     if (!body) return null;
     var current = null;
     function go(name, back, quiet) {
@@ -670,13 +711,13 @@
       }
       current = target;
       body.scrollTop = 0;
+      if (window.scrollY > 0) window.scrollTo(0, 0);   // website layout: the page itself scrolls
       var tab = target.getAttribute("data-tab");
-      if (tabbar) {
-        tabbar.querySelectorAll("[data-tab-btn]").forEach(function (b) {
-          if (b.getAttribute("data-tab-btn") === tab) b.setAttribute("aria-current", "page");
-          else b.removeAttribute("aria-current");
-        });
-      }
+      // The phone tab bar and the website top bar both show where you are.
+      document.querySelectorAll("[data-tab-btn]").forEach(function (b) {
+        if (b.getAttribute("data-tab-btn") === tab) b.setAttribute("aria-current", "page");
+        else b.removeAttribute("aria-current");
+      });
       var heading = target.querySelector("[data-focus]");
       if (heading && go.ready && !quiet) heading.focus({ preventScroll: true });
       if (go.onShow) go.onShow(name);
@@ -713,7 +754,7 @@
       // Nothing is checked or stored: clear the fields and move on.
       form.reset();
       pass.type = "password";
-      window.location.href = page + "?v=16" + (EMBED ? "&embed=1" : "");
+      window.location.href = keepView(page + "?v=19");
     });
   }
 
@@ -1032,7 +1073,7 @@
       card.appendChild(again);
 
       var link = el("a", "btn btn-ghost btn-block");
-      link.href = "worker.html?v=16&worker=" + booking.worker.id + "&done=1" + (EMBED ? "&embed=1" : "");
+      link.href = keepView("worker.html?v=19&worker=" + booking.worker.id + "&done=1");
       link.appendChild(icon("person"));
       link.appendChild(el("span", null, t("demo.family.seeWorker", { worker: booking.worker.name })));
       card.appendChild(link);

@@ -823,3 +823,108 @@ body.app-page { background: var(--mist); }
   .sheet, .sheet-scrim, .sheet-row { transition: none; }
   .sheet-spinner { animation: none; }
 }
+
+/* =====================================================================
+   Website layout
+   On laptops and tablets the demo works like a website: a top bar with
+   the sections, and each screen laid out across the page. Phones, the
+   landing page embed (.is-embed) and "Phone app view" (.is-phone) keep
+   the app layout above. The class is set in each page's <head>.
+   ===================================================================== */
+.split, .split-main, .split-side { display: grid; gap: 18px; align-content: start; }
+.web-head { display: none; }
+.web-points { display: none; }
+
+@media (min-width: 768px) {
+  .is-web body.app-page { background: var(--white); }
+  .is-web .app-stage { display: block; justify-items: normal; align-items: normal; min-height: 0; padding: 0; }
+  .is-web .stage-copy, .is-web .status-bar, .is-web .tabbar { display: none; }
+  .is-web .phone { display: block; width: auto; height: auto; max-height: none; min-height: 0; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
+  .is-web .phone-screen { display: block; overflow: visible; border-radius: 0; background: none; padding: 0; }
+  .is-web .app-body { overflow: visible; }
+
+  /* Top bar */
+  .is-web .web-head { display: block; position: sticky; top: 40px; z-index: 90; background: var(--white); border-bottom: 1px solid var(--line); }
+  .web-head-inner { max-width: 1200px; margin: 0 auto; padding: 0 var(--gutter); min-height: 72px; display: flex; align-items: center; gap: 24px; }
+  .web-head .logo svg { width: 32px; height: 32px; }
+  .web-head .logo-text { font-size: 1.4rem; }
+  .web-nav { display: flex; gap: 4px; }
+  .web-nav button {
+    display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 16px;
+    border: 0; border-radius: var(--r-pill); background: transparent; color: var(--muted);
+    font: inherit; font-size: 0.98rem; font-weight: 700; cursor: pointer; white-space: nowrap;
+  }
+  .web-nav button .icon { font-size: 22px; }
+  .web-nav button:hover { background: var(--mist); color: var(--ink); }
+  .web-nav button[aria-current="page"] { background: var(--green-50); color: var(--green-700); }
+  .web-nav button[aria-current="page"] .icon { font-variation-settings: "FILL" 1, "wght" 600, "GRAD" 0, "opsz" 24; }
+  .web-head-end { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+  .web-link {
+    display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 8px 12px;
+    border: 1px solid transparent; border-radius: var(--r-pill); color: var(--muted);
+    font-size: 0.95rem; font-weight: 700; text-decoration: none; white-space: nowrap;
+  }
+  .web-link .icon { font-size: 20px; }
+  .web-link:hover { background: var(--mist); color: var(--ink); }
+  .web-link-strong { color: var(--ink); border-color: var(--line); }
+
+  /* Screens */
+  .is-web .screen { max-width: 1200px; margin: 0 auto; padding: 40px var(--gutter) 96px; gap: 24px; }
+  .is-web .app-top { min-height: 0; padding-top: 0; }
+  .is-web .app-top .logo, .is-web .app-top > .avatar { display: none; }
+  .is-web .app-top:not(:has(.icon-btn, .app-title)) { display: none; }
+  .is-web .screen-head.pad-top { padding-top: 0; }
+  .is-web .app-title { font-size: clamp(1.9rem, 2.6vw, 2.5rem); letter-spacing: -0.03em; }
+  .is-web .app-sub { font-size: 1.05rem; }
+  .is-web .app-card { padding: 24px; }
+  .is-web .app-body .field-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+
+  /* Family: post a job */
+  .is-web .web-points { display: grid; gap: 14px; margin-top: 14px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .web-points li { display: flex; align-items: flex-start; gap: 12px; font-size: 1rem; line-height: 1.5; }
+  .web-points .icon { flex-shrink: 0; width: 36px; height: 36px; padding: 6px; border-radius: 50%; display: grid; place-items: center; background: var(--green-50); color: var(--green-700); font-size: 22px; }
+  .is-web #post-job { padding: 32px; border: 1px solid var(--line); border-radius: var(--r-xl); box-shadow: var(--shadow-sm); }
+  .is-web #post-job .job-tiles { gap: 12px; }
+  .is-web #post-job .job-tile > span { padding: 18px 8px 16px; font-size: 0.9rem; }
+
+  /* Family: shortlist as a row of cards */
+  .is-web [data-shortlist] { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+  .is-web [data-shortlist] .worker-card { display: flex; flex-direction: column; gap: 14px; }
+  .is-web [data-shortlist] .worker-card > .btn { margin-top: auto; }
+
+  /* Family: bookings, and both account pages */
+  .is-web [data-bookings], .is-web [data-screen="account"] > * { width: 100%; max-width: 680px; }
+  .is-web [data-screen="account"] > .btn { width: auto; justify-self: start; }
+
+  /* Worker: courses and work record */
+  .is-web .badge-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+  .is-web .app-table { font-size: 1rem; }
+  .is-web .app-table th { font-size: 0.85rem; }
+
+  /* Log in: a centred card */
+  .is-web body.login-page { background: var(--mist); }
+  .is-web .login-page .app-stage { display: grid; place-items: center; padding: 56px var(--gutter) 96px; }
+  .is-web .login-page .phone { width: 100%; max-width: 460px; background: var(--white); border: 1px solid var(--line); border-radius: var(--r-xl); box-shadow: var(--shadow-md); }
+  .is-web .login-screen { min-height: 0; padding: 40px; }
+  .is-web .login-mark .logo { display: none; }
+}
+
+/* Wide screens: two columns where it helps */
+@media (min-width: 1024px) {
+  .is-web [data-screen="post"] { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); column-gap: 64px; align-items: start; }
+  .is-web [data-screen="post"] > .screen-head { position: sticky; top: 152px; }
+  .is-web .split { grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: 56px; align-items: start; }
+  .is-web [data-screen="home"] .split { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+  .is-web .split-side.panel { position: sticky; top: 136px; padding: 24px; border: 1px solid var(--line); border-radius: var(--r-xl); box-shadow: var(--shadow-md); }
+  .is-web .panel .app-receipt { padding: 0; border: 0; }
+}
+
+/* Tablets: the top bar keeps its links as icons */
+@media (min-width: 768px) and (max-width: 1179px) {
+  .web-head-end .web-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .web-link { padding: 8px 10px; }
+}
+@media (min-width: 768px) and (max-width: 899px) {
+  .web-nav button { padding: 8px 12px; }
+  .web-nav button .icon { display: none; }
+}
