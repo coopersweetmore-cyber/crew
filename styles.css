@@ -964,3 +964,5 @@ body.app-page { background: var(--mist); }
 .biz-link { display: inline-flex; align-items: center; gap: 8px; margin: 10px 0 0; font-weight: 700; }
 .biz-link .icon { color: var(--green-700); font-size: 20px; }
 .biz-link a, .job-note a { color: var(--green-700); text-decoration: underline; text-underline-offset: 3px; }
+.business-timing { display: flex; align-items: center; gap: 8px; margin: 0; font-weight: 700; }
+.business-timing .icon { color: var(--green-700); font-size: 20px; }

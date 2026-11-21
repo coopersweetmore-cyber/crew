@@ -208,15 +208,16 @@ var SITE_COPY = {
     business: {
       kicker: "FOR HOTELS, RESTAURANTS AND EVENTS",
       title: "Trained young people for local businesses too",
-      intro: "Hotels, restaurants, beach clubs and event companies in Cascais need reliable extra hands. {brand} trains young people and puts them on record, so you know who you're getting.",
+      intro: "Hotels, restaurants, beach clubs and event companies in Cascais need reliable extra hands. Train young people on the job with us, or book ones we've already trained.",
       stat: "45,000",
       statText: "workers missing in Portugal's tourism sector, says the Hotel Association of Portugal (AHP). Waiting staff, kitchen, cleaning and reception are the hardest jobs to fill.",
       statSource: "Source: AHP, reported by Diário de Notícias and HR Portugal, 2023",
       offers: [
-        { tag: "Now", title: "Train with us", text: "Teach one of our free course modules, like event set-up or welcoming guests. Every certificate carries your name next to ours." },
-        { tag: "From summer 2027", title: "Extra hands for events and busy seasons", text: "Book Crew Certified workers aged 18 and over for daytime shifts: event set-up, serving help and guest welcome." },
-        { tag: "From summer 2027", title: "Hire Crew Certified young people", text: "Find trained, reviewed young people for seasonal and first jobs, with their skills record to check." }
+        { tag: "Train on the job", title: "Train them yourself, on real shifts", text: "Agree to teach the young people who work for you. They learn your way and finish with a proper certificate from your business and {brand}. Your staff train them, so they don't need a {brand} supervisor." },
+        { tag: "Trained by {brand}", title: "Book workers we've trained", text: "For events and busy seasons. They've passed our online course and done their first job with a {brand} supervisor. Workers aged 18 and over, daytime shifts." },
+        { tag: "Hire", title: "Hire Crew Certified young people", text: "Take on trained, reviewed young people for seasonal and first jobs, with their skills record to check." }
       ],
+      timing: "Businesses can sign up as partners now. Business shifts start in summer 2027.",
       cta: "Partner with {brand}",
       photoAlt: "A young waiter setting a long table with flowers for an event",
       photoNote: "Business shifts: workers aged 18+, daytime only"
@@ -310,8 +311,8 @@ var SITE_COPY = {
         ],
         interests: "What are you interested in?",
         interestOptions: [
-          { value: "Training partner", label: "Being a training partner" },
-          { value: "Event and season help", label: "Extra hands for events and busy seasons" },
+          { value: "Training on the job", label: "Training young people on the job" },
+          { value: "Crew-trained workers", label: "Booking Crew-trained workers for events and busy seasons" },
           { value: "Hiring", label: "Hiring Crew Certified young people" },
           { value: "Sponsoring", label: "Sponsoring training places or kits" }
         ],
@@ -401,12 +402,12 @@ var SITE_COPY = {
       title: "Questions",
       intro: "Can't find your answer? Email us at {email}.",
       items: [
-        { q: "When does {brand} start?", a: "We launch for households in Cascais in January 2027, and businesses can join as training partners now. Sign up and we'll email you when bookings open." },
+        { q: "When does {brand} start?", a: "We launch for households in Cascais in January 2027, and businesses can sign up as partners now. Sign up and we'll email you when bookings open." },
         { q: "Is every job insured?", a: "Yes. Every booked job will be insured, and the policy will be in place before we launch. Insurance is included in the booking fee." },
         { q: "How are workers checked?", a: "Workers pass a short online course and quiz for each job type before they can take that job. Under-18s need a parent or guardian's consent, and only workers aged 18 and over take business shifts. Every job ends with reviews from both sides." },
         { q: "How much does it cost?", a: "Workers set their own rate, usually around €10 an hour, and keep 100% of it. Households pay a 15% booking fee on top for a new match, or 5% to rebook the same worker. The fee includes insurance. You pay through {brand} after the job. Training partnerships for businesses are free, and business shifts and hiring are priced per partner." },
         { q: "I'm 16 or 17. Can I join?", a: "Yes, with a parent or guardian's consent. You won't be offered jobs after 22:00." },
-        { q: "Can businesses use {brand}?", a: "Yes. Hotels, restaurants, beach clubs and event companies can join as training partners now. From summer 2027 they can also book event and season shifts and hire Crew Certified young people. Sign up as a business and we'll get in touch." },
+        { q: "Can businesses use {brand}?", a: "Yes. Hotels, restaurants, beach clubs and event companies can train young people on the job, book workers {brand} has trained, or hire Crew Certified young people. When a business trains them, the young people get a certificate from that business and {brand}, and no {brand} supervisor is needed. Businesses can sign up as partners now, and business shifts start in summer 2027." },
         { q: "Can under-18s work for a business?", a: "Not at first. Business shifts start with workers aged 18 and over, daytime only. Workers aged 16 and 17 do household jobs, with a parent or guardian's consent." },
         { q: "What can't I book?", a: "No babysitting or childcare at launch, and nothing that needs ladders, power tools, a pool or driving." }
       ]
