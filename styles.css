@@ -420,6 +420,9 @@ fieldset.field[aria-invalid="true"] .choice span { border-color: var(--error); }
 .notice { display: flex; align-items: flex-start; gap: 12px; padding: 16px 18px; border-radius: var(--r-md); font-size: 1rem; line-height: 1.5; }
 .notice .icon { margin-top: 1px; }
 .notice-success { background: var(--green-50); color: var(--green-700); font-weight: 650; }
+.success-body { display: grid; gap: 12px; justify-items: start; }
+.success-body p { margin: 0; }
+.success-body .success-next { color: var(--ink); font-weight: 400; }
 .notice-error { background: var(--error-50); color: var(--error); }
 .notice-info { background: var(--sun-50); color: var(--ink); }
 

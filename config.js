@@ -233,6 +233,8 @@ var SITE_COPY = {
         { value: "Not sure", label: "Not sure" }
       ],
       chooseAll: "Choose all that apply.",
+      demoNext: "While you wait, log in to the app demo to see how {brand} will work. It uses sample data.",
+      demoLogin: "Log in to the demo",
       sending: "Sending…",
       errors: {
         required: "Fill in this field.",
@@ -247,39 +249,13 @@ var SITE_COPY = {
 
       family: {
         title: "Sign up as a family",
-        intro: "Tell us what you would book. Your answers also help us plan the service.",
+        intro: "Be one of the first to book when {brand} launches in January 2027.",
         name: "Your name",
         email: "Email",
         phone: "Phone (optional)",
         parish: "Your parish in Cascais",
-        jobs: "Which jobs would you book?",
-        frequency: "How often would you book?",
-        frequencyOptions: [
-          { value: "Once a month or less", label: "Once a month or less" },
-          { value: "2 to 3 times a month", label: "2 to 3 times a month" },
-          { value: "Weekly", label: "Weekly" },
-          { value: "Several times a week", label: "Several times a week" }
-        ],
-        fee: "Would you pay a 15% booking fee for insured, vetted workers?",
-        feeOptions: [
-          { value: "Yes", label: "Yes" },
-          { value: "Maybe", label: "Maybe" },
-          { value: "No", label: "No" }
-        ],
-        rate: "What's a fair hourly rate?",
-        rateOptions: [
-          { value: "8 to 9 euros", label: "€8 to 9" },
-          { value: "10 to 11 euros", label: "€10 to 11" },
-          { value: "12 to 13 euros", label: "€12 to 13" },
-          { value: "14+ euros", label: "€14 or more" }
-        ],
-        payment: "How would you prefer to pay?",
-        paymentOptions: [
-          { value: "MB WAY", label: "MB WAY" },
-          { value: "Card", label: "Card" },
-          { value: "Either", label: "Either" }
-        ],
-        consent: "I agree that {brand} can keep these answers and email me about the launch.",
+        jobs: "What do you need help with?",
+        consent: "I agree that {brand} can keep my details and email me about the launch.",
         submit: "Sign up as a family",
         success: "Thanks, you're on the list. We'll email you before {brand} launches in January 2027."
       },
@@ -315,7 +291,7 @@ var SITE_COPY = {
           { value: "Yes", label: "Yes" },
           { value: "No", label: "No" }
         ],
-        consent: "I agree that {brand} can keep these answers and email me about joining.",
+        consent: "I agree that {brand} can keep my details and email me about joining.",
         submit: "Sign up to work",
         success: "Thanks, you're signed up. We'll email you before {brand} launches in January 2027."
       }

@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400..800&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,500..600,0..1,0&display=block">
   <link rel="preload" as="image" href="assets/hero-dog-walk.jpg">
-  <link rel="stylesheet" href="styles.css?v=15">
+  <link rel="stylesheet" href="styles.css?v=16">
 </head>
 <body data-title="meta.titleIndex">
 
@@ -34,7 +34,7 @@
         </ul>
       </nav>
       <div class="header-actions">
-        <a class="btn btn-ghost header-demo" href="login.html?v=15">
+        <a class="btn btn-ghost header-demo" href="login.html?v=16">
           <span class="icon" aria-hidden="true">smartphone</span>
           <span data-t="nav.demo"></span>
         </a>
@@ -133,8 +133,8 @@
             <p class="lead" data-t="how.intro"></p>
           </div>
           <div class="segmented" role="tablist" data-tabs data-how-tabs data-t-aria-label="how.tabsLabel">
-            <button type="button" role="tab" id="how-tab-family" aria-controls="how-family" aria-selected="true" data-demo="family.html?v=15&embed=1" data-t="how.tabFamily"></button>
-            <button type="button" role="tab" id="how-tab-worker" aria-controls="how-worker" aria-selected="false" tabindex="-1" data-demo="worker.html?v=15&embed=1" data-t="how.tabWorker"></button>
+            <button type="button" role="tab" id="how-tab-family" aria-controls="how-family" aria-selected="true" data-demo="family.html?v=16&embed=1" data-t="how.tabFamily"></button>
+            <button type="button" role="tab" id="how-tab-worker" aria-controls="how-worker" aria-selected="false" tabindex="-1" data-demo="worker.html?v=16&embed=1" data-t="how.tabWorker"></button>
           </div>
           <p class="steps-hint"><span class="icon" aria-hidden="true">touch_app</span><span data-t="how.stepsHint"></span></p>
           <div role="tabpanel" id="how-family" aria-labelledby="how-tab-family">
@@ -165,9 +165,9 @@
             <p data-t="how.demoText"></p>
           </div>
           <div class="device">
-            <iframe src="family.html?v=15&embed=1" loading="lazy" data-demo-frame data-t-title="how.demoFrameTitle"></iframe>
+            <iframe src="family.html?v=16&embed=1" loading="lazy" data-demo-frame data-t-title="how.demoFrameTitle"></iframe>
           </div>
-          <a class="btn btn-sun" href="login.html?v=15">
+          <a class="btn btn-sun" href="login.html?v=16">
             <span class="icon" aria-hidden="true">open_in_full</span>
             <span data-t="how.demoOpen"></span>
           </a>
@@ -376,30 +376,6 @@
                   <p class="field-error"></p>
                 </fieldset>
 
-                <fieldset class="field" data-rule="one">
-                  <legend data-t="forms.family.frequency"></legend>
-                  <div class="choices" data-choices="forms.family.frequencyOptions" data-name="frequency"></div>
-                  <p class="field-error"></p>
-                </fieldset>
-
-                <fieldset class="field" data-rule="one">
-                  <legend data-t="forms.family.fee"></legend>
-                  <div class="choices" data-choices="forms.family.feeOptions" data-name="booking_fee"></div>
-                  <p class="field-error"></p>
-                </fieldset>
-
-                <fieldset class="field" data-rule="one">
-                  <legend data-t="forms.family.rate"></legend>
-                  <div class="choices" data-choices="forms.family.rateOptions" data-name="fair_rate"></div>
-                  <p class="field-error"></p>
-                </fieldset>
-
-                <fieldset class="field" data-rule="one">
-                  <legend data-t="forms.family.payment"></legend>
-                  <div class="choices" data-choices="forms.family.paymentOptions" data-name="payment"></div>
-                  <p class="field-error"></p>
-                </fieldset>
-
                 <div class="field" data-rule="consent">
                   <label class="consent">
                     <input type="checkbox" name="consent" value="Yes">
@@ -417,7 +393,14 @@
 
               <div class="notice notice-success" data-success tabindex="-1" hidden>
                 <span class="icon icon-fill" aria-hidden="true">check_circle</span>
-                <span data-t="forms.family.success"></span>
+                <div class="success-body">
+                  <p data-t="forms.family.success"></p>
+                  <p class="success-next" data-t="forms.demoNext"></p>
+                  <a class="btn btn-primary" href="login.html?v=16&amp;role=family">
+                    <span data-t="forms.demoLogin"></span>
+                    <span class="icon" aria-hidden="true">arrow_forward</span>
+                  </a>
+                </div>
               </div>
             </form>
           </div>
@@ -512,7 +495,14 @@
 
               <div class="notice notice-success" data-success tabindex="-1" hidden>
                 <span class="icon icon-fill" aria-hidden="true">check_circle</span>
-                <span data-t="forms.worker.success"></span>
+                <div class="success-body">
+                  <p data-t="forms.worker.success"></p>
+                  <p class="success-next" data-t="forms.demoNext"></p>
+                  <a class="btn btn-primary" href="login.html?v=16&amp;role=worker">
+                    <span data-t="forms.demoLogin"></span>
+                    <span class="icon" aria-hidden="true">arrow_forward</span>
+                  </a>
+                </div>
               </div>
             </form>
           </div>
@@ -554,13 +544,13 @@
         <a href="#how" data-t="nav.how"></a>
         <a href="#pricing" data-t="nav.pricing"></a>
         <a href="#signup" data-t="nav.signup"></a>
-        <a href="login.html?v=15" data-t="nav.demo"></a>
+        <a href="login.html?v=16" data-t="nav.demo"></a>
       </nav>
       <p class="footer-small" data-t="footer.photos"></p>
     </div>
   </footer>
 
-  <script src="config.js?v=15"></script>
-  <script src="script.js?v=15"></script>
+  <script src="config.js?v=16"></script>
+  <script src="script.js?v=16"></script>
 </body>
 </html>

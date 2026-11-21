@@ -696,6 +696,10 @@
     if (!form) return;
     var toggle = form.querySelector("[data-pass-toggle]");
     var pass = document.getElementById("l-pass");
+    // Coming from a sign-up confirmation: start on the matching role.
+    var wanted = new URLSearchParams(window.location.search).get("role");
+    var preset = wanted && form.querySelector('input[name=role][value="' + (wanted === "worker" ? "worker" : "family") + '"]');
+    if (preset) preset.checked = true;
     toggle.addEventListener("click", function () {
       var show = pass.type === "password";
       pass.type = show ? "text" : "password";
@@ -709,7 +713,7 @@
       // Nothing is checked or stored: clear the fields and move on.
       form.reset();
       pass.type = "password";
-      window.location.href = page + "?v=15" + (EMBED ? "&embed=1" : "");
+      window.location.href = page + "?v=16" + (EMBED ? "&embed=1" : "");
     });
   }
 
@@ -1028,7 +1032,7 @@
       card.appendChild(again);
 
       var link = el("a", "btn btn-ghost btn-block");
-      link.href = "worker.html?v=15&worker=" + booking.worker.id + "&done=1" + (EMBED ? "&embed=1" : "");
+      link.href = "worker.html?v=16&worker=" + booking.worker.id + "&done=1" + (EMBED ? "&embed=1" : "");
       link.appendChild(icon("person"));
       link.appendChild(el("span", null, t("demo.family.seeWorker", { worker: booking.worker.name })));
       card.appendChild(link);
