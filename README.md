@@ -90,7 +90,23 @@ All photos are from [Unsplash](https://unsplash.com) and used under the Unsplash
 | `assets/people/worker-b.jpg` | https://unsplash.com/photos/mens-blue-crew-neck-t-shirt-gRslJX1S4h0 |
 | `assets/people/worker-c.jpg` | https://unsplash.com/photos/a-smiling-student-with-backpack-and-books-walks-outside-dPQBwZ6d-NU |
 | `assets/people/family.jpg` | https://unsplash.com/photos/woman-in-white-long-sleeve-shirt-smiling-RBtFAZXlJDA |
+| `assets/business-event-team.jpg` | https://unsplash.com/photos/man-in-white-top-standing-next-to-table-OB7ol699Iww |
 
 ## A note on Google permissions
 
 `Code.gs` starts with `@OnlyCurrentDoc`, so the script can only touch the Sheet it belongs to. If you approved the script before this line was added, Google may still list wider access for it. You can review or remove that at myaccount.google.com, under Security, then "Third-party connections". The script asks again for access to just this Sheet next time it needs it.
+
+## Business sign-ups
+
+The sign-up section has a third tab, "A business", for hotels, restaurants, beach clubs and event companies.
+
+Until the sign-up script is updated, business sign-ups are saved in the **Families** tab. Their name starts with `[Business]`, the "Parish" column holds the type of business and the "Jobs" column holds what they're interested in. None are lost.
+
+To give businesses their own tab:
+
+1. Open the Google Sheet, then **Extensions > Apps Script**.
+2. Replace the code with the new `apps-script/Code.gs` from this repo and save.
+3. **Deploy > Manage deployments**, edit the current deployment, choose **New version**, then **Deploy**. The web app URL stays the same.
+4. In `config.js`, set `BUSINESS_TAB_READY = true`.
+
+New business sign-ups then go to a "Businesses" tab, which the script creates itself.

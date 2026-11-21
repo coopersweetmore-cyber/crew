@@ -327,6 +327,18 @@
       out[key] = out[key] ? out[key] + ", " + value : String(value).trim();
     });
     var params = new URLSearchParams();
+    if (type === "business" && !window.BUSINESS_TAB_READY) {
+      // Until the sign-up script knows the "Businesses" tab, save the business
+      // in the "Families" tab, marked so it's easy to find. Nothing is lost.
+      params.append("form", "family");
+      params.append("name", "[Business] " + (out.business_name || "") + " (" + (out.name || "") + ")");
+      params.append("email", out.email || "");
+      params.append("phone", out.phone || "");
+      params.append("parish", out.business_type || "");
+      params.append("jobs", "Interested in: " + (out.interests || "") + " | Young people a year: " + (out.young_people_per_year || ""));
+      params.append("consent", out.consent || "");
+      return params;
+    }
     params.append("form", type);
     Object.keys(out).forEach(function (k) { params.append(k, out[k]); });
     return params;
@@ -431,10 +443,36 @@
     if (!signupTabs) return;
 
     function openForm(kind) {
-      var tab = document.getElementById(kind === "worker" ? "su-tab-worker" : "su-tab-family");
+      var ids = { worker: ["su-tab-worker", "worker"], business: ["su-tab-business", "partner"] };
+      var pair = ids[kind] || ["su-tab-family", "family"];
+      var tab = document.getElementById(pair[0]);
       if (tab && signupTabs._select) signupTabs._select(tab);
-      return document.getElementById(kind === "worker" ? "worker" : "family");
+      return document.getElementById(pair[1]);
     }
+
+    // Hero: "For my home" or "For my business" swaps the starter's fields.
+    var heroFor = function () {
+      var picked = document.querySelector('input[name="st-for"]:checked');
+      return picked ? picked.value : "home";
+    };
+    document.querySelectorAll('input[name="st-for"]').forEach(function (r) {
+      r.addEventListener("change", function () {
+        var biz = heroFor() === "business";
+        document.querySelectorAll("#st-family [data-for-home]").forEach(function (n) { n.hidden = biz; });
+        document.querySelectorAll("#st-family [data-for-business]").forEach(function (n) { n.hidden = !biz; });
+      });
+    });
+
+    // "Partner with Crew" links open the business form.
+    document.querySelectorAll('a[href="#partner"]').forEach(function (a) {
+      a.addEventListener("click", function (e) {
+        e.preventDefault();
+        var form = openForm("business");
+        form.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" });
+        history.replaceState(null, "", "#partner");
+      });
+    });
+    if (location.hash === "#partner") openForm("business");
 
     // Any link to #family or #worker opens the right form first.
     document.querySelectorAll('a[href="#family"], a[href="#worker"]').forEach(function (a) {
@@ -456,7 +494,16 @@
     document.querySelectorAll("[data-start]").forEach(function (btn) {
       btn.addEventListener("click", function () {
         var kind = btn.getAttribute("data-start");
+        if (btn.hasAttribute("data-start-family") && heroFor() === "business") kind = "business";
         var form = openForm(kind);
+        if (kind === "business") {
+          var btype = document.getElementById("st-btype").value;
+          if (btype) form.querySelector('[name="business_type"]').value = btype;
+          var firstB = form.querySelector('input[name="business_name"]');
+          form.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" });
+          if (firstB) setTimeout(function () { firstB.focus({ preventScroll: true }); }, REDUCED ? 0 : 450);
+          return;
+        }
         if (kind === "family") {
           var job = document.getElementById("st-job").value;
           var parish = document.getElementById("st-parish-f").value;
@@ -754,7 +801,7 @@
       // Nothing is checked or stored: clear the fields and move on.
       form.reset();
       pass.type = "password";
-      window.location.href = keepView(page + "?v=19");
+      window.location.href = keepView(page + "?v=20");
     });
   }
 
@@ -1073,7 +1120,7 @@
       card.appendChild(again);
 
       var link = el("a", "btn btn-ghost btn-block");
-      link.href = keepView("worker.html?v=19&worker=" + booking.worker.id + "&done=1");
+      link.href = keepView("worker.html?v=20&worker=" + booking.worker.id + "&done=1");
       link.appendChild(icon("person"));
       link.appendChild(el("span", null, t("demo.family.seeWorker", { worker: booking.worker.name })));
       card.appendChild(link);

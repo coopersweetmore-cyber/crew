@@ -4,7 +4,7 @@
  * Paste this into the Apps Script editor of your Google Sheet
  * (Extensions > Apps Script) and deploy it as a web app. See README.md.
  *
- * Each form POST adds one row to the "Families" or "Workers" tab,
+ * Each form POST adds one row to the "Families", "Workers" or "Businesses" tab,
  * with a timestamp in the first column. Tabs and header rows are
  * created automatically the first time a sign-up arrives.
  */
@@ -21,6 +21,12 @@ var TABS = {
     fields: ['name', 'email', 'phone', 'parish', 'jobs', 'frequency', 'booking_fee', 'fair_rate', 'payment', 'consent'],
     headers: ['Timestamp', 'Name', 'Email', 'Phone', 'Parish', 'Jobs they would book', 'How often',
               'Would pay 15% fee', 'Fair hourly rate', 'Preferred payment', 'Consent']
+  },
+  business: {
+    name: 'Businesses',
+    fields: ['business_name', 'business_type', 'name', 'email', 'phone', 'interests', 'young_people_per_year', 'consent'],
+    headers: ['Timestamp', 'Business', 'Type', 'Contact name', 'Email', 'Phone', 'Interested in',
+              'Young people a year', 'Consent']
   },
   worker: {
     name: 'Workers',

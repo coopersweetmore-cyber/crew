@@ -11,6 +11,11 @@ var CONTACT_EMAIL = "[CONTACT EMAIL]";
 
 // Google Apps Script web app URL (README step 4). Leave empty until deployed.
 // It looks like: https://script.google.com/macros/s/XXXXXXXX/exec
+// Set to true once apps-script/Code.gs (with the "Businesses" tab) is
+// redeployed. Until then business sign-ups are saved in the "Families" tab,
+// with "[Business]" at the start of the name, so none are lost.
+var BUSINESS_TAB_READY = false;
+
 var SIGNUP_ENDPOINT = "https://script.google.com/macros/s/AKfycbx5E5Ur-9kYOksBxM-B2eFWTWzSew-Pxo2dBXlnURoIpxckXz9B-RG3lKVppkJ2ANg7Eg/exec";
 
 // Which language from SITE_COPY to show. Add a "pt" block below to translate.
@@ -59,16 +64,23 @@ var SITE_COPY = {
       pricing: "Pricing",
       faq: "FAQ",
       demo: "Try the app demo",
-      signup: "Sign up"
+      signup: "Sign up",
+      business: "For businesses"
     },
 
     hero: {
       title: "Trusted local help from trained young people",
-      intro: "{brand} connects Cascais households and older neighbours with trained young people aged 16 to 24 for paid local jobs.",
+      intro: "{brand} connects Cascais households, hotels and local businesses with trained young people aged 16 to 24 for paid local jobs.",
       tabsLabel: "Who are you?",
       tabFamily: "I need help",
       tabWorker: "I want to work",
       familyLine: "Book a trained young person for the jobs around your home.",
+      forLabel: "Who is it for?",
+      forHome: "My home",
+      forBusiness: "My business",
+      businessLine: "Train, book or hire young people for your hotel, restaurant or events.",
+      businessTypeLabel: "Type of business",
+      businessTypePlaceholder: "Choose a type",
       workerLine: "Earn money near home, learn new skills and build a real reference.",
       jobLabel: "What do you need help with?",
       jobPlaceholder: "Choose a job",
@@ -191,6 +203,23 @@ var SITE_COPY = {
     },
 
 
+    business: {
+      kicker: "FOR HOTELS, RESTAURANTS AND EVENTS",
+      title: "Trained young people for local businesses too",
+      intro: "Hotels, restaurants, beach clubs and event companies in Cascais need reliable extra hands. {brand} trains young people and puts them on record, so you know who you're getting.",
+      stat: "45,000",
+      statText: "workers missing in Portugal's tourism sector, says the Hotel Association of Portugal (AHP). Waiting staff, kitchen, cleaning and reception are the hardest jobs to fill.",
+      statSource: "Source: AHP, reported by Diário de Notícias and HR Portugal, 2023",
+      offers: [
+        { tag: "Now", title: "Train with us", text: "Teach one of our free course modules, like event set-up or welcoming guests. Every certificate carries your name next to ours." },
+        { tag: "From summer 2027", title: "Extra hands for events and busy seasons", text: "Book Crew Certified workers aged 18 and over for daytime shifts: event set-up, serving help and guest welcome." },
+        { tag: "From summer 2027", title: "Hire Crew Certified young people", text: "Find trained, reviewed young people for seasonal and first jobs, with their skills record to check." }
+      ],
+      cta: "Partner with {brand}",
+      photoAlt: "A young waiter setting a long table with flowers for an event",
+      photoNote: "Business shifts: workers aged 18+, daytime only"
+    },
+
     pricing: {
       title: "Simple, fair pricing",
       intro: "Workers keep everything they earn. Families pay a small fee on top that includes insurance.",
@@ -211,7 +240,8 @@ var SITE_COPY = {
       points: [
         { icon: "payments", title: "Workers set their own rate", text: "Usually around €10 an hour. Workers keep 100% of their rate." },
         { icon: "receipt_long", title: "15% booking fee for a new match", text: "Added on top of the worker's rate. It includes insurance." },
-        { icon: "autorenew", title: "5% to rebook the same worker", text: "Book someone you already know again for a smaller fee." }
+        { icon: "autorenew", title: "5% to rebook the same worker", text: "Book someone you already know again for a smaller fee." },
+        { icon: "storefront", title: "Businesses", text: "Training partnerships are free. Event shifts and hiring are priced per partner. Ask us." }
       ]
     },
 
@@ -220,7 +250,8 @@ var SITE_COPY = {
       intro: "It takes about two minutes. We'll email you before we launch in January 2027.",
       tabsLabel: "Sign up as",
       tabFamily: "A family",
-      tabWorker: "A young person (16 to 24)"
+      tabWorker: "A young person (16 to 24)",
+      tabBusiness: "A business"
     },
 
     forms: {
@@ -258,6 +289,40 @@ var SITE_COPY = {
         consent: "I agree that {brand} can keep my details and email me about the launch.",
         submit: "Sign up as a family",
         success: "Thanks, you're on the list. We'll email you before {brand} launches in January 2027."
+      },
+
+      business: {
+        title: "Sign up as a business",
+        intro: "For hotels, restaurants, beach clubs, event companies and other local businesses. We'll get in touch to talk it through.",
+        businessName: "Business name",
+        name: "Your name",
+        email: "Work email",
+        phone: "Phone (optional)",
+        type: "Type of business",
+        typeOptions: [
+          { value: "Hotel", label: "Hotel" },
+          { value: "Restaurant or cafe", label: "Restaurant or café" },
+          { value: "Beach club", label: "Beach club" },
+          { value: "Events company", label: "Events company" },
+          { value: "Other", label: "Other" }
+        ],
+        interests: "What are you interested in?",
+        interestOptions: [
+          { value: "Training partner", label: "Being a training partner" },
+          { value: "Event and season help", label: "Extra hands for events and busy seasons" },
+          { value: "Hiring", label: "Hiring Crew Certified young people" },
+          { value: "Sponsoring", label: "Sponsoring training places or kits" }
+        ],
+        size: "Roughly how many young people might you need in a year?",
+        sizeOptions: [
+          { value: "1 to 5", label: "1 to 5" },
+          { value: "6 to 20", label: "6 to 20" },
+          { value: "20+", label: "More than 20" },
+          { value: "Not sure", label: "Not sure yet" }
+        ],
+        consent: "I agree that {brand} can keep these details and contact me about a partnership.",
+        submit: "Sign up as a business",
+        success: "Thanks, we've got your details. We'll be in touch about a partnership before {brand} launches in January 2027."
       },
 
       worker: {
@@ -339,6 +404,8 @@ var SITE_COPY = {
         { q: "How are workers checked?", a: "Workers pass a short online course and quiz for each job type before they can take that job. Under-18s need a parent or guardian's consent, and every job ends with reviews from both sides." },
         { q: "How much does it cost?", a: "Workers set their own rate, usually around €10 an hour, and keep 100% of it. Families pay a 15% booking fee on top for a new match, or 5% to rebook the same worker. The fee includes insurance. You pay through {brand} after the job." },
         { q: "I'm 16 or 17. Can I join?", a: "Yes, with a parent or guardian's consent. You won't be offered jobs after 22:00." },
+        { q: "Can businesses use {brand}?", a: "Yes. Hotels, restaurants, beach clubs and event companies can join as training partners now. From summer 2027 they can also book event and season shifts and hire Crew Certified young people. Sign up as a business and we'll get in touch." },
+        { q: "Can under-18s work for a business?", a: "Not at first. Business shifts start with workers aged 18 and over, daytime only. Workers aged 16 and 17 do household jobs, with a parent or guardian's consent." },
         { q: "What can't I book?", a: "No babysitting or childcare at launch, and nothing that needs ladders, power tools, a pool or driving." }
       ]
     },

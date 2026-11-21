@@ -928,3 +928,36 @@ body.app-page { background: var(--mist); }
   .web-nav button { padding: 8px 12px; }
   .web-nav button .icon { display: none; }
 }
+
+/* ===== For businesses ===== */
+.business-grid { display: grid; gap: 48px; align-items: center; }
+.business-copy { display: grid; gap: 22px; }
+.business-copy .kicker { font-size: 0.85rem; font-weight: 800; letter-spacing: 0.1em; color: var(--green-700); margin: 0; }
+.business-stat { display: flex; gap: 18px; align-items: center; padding: 18px 20px; border-radius: 18px; background: var(--mist, #EEF4F1); }
+.business-stat-num { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; color: var(--green-700); white-space: nowrap; margin: 0; }
+.business-stat p { margin: 0; }
+.business-source { font-size: 0.8rem; color: var(--muted); margin-top: 4px !important; }
+.business-offers { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.business-offers li { display: flex; gap: 16px; padding: 16px 0; border-top: 1px solid var(--line); }
+.business-offers li:last-child { border-bottom: 1px solid var(--line); }
+.offer-n { width: 34px; height: 34px; flex-shrink: 0; border-radius: 50%; background: var(--sun); color: var(--ink); display: grid; place-items: center; font-weight: 800; }
+.business-offers h3 { font-size: 1.1rem; font-weight: 800; margin: 2px 0 4px; }
+.business-offers p { margin: 0; color: var(--muted); line-height: 1.5; }
+.business-offers .offer-tag { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.04em; color: var(--green-700); text-transform: uppercase; }
+.business-copy .btn { justify-self: start; }
+.business-media { position: relative; }
+.business-media img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--r-xl); display: block; }
+.business-note { position: absolute; left: 16px; bottom: 16px; display: inline-flex; align-items: center; gap: 8px; margin: 0; padding: 10px 14px; border-radius: 999px; background: var(--white); box-shadow: var(--shadow-md); font-weight: 700; font-size: 0.9rem; }
+.business-note .icon { color: var(--green-700); font-size: 20px; }
+@media (min-width: 900px) {
+  .business-grid { grid-template-columns: 1.1fr 0.9fr; gap: 64px; }
+}
+/* Hero: home or business choice */
+.for-choice { border: 0; padding: 0; margin: 0 0 10px; display: flex; gap: 8px; flex-wrap: wrap; }
+.for-choice label { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; font-weight: 700; font-size: 0.92rem; cursor: pointer; background: var(--white); }
+.for-choice input { accent-color: var(--green-700); margin: 0; }
+.for-choice label:has(input:checked) { border-color: var(--green-700); background: var(--mist, #EEF4F1); }
+@media (max-width: 599px) {
+  .business-stat { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .business-media img { aspect-ratio: 4 / 3; }
+}

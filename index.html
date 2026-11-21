@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- The visible title and all copy come from config.js. This fallback is brand-neutral. -->
   <title>Trained young people for local jobs in Cascais</title>
-  <meta name="description" content="Cascais households and older neighbours book trained young people aged 16 to 24 for paid local jobs. Launching January 2027.">
+  <meta name="description" content="Cascais households, hotels and local businesses book trained young people aged 16 to 24 for paid local jobs. Launching January 2027.">
   <meta name="theme-color" content="#08392D">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400..800&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,500..600,0..1,0&display=block">
   <link rel="preload" as="image" href="assets/hero-dog-walk.jpg">
-  <link rel="stylesheet" href="styles.css?v=19">
+  <link rel="stylesheet" href="styles.css?v=20">
 </head>
 <body data-title="meta.titleIndex">
 
@@ -28,13 +28,14 @@
         <ul>
           <li><a href="#how" data-t="nav.how"></a></li>
           <li><a href="#jobs" data-t="nav.jobs"></a></li>
+          <li><a href="#business" data-t="nav.business"></a></li>
           <li><a href="#safety" data-t="nav.safety"></a></li>
           <li><a href="#pricing" data-t="nav.pricing"></a></li>
           <li><a href="#faq" data-t="nav.faq"></a></li>
         </ul>
       </nav>
       <div class="header-actions">
-        <a class="btn btn-ghost header-demo" href="login.html?v=19">
+        <a class="btn btn-ghost header-demo" href="login.html?v=20">
           <span class="icon" aria-hidden="true">smartphone</span>
           <span data-t="nav.demo"></span>
         </a>
@@ -60,8 +61,14 @@
               </div>
 
               <div class="starter-body" role="tabpanel" id="st-family" aria-labelledby="st-tab-family">
-                <p class="starter-line" data-t="hero.familyLine"></p>
-                <div class="starter-fields two">
+                <fieldset class="for-choice">
+                  <legend class="sr-only" data-t="hero.forLabel"></legend>
+                  <label><input type="radio" name="st-for" value="home" checked><span data-t="hero.forHome"></span></label>
+                  <label><input type="radio" name="st-for" value="business"><span data-t="hero.forBusiness"></span></label>
+                </fieldset>
+                <p class="starter-line" data-for-home data-t="hero.familyLine"></p>
+                <p class="starter-line" data-for-business hidden data-t="hero.businessLine"></p>
+                <div class="starter-fields two" data-for-home>
                   <div class="field">
                     <label class="label" for="st-job" data-t="hero.jobLabel"></label>
                     <select class="select" id="st-job" data-options="jobTypes" data-placeholder="hero.jobPlaceholder"></select>
@@ -71,7 +78,13 @@
                     <select class="select" id="st-parish-f" data-options="forms.parishes" data-placeholder="forms.parishPlaceholder"></select>
                   </div>
                 </div>
-                <button class="btn btn-primary btn-lg btn-block" type="button" data-start="family">
+                <div class="starter-fields" data-for-business hidden>
+                  <div class="field">
+                    <label class="label" for="st-btype" data-t="hero.businessTypeLabel"></label>
+                    <select class="select" id="st-btype" data-options="forms.business.typeOptions" data-placeholder="hero.businessTypePlaceholder"></select>
+                  </div>
+                </div>
+                <button class="btn btn-primary btn-lg btn-block" type="button" data-start="family" data-start-family>
                   <span data-t="hero.start"></span>
                   <span class="icon" aria-hidden="true">arrow_forward</span>
                 </button>
@@ -133,8 +146,8 @@
             <p class="lead" data-t="how.intro"></p>
           </div>
           <div class="segmented" role="tablist" data-tabs data-how-tabs data-t-aria-label="how.tabsLabel">
-            <button type="button" role="tab" id="how-tab-family" aria-controls="how-family" aria-selected="true" data-demo="family.html?v=19&embed=1" data-t="how.tabFamily"></button>
-            <button type="button" role="tab" id="how-tab-worker" aria-controls="how-worker" aria-selected="false" tabindex="-1" data-demo="worker.html?v=19&embed=1" data-t="how.tabWorker"></button>
+            <button type="button" role="tab" id="how-tab-family" aria-controls="how-family" aria-selected="true" data-demo="family.html?v=20&embed=1" data-t="how.tabFamily"></button>
+            <button type="button" role="tab" id="how-tab-worker" aria-controls="how-worker" aria-selected="false" tabindex="-1" data-demo="worker.html?v=20&embed=1" data-t="how.tabWorker"></button>
           </div>
           <p class="steps-hint"><span class="icon" aria-hidden="true">touch_app</span><span data-t="how.stepsHint"></span></p>
           <div role="tabpanel" id="how-family" aria-labelledby="how-tab-family">
@@ -165,9 +178,9 @@
             <p data-t="how.demoText"></p>
           </div>
           <div class="device">
-            <iframe src="family.html?v=19&embed=1" loading="lazy" data-demo-frame data-t-title="how.demoFrameTitle"></iframe>
+            <iframe src="family.html?v=20&embed=1" loading="lazy" data-demo-frame data-t-title="how.demoFrameTitle"></iframe>
           </div>
-          <a class="btn btn-sun" href="login.html?v=19">
+          <a class="btn btn-sun" href="login.html?v=20">
             <span class="icon" aria-hidden="true">open_in_full</span>
             <span data-t="how.demoOpen"></span>
           </a>
@@ -195,6 +208,34 @@
           </template>
         </ul>
         <p class="job-note"><span class="icon" aria-hidden="true">info</span><span data-t="jobs.notOffered"></span></p>
+      </div>
+    </section>
+
+    <!-- For businesses -->
+    <section id="business" class="section">
+      <div class="container business-grid">
+        <div class="business-copy">
+          <p class="kicker" data-t="business.kicker"></p>
+          <h2 class="h2" data-t="business.title"></h2>
+          <p class="lead" data-t="business.intro"></p>
+          <div class="business-stat">
+            <p class="business-stat-num num" data-t="business.stat"></p>
+            <div><p data-t="business.statText"></p><p class="business-source" data-t="business.statSource"></p></div>
+          </div>
+          <ol class="business-offers" data-list="business.offers">
+            <template>
+              <li><span class="offer-n num" data-f="index" aria-hidden="true"></span><div><p class="offer-tag" data-f="tag"></p><h3 data-f="title"></h3><p data-f="text"></p></div></li>
+            </template>
+          </ol>
+          <a class="btn btn-primary btn-lg" href="#partner">
+            <span data-t="business.cta"></span>
+            <span class="icon" aria-hidden="true">arrow_forward</span>
+          </a>
+        </div>
+        <div class="business-media">
+          <img src="assets/business-event-team.jpg" width="1462" height="789" loading="lazy" data-t-alt="business.photoAlt">
+          <p class="business-note"><span class="icon" aria-hidden="true">badge</span><span data-t="business.photoNote"></span></p>
+        </div>
       </div>
     </section>
 
@@ -335,6 +376,7 @@
           <div class="segmented" role="tablist" data-tabs data-signup-tabs data-t-aria-label="signup.tabsLabel">
             <button type="button" role="tab" id="su-tab-family" aria-controls="su-family" aria-selected="true" data-t="signup.tabFamily"></button>
             <button type="button" role="tab" id="su-tab-worker" aria-controls="su-worker" aria-selected="false" tabindex="-1" data-t="signup.tabWorker"></button>
+            <button type="button" role="tab" id="su-tab-business" aria-controls="su-business" aria-selected="false" tabindex="-1" data-t="signup.tabBusiness"></button>
           </div>
 
           <div role="tabpanel" id="su-family" aria-labelledby="su-tab-family">
@@ -396,7 +438,7 @@
                 <div class="success-body">
                   <p data-t="forms.family.success"></p>
                   <p class="success-next" data-t="forms.demoNext"></p>
-                  <a class="btn btn-primary" href="login.html?v=19&amp;role=family">
+                  <a class="btn btn-primary" href="login.html?v=20&amp;role=family">
                     <span data-t="forms.demoLogin"></span>
                     <span class="icon" aria-hidden="true">arrow_forward</span>
                   </a>
@@ -504,11 +546,85 @@
                 <div class="success-body">
                   <p data-t="forms.worker.success"></p>
                   <p class="success-next" data-t="forms.demoNext"></p>
-                  <a class="btn btn-primary" href="login.html?v=19&amp;role=worker">
+                  <a class="btn btn-primary" href="login.html?v=20&amp;role=worker">
                     <span data-t="forms.demoLogin"></span>
                     <span class="icon" aria-hidden="true">arrow_forward</span>
                   </a>
                 </div>
+              </div>
+            </form>
+          </div>
+
+          <div role="tabpanel" id="su-business" aria-labelledby="su-tab-business" hidden>
+            <form id="partner" class="form-card" data-form="business" novalidate>
+              <div class="form-card-head">
+                <h3 class="h3" data-t="forms.business.title"></h3>
+                <p data-t="forms.business.intro"></p>
+              </div>
+
+              <div class="form-fields" data-fields>
+                <div class="field-row">
+                  <div class="field" data-rule="required">
+                    <label class="label" for="b-company" data-t="forms.business.businessName"></label>
+                    <input class="input" id="b-company" name="business_name" type="text" autocomplete="organization">
+                    <p class="field-error"></p>
+                  </div>
+                  <div class="field" data-rule="required">
+                    <label class="label" for="b-type" data-t="forms.business.type"></label>
+                    <select class="select" id="b-type" name="business_type" data-options="forms.business.typeOptions" data-placeholder="hero.businessTypePlaceholder"></select>
+                    <p class="field-error"></p>
+                  </div>
+                </div>
+
+                <div class="field" data-rule="required">
+                  <label class="label" for="b-name" data-t="forms.business.name"></label>
+                  <input class="input" id="b-name" name="name" type="text" autocomplete="name">
+                  <p class="field-error"></p>
+                </div>
+
+                <div class="field-row">
+                  <div class="field" data-rule="email">
+                    <label class="label" for="b-email" data-t="forms.business.email"></label>
+                    <input class="input" id="b-email" name="email" type="email" autocomplete="email" inputmode="email">
+                    <p class="field-error"></p>
+                  </div>
+                  <div class="field">
+                    <label class="label" for="b-phone" data-t="forms.business.phone"></label>
+                    <input class="input" id="b-phone" name="phone" type="tel" autocomplete="tel">
+                  </div>
+                </div>
+
+                <fieldset class="field" data-rule="many">
+                  <legend data-t="forms.business.interests"></legend>
+                  <p class="hint" data-t="forms.chooseAll"></p>
+                  <div class="choices" data-choices="forms.business.interestOptions" data-name="interests" data-type="checkbox"></div>
+                  <p class="field-error"></p>
+                </fieldset>
+
+                <fieldset class="field" data-rule="one">
+                  <legend data-t="forms.business.size"></legend>
+                  <div class="choices" data-choices="forms.business.sizeOptions" data-name="young_people_per_year"></div>
+                  <p class="field-error"></p>
+                </fieldset>
+
+                <div class="field" data-rule="consent">
+                  <label class="consent">
+                    <input type="checkbox" name="consent" value="Yes">
+                    <span data-t="forms.business.consent"></span>
+                  </label>
+                  <p class="field-error"></p>
+                </div>
+
+                <div aria-live="polite"><div data-status hidden></div></div>
+
+                <button class="btn btn-primary btn-lg btn-block" type="submit">
+                  <span data-t="forms.business.submit"></span>
+                </button>
+              </div>
+
+              <div class="notice notice-success" data-success tabindex="-1" hidden>
+                <span class="icon icon-fill" aria-hidden="true">check_circle</span>
+                <span data-t="forms.business.success"></span>
               </div>
             </form>
           </div>
@@ -549,14 +665,15 @@
       <nav class="footer-links" data-t-aria-label="footer.nav">
         <a href="#how" data-t="nav.how"></a>
         <a href="#pricing" data-t="nav.pricing"></a>
+        <a href="#business" data-t="nav.business"></a>
         <a href="#signup" data-t="nav.signup"></a>
-        <a href="login.html?v=19" data-t="nav.demo"></a>
+        <a href="login.html?v=20" data-t="nav.demo"></a>
       </nav>
       <p class="footer-small" data-t="footer.photos"></p>
     </div>
   </footer>
 
-  <script src="config.js?v=19"></script>
-  <script src="script.js?v=19"></script>
+  <script src="config.js?v=20"></script>
+  <script src="script.js?v=20"></script>
 </body>
 </html>
